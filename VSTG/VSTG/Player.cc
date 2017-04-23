@@ -2,11 +2,10 @@
 #include "Bullet.hpp"
 #include "Essential.hpp"
 
-Player::Player(sf::RenderWindow *wnd) :
-	GameObject(wnd),
+Player::Player() :
+	GameObject(),
 	sprite()
 {
-	this->wnd = wnd;
 	up = down = left = right = false;
 	fire = false; radius = 5;
 	position.x = 400;
@@ -37,7 +36,7 @@ void Player::Update(){
 	if (cooldown > 0){
 		cooldown--;
 	}else if (fire){
-		layerDefault.insert(new Bullet(wnd, position.x, position.y));
+		layerDefault.insert(new Bullet(position.x, position.y));
 		cooldown = 10;
 	}
 	float sqlen = velocity.x*velocity.x + velocity.y*velocity.y;

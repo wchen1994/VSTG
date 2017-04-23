@@ -26,7 +26,7 @@ Game::~Game(){
 }
 
 Essential::GameState Game::Run(){ 
-	GameObject::layerDefault.insert(new Player(&wnd));
+	GameObject::layerDefault.insert(new Player());
 
 	while(wnd.isOpen()){ 
 		Update();
@@ -59,8 +59,7 @@ void Game::Update(){
 	}
 
 	//Enemy create
-//	GameObject::layerDefault.insert(new Enemy(wnd, rand()%800, 0,
-//											rand()%100-50, rand()%50));
+	//GameObject::layerDefault.insert(new Enemy(rand()%800, 0, rand()%100-50, rand()%50));
 
 	wnd.clear();
 
@@ -87,7 +86,7 @@ void Game::Update(){
 	//Drawing
 	for (std::set<GameObject*>::iterator it=GameObject::layerDefault.begin();
 		it != GameObject::GameObject::layerDefault.end(); it++){
-		(*it)->Draw();
+		(*it)->Draw(wnd);
 	}
 
 	//Remove

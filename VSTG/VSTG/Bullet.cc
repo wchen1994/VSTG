@@ -1,10 +1,9 @@
 #include "Bullet.hpp"
 
-Bullet::Bullet(sf::RenderWindow *wnd, float x, float y) :
-	GameObject(wnd),
+Bullet::Bullet(float x, float y) :
+	GameObject(),
 	sprite()
 {
-	this->wnd = wnd;
 	position.x = x;
 	position.y = y;
 	velocity.x = 0;
@@ -21,7 +20,6 @@ void Bullet::Update(){
 		layerDelete.insert(this);
 	} else {
 		position += velocity;
-		Draw();
 	}
 	sprite.setPosition(position);
 }

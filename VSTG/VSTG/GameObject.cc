@@ -3,10 +3,9 @@
 std::set<GameObject*> GameObject::layerDefault;
 std::set<GameObject*> GameObject::layerDelete;
 
-GameObject::GameObject(sf::RenderWindow *wnd) :
+GameObject::GameObject() :
 	position(0,0)
 {
-	this->wnd = wnd;
 	colliderSize = 0;
 	drawing = NULL;
 }
@@ -14,9 +13,9 @@ GameObject::GameObject(sf::RenderWindow *wnd) :
 GameObject::~GameObject(){
 };
 
-void GameObject::Draw(){
+void GameObject::Draw(sf::RenderWindow& wnd){
 	if (drawing){
-		wnd->draw(*drawing);
+		wnd.draw(*drawing);
 	}
 }
 

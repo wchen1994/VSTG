@@ -1,11 +1,10 @@
 #include "Enemy.hpp"
 #include <cmath>
 
-Enemy::Enemy(sf::RenderWindow *wnd, float x, float y=0) :
-	GameObject(wnd),
+Enemy::Enemy(float x, float y=0) :
+	GameObject(),
 	sprite()
 {
-	this->wnd = wnd;
 	position.x = x;
 	position.y = y;
 	velocity.x = 0;
@@ -17,11 +16,10 @@ Enemy::Enemy(sf::RenderWindow *wnd, float x, float y=0) :
 	drawing = &sprite;
 }
 
-Enemy::Enemy(sf::RenderWindow *wnd, float x, float y, float vx, float vy) :
-	GameObject(wnd),
+Enemy::Enemy(float x, float y, float vx, float vy) :
+	GameObject(),
 	sprite()
 {
-	this->wnd = wnd;
 	position.x = x;
 	position.y = y;
 	if (vy <= 0)

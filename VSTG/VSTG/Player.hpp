@@ -16,7 +16,7 @@ private:
 	bool fire;
 	int cooldown;
 public:
-	Player(sf::RenderWindow *wnd);
+	Player();
 	void Update();
 	void OnKeyPressed(sf::Event::KeyEvent key);
 	void OnKeyReleased(sf::Event::KeyEvent key);
