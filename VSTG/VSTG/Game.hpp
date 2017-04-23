@@ -17,4 +17,7 @@ public:
 	~Game();
 	Essential::GameState Run();
 	void Update();
+public:
+	static std::set<GameObject*> layerDefault;
+	static std::set<GameObject*> layerDelete;
 };

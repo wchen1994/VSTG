@@ -22,6 +22,4 @@ public:
 	virtual void OnKeyReleased(sf::Event::KeyEvent key);
 	virtual void OnCollisionEnter(GameObject *other);
 	virtual std::string GetType() { return ""; }
-	static std::set<GameObject*> layerDefault;
-	static std::set<GameObject*> layerDelete;
 };

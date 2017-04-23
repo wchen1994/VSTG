@@ -1,8 +1,5 @@
 #include"GameObject.hpp"
 
-std::set<GameObject*> GameObject::layerDefault;
-std::set<GameObject*> GameObject::layerDelete;
-
 GameObject::GameObject() :
 	position(0,0)
 {

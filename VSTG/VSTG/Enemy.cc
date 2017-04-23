@@ -1,4 +1,5 @@
 #include "Enemy.hpp"
+#include "Game.hpp"
 #include <cmath>
 
 Enemy::Enemy(float x, float y=0) :
@@ -38,7 +39,7 @@ void Enemy::Update(){
 	position += velocity;
 
 	if (position.x < 0 || position.x > 800 || position.y > 600){
-		GameObject::layerDelete.insert(this);	
+		Game::layerDelete.insert(this);	
 	}
 
 	sprite.setPosition(position);
@@ -47,6 +48,6 @@ void Enemy::Update(){
 void Enemy::OnCollisionEnter(GameObject *other){
 	std::string type = other->GetType();
 	if (type == "bullet"){
-		GameObject::layerDelete.insert(this);
+		Game::layerDelete.insert(this);
 	}
 }

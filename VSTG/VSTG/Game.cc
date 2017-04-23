@@ -6,6 +6,10 @@
 #include "Player.hpp" 
 #include "Enemy.hpp"
 
+
+std::set<GameObject*> Game::layerDefault;
+std::set<GameObject*> Game::layerDelete;
+
 Game::Game(sf::RenderWindow& wnd) :
 	Scene(),
 	wnd(wnd)
@@ -14,19 +18,19 @@ Game::Game(sf::RenderWindow& wnd) :
 }
 
 Game::~Game(){
-	for (std::set<GameObject*>::iterator it=GameObject::layerDefault.begin(); it!=GameObject::layerDefault.end(); it++){
+	for (auto it=layerDefault.begin(); it!=layerDefault.end(); it++){
 		delete *it;
 	}
-	GameObject::layerDefault.clear();
+	layerDefault.clear();
 	
-	for (std::set<GameObject*>::iterator it=GameObject::layerDelete.begin(); it!=GameObject::layerDelete.end(); it++){
+	for (auto it=layerDelete.begin(); it!=layerDelete.end(); it++){
 		delete *it;
 	}
-	GameObject::layerDelete.clear();
+	layerDelete.clear();
 }
 
 Essential::GameState Game::Run(){ 
-	GameObject::layerDefault.insert(new Player());
+	layerDefault.insert(new Player());
 
 	while(wnd.isOpen()){ 
 		Update();
@@ -42,14 +46,14 @@ void Game::Update(){
 	while(wnd.pollEvent(event)){
 		switch (event.type){
 			case sf::Event::KeyPressed:
-				for (std::set<GameObject*>::iterator it=GameObject::layerDefault.begin();
-				it != GameObject::layerDefault.end(); it++){
+				for (auto it=layerDefault.begin();
+				it != layerDefault.end(); it++){
 					(*it)->OnKeyPressed(event.key);
 				}
 				break;
 			case sf::Event::KeyReleased:
-				for (std::set<GameObject*>::iterator it=GameObject::layerDefault.begin();
-				it != GameObject::layerDefault.end(); it++){
+				for (auto it=layerDefault.begin();
+				it != layerDefault.end(); it++){
 					(*it)->OnKeyReleased(event.key);
 				}
 				break;
@@ -64,16 +68,13 @@ void Game::Update(){
 	wnd.clear();
 
 	//Update
-	for (std::set<GameObject*>::iterator it=GameObject::layerDefault.begin();
-		it != GameObject::layerDefault.end(); it++){
+	for (auto it=layerDefault.begin(); it != layerDefault.end(); it++){
 		(*it)->Update();
 	}
 
 	//Collision
-	for (std::set<GameObject*>::iterator it=GameObject::layerDefault.begin();
-		it != GameObject::layerDefault.end(); it++){
-		for (std::set<GameObject*>::iterator it2=GameObject::layerDefault.begin();
-			it2 != GameObject::layerDefault.end(); it2++){
+	for (auto it=layerDefault.begin(); it != layerDefault.end(); it++){
+		for (auto it2=layerDefault.begin(); it2 != layerDefault.end(); it2++){
 			if(it != it2){
 				sf::Vector2<float> diffPos = (*it)->getPosition() - (*it2)->getPosition();
 				float len = (*it)->getSize() + (*it2)->getSize();
@@ -84,18 +85,17 @@ void Game::Update(){
 	}
 
 	//Drawing
-	for (std::set<GameObject*>::iterator it=GameObject::layerDefault.begin();
-		it != GameObject::GameObject::layerDefault.end(); it++){
+	for (auto it=layerDefault.begin(); it != layerDefault.end(); it++){
 		(*it)->Draw(wnd);
 	}
 
 	//Remove
 	GameObject *pDelete;
-	while(!GameObject::layerDelete.empty()){
-		pDelete = (*GameObject::layerDelete.begin());
-		GameObject::layerDefault.erase(pDelete);
+	while(!layerDelete.empty()){
+		pDelete = (*layerDelete.begin());
+		layerDefault.erase(pDelete);
 		delete pDelete;
-		GameObject::layerDelete.erase(pDelete);
+		layerDelete.erase(pDelete);
 	}
 
 	wnd.display();

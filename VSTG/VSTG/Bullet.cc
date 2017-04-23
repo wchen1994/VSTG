@@ -1,4 +1,5 @@
 #include "Bullet.hpp"
+#include "Game.hpp"
 
 Bullet::Bullet(float x, float y) :
 	GameObject(),
@@ -17,7 +18,7 @@ Bullet::Bullet(float x, float y) :
 
 void Bullet::Update(){
 	if (position.y < 0){
-		layerDelete.insert(this);
+		Game::layerDelete.insert(this);
 	} else {
 		position += velocity;
 	}
@@ -26,6 +27,6 @@ void Bullet::Update(){
 
 void Bullet::OnCollisionEnter(GameObject *other){
 	if (other->GetType() == "enemy"){
-		layerDelete.insert(this);
+		Game::layerDelete.insert(this);
 	}
 }
