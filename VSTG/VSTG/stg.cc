@@ -23,7 +23,7 @@ int main(){
 	std::list<Scene*> lScenes;
 
 	Essential::GameState gameState = Essential::MENU;
-	lScenes.push_back(new StartMenu(&Essential::wnd));
+	lScenes.push_back(new StartMenu(Essential::wnd));
 
 	while(!lScenes.empty()){
 		gameState = (lScenes.back())->Run();
@@ -34,7 +34,7 @@ int main(){
 				lScenes.pop_back();
 				break;
 			case Essential::GAME:
-				lScenes.push_back(new Game(&Essential::wnd));
+				lScenes.push_back(new Game(Essential::wnd));
 				break;
 			default:
 				break;

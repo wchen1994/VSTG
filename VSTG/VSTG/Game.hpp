@@ -11,9 +11,9 @@
 class Game : public Scene{
 private:
 	sf::Event event;
-	sf::RenderWindow *wnd;
+	sf::RenderWindow& wnd;
 public:
-	Game(sf::RenderWindow *wnd);
+	Game(sf::RenderWindow& wnd);
 	~Game();
 	Essential::GameState Run();
 	void Update();

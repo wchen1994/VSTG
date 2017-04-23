@@ -6,11 +6,11 @@
 #include "Player.hpp" 
 #include "Enemy.hpp"
 
-Game::Game(sf::RenderWindow *wnd) :
-	Scene()
+Game::Game(sf::RenderWindow& wnd) :
+	Scene(),
+	wnd(wnd)
 {
-	this->wnd = wnd;
-	wnd->setFramerateLimit(60);
+	wnd.setFramerateLimit(60);
 }
 
 Game::~Game(){
@@ -26,9 +26,9 @@ Game::~Game(){
 }
 
 Essential::GameState Game::Run(){ 
-	GameObject::layerDefault.insert(new Player(wnd));
+	GameObject::layerDefault.insert(new Player(&wnd));
 
-	while(wnd->isOpen()){ 
+	while(wnd.isOpen()){ 
 		Update();
 		if (Essential::isGameOver){
 			return Essential::POP;
@@ -39,7 +39,7 @@ Essential::GameState Game::Run(){
 
 void Game::Update(){
 	//Event Handle
-	while(wnd->pollEvent(event)){
+	while(wnd.pollEvent(event)){
 		switch (event.type){
 			case sf::Event::KeyPressed:
 				for (std::set<GameObject*>::iterator it=GameObject::layerDefault.begin();
@@ -62,7 +62,7 @@ void Game::Update(){
 //	GameObject::layerDefault.insert(new Enemy(wnd, rand()%800, 0,
 //											rand()%100-50, rand()%50));
 
-	wnd->clear();
+	wnd.clear();
 
 	//Update
 	for (std::set<GameObject*>::iterator it=GameObject::layerDefault.begin();
@@ -99,5 +99,5 @@ void Game::Update(){
 		GameObject::layerDelete.erase(pDelete);
 	}
 
-	wnd->display();
+	wnd.display();
 }

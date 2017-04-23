@@ -6,10 +6,10 @@
 class StartMenu : public Scene{
 private:
 	sf::Event event;
-	sf::RenderWindow *wnd;
+	sf::RenderWindow& wnd;
 	sf::Text text;
 	sf::Font font;
 public:
-	StartMenu(sf::RenderWindow *wnd);
+	StartMenu(sf::RenderWindow& wnd);
 	Essential::GameState Run();
 };
