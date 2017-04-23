@@ -5,11 +5,12 @@
 #include <set>
 #include <iostream>
 #include <string>
+#include <memory>
 
 class GameObject{
 protected:
 	sf::Vector2<float> position;
-	sf::Drawable *drawing;
+	std::shared_ptr<sf::Drawable> drawing;
 	float colliderSize;
 public:
 	GameObject();

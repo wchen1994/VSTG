@@ -4,8 +4,7 @@
 #include "Game.hpp"
 
 Player::Player() :
-	GameObject(),
-	sprite()
+	GameObject()
 {
 	up = down = left = right = false;
 	fire = false; radius = 5;
@@ -16,10 +15,11 @@ Player::Player() :
 	speed = 3;
 	cooldown = 0;
 	originX = originY = radius;
-	sprite.setRadius(radius);
-	sprite.setOrigin(originX, originY);
-	sprite.setPosition(position);
-	drawing = &sprite;
+	pSprite = std::make_shared<sf::CircleShape>(sf::CircleShape());
+	pSprite->setRadius(radius);
+	pSprite->setOrigin(originX, originY);
+	pSprite->setPosition(position);
+	drawing = pSprite;
 }
 
 void Player::Update(){
@@ -55,7 +55,7 @@ void Player::Update(){
 			position.y = 600;
 	}
 
-	sprite.setPosition(position);
+	pSprite->setPosition(position);
 }
 
 void Player::OnKeyPressed(sf::Event::KeyEvent key){

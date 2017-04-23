@@ -7,7 +7,7 @@
 
 class Player : public GameObject{
 private:
-	sf::CircleShape sprite;
+	std::shared_ptr<sf::CircleShape> pSprite;
 	sf::Vector2<float> velocity;
 	float originX, originY;
 	float radius;

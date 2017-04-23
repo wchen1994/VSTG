@@ -3,23 +3,22 @@
 #include <cmath>
 
 Enemy::Enemy(float x, float y=0) :
-	GameObject(),
-	sprite()
+	GameObject()
 {
 	position.x = x;
 	position.y = y;
 	velocity.x = 0;
 	velocity.y = 2;
 	colliderSize = radius = 10;
-	sprite.setRadius(radius);
-	sprite.setPosition(position);
-	sprite.setOrigin(radius, radius);
-	drawing = &sprite;
+	pSprite = std::make_shared<sf::CircleShape>(sf::CircleShape());
+	pSprite->setRadius(radius);
+	pSprite->setPosition(position);
+	pSprite->setOrigin(radius, radius);
+	drawing = pSprite;
 }
 
 Enemy::Enemy(float x, float y, float vx, float vy) :
-	GameObject(),
-	sprite()
+	GameObject()
 {
 	position.x = x;
 	position.y = y;
@@ -29,10 +28,11 @@ Enemy::Enemy(float x, float y, float vx, float vy) :
 	velocity.x = vx * 2 / len;
 	velocity.y = vy * 2 / len;
 	colliderSize = radius = 10;
-	sprite.setRadius(radius);
-	sprite.setPosition(position);
-	sprite.setOrigin(radius, radius);
-	drawing = &sprite;
+	pSprite = std::make_shared<sf::CircleShape>(sf::CircleShape());
+	pSprite->setRadius(radius);
+	pSprite->setPosition(position);
+	pSprite->setOrigin(radius, radius);
+	drawing = pSprite;
 }
 
 void Enemy::Update(){
@@ -42,7 +42,7 @@ void Enemy::Update(){
 		Game::layerDelete.insert(this);	
 	}
 
-	sprite.setPosition(position);
+	pSprite->setPosition(position);
 }
 
 void Enemy::OnCollisionEnter(GameObject *other){

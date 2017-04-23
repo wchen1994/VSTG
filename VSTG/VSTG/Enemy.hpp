@@ -5,7 +5,7 @@
 
 class Enemy : public GameObject{
 private:
-	sf::CircleShape sprite;
+	std::shared_ptr<sf::CircleShape> pSprite;
 	sf::Vector2<float> velocity;
 	float radius;
 public:

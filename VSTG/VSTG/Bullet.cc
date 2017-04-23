@@ -2,18 +2,18 @@
 #include "Game.hpp"
 
 Bullet::Bullet(float x, float y) :
-	GameObject(),
-	sprite()
+	GameObject()
 {
 	position.x = x;
 	position.y = y;
 	velocity.x = 0;
 	velocity.y = -5;
 	colliderSize = radius = 3;
-	sprite.setRadius(radius);
-	sprite.setPosition(x, y);
-	sprite.setOrigin(radius, radius);
-	drawing = &sprite;
+	pSprite = std::make_shared<sf::CircleShape>(sf::CircleShape());
+	pSprite->setRadius(radius);
+	pSprite->setPosition(x, y);
+	pSprite->setOrigin(radius, radius);
+	drawing = pSprite;
 }
 
 void Bullet::Update(){
@@ -22,7 +22,7 @@ void Bullet::Update(){
 	} else {
 		position += velocity;
 	}
-	sprite.setPosition(position);
+	pSprite->setPosition(position);
 }
 
 void Bullet::OnCollisionEnter(GameObject *other){
