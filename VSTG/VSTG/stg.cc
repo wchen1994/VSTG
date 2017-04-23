@@ -7,6 +7,7 @@ A touhou like game
 #include <cmath>
 #include <list>
 #include <cstdlib>
+#include <memory>
 
 #include "Essential.hpp"
 #include "Scene.hpp"
@@ -20,21 +21,24 @@ A touhou like game
 
 int main(){
 	Scene *pScene;
-	std::list<Scene*> lScenes;
+	std::list<std::unique_ptr<Scene>> lScenes;
 
 	Essential::GameState gameState = Essential::MENU;
-	lScenes.push_back(new StartMenu(Essential::wnd));
+
+	// Honestly I don't know why I need to break it into two statement
+	StartMenu sm(Essential::wnd);
+	lScenes.push_back(std::make_unique<StartMenu>(sm));
 
 	while(!lScenes.empty()){
 		gameState = (lScenes.back())->Run();
 		switch (gameState){
 			case Essential::POP:
-				pScene = lScenes.back();
-				delete pScene;
+				//pScene = lScenes.back();
+				//delete pScene;
 				lScenes.pop_back();
 				break;
 			case Essential::GAME:
-				lScenes.push_back(new Game(Essential::wnd));
+				lScenes.push_back(std::make_unique<Game>(Game(Essential::wnd)));
 				break;
 			default:
 				break;
