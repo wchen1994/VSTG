@@ -1,5 +1,5 @@
 #include "Board.hpp"
-
+/*
 Board::Board(int wndWidth, int wndHeight, int gridsize){
 	this->gridsize = gridsize;
 	width = (wndWidth + gridsize - 1) / gridsize;
@@ -47,3 +47,4 @@ void Board::clear(){
 		}
 	}
 }
+*/

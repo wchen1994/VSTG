@@ -18,15 +18,15 @@ Bullet::Bullet(float x, float y) :
 
 void Bullet::Update(){
 	if (position.y < 0){
-		Game::layerDelete.insert(this);
+		Game::layerDelete.insert(shared_from_this());
 	} else {
 		position += velocity;
 	}
 	pSprite->setPosition(position);
 }
 
-void Bullet::OnCollisionEnter(GameObject *other){
+void Bullet::OnCollisionEnter(std::shared_ptr<GameObject> other){
 	if (other->GetType() == "enemy"){
-		Game::layerDelete.insert(this);
+		Game::layerDelete.insert(shared_from_this());
 	}
 }

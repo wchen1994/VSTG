@@ -25,6 +25,6 @@ void GameObject::OnKeyPressed(sf::Event::KeyEvent key){
 void GameObject::OnKeyReleased(sf::Event::KeyEvent key){
 }
 
-void GameObject::OnCollisionEnter(GameObject *other){
+void GameObject::OnCollisionEnter(std::shared_ptr<GameObject> other){
 }
 

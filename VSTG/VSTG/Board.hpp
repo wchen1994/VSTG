@@ -3,7 +3,7 @@
 #include "GameObject.hpp"
 #include <set>
 #include <vector>
-
+/* Disable class Board not using
 class Board{
 private:
 	int gridsize;
@@ -23,3 +23,4 @@ public:
 };
 
 static Board board(800, 600, 50);
+*/

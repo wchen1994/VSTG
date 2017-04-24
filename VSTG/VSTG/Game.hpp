@@ -18,6 +18,6 @@ public:
 	Essential::GameState Run();
 	void Update();
 public:
-	static std::set<GameObject*> layerDefault;
-	static std::set<GameObject*> layerDelete;
+	static std::set<std::shared_ptr<GameObject>> layerDefault;
+	static std::set<std::shared_ptr<GameObject>> layerDelete;
 };

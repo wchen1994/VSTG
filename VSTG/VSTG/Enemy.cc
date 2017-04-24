@@ -39,15 +39,15 @@ void Enemy::Update(){
 	position += velocity;
 
 	if (position.x < 0 || position.x > 800 || position.y > 600){
-		Game::layerDelete.insert(this);	
+		Game::layerDelete.insert(shared_from_this());	
 	}
 
 	pSprite->setPosition(position);
 }
 
-void Enemy::OnCollisionEnter(GameObject *other){
+void Enemy::OnCollisionEnter(std::shared_ptr<GameObject> other){
 	std::string type = other->GetType();
 	if (type == "bullet"){
-		Game::layerDelete.insert(this);
+		Game::layerDelete.insert(shared_from_this());
 	}
 }

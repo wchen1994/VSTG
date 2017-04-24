@@ -7,8 +7,8 @@
 #include "Enemy.hpp"
 
 
-std::set<GameObject*> Game::layerDefault;
-std::set<GameObject*> Game::layerDelete;
+std::set<std::shared_ptr<GameObject>> Game::layerDefault;
+std::set<std::shared_ptr<GameObject>> Game::layerDelete;
 
 Game::Game(sf::RenderWindow& wnd) :
 	Scene(),
@@ -18,19 +18,19 @@ Game::Game(sf::RenderWindow& wnd) :
 }
 
 Game::~Game(){
-	for (auto it=layerDefault.begin(); it!=layerDefault.end(); it++){
-		delete *it;
-	}
+//	for (auto it=layerDefault.begin(); it!=layerDefault.end(); it++){
+//		delete *it;
+//	}
 	layerDefault.clear();
 	
-	for (auto it=layerDelete.begin(); it!=layerDelete.end(); it++){
-		delete *it;
-	}
+//	for (auto it=layerDelete.begin(); it!=layerDelete.end(); it++){
+//		delete *it;
+//	}
 	layerDelete.clear();
 }
 
 Essential::GameState Game::Run(){ 
-	layerDefault.insert(new Player());
+	layerDefault.insert(std::make_shared<Player>(Player()));
 
 	while(wnd.isOpen()){ 
 		Update();
@@ -90,13 +90,18 @@ void Game::Update(){
 	}
 
 	//Remove
-	GameObject *pDelete;
-	while(!layerDelete.empty()){
-		pDelete = (*layerDelete.begin());
-		layerDefault.erase(pDelete);
-		delete pDelete;
-		layerDelete.erase(pDelete);
+//	GameObject *pDelete;
+//	while(!layerDelete.empty()){
+//		pDelete = (*layerDelete.begin());
+//		layerDefault.erase(pDelete);
+//		delete pDelete;
+//		layerDelete.erase(pDelete);
+//	}
+
+	for (auto it = layerDelete.begin(); it != layerDelete.end(); it++) {
+		layerDefault.erase(*it);
 	}
+	layerDelete.clear();
 
 	wnd.display();
 }

@@ -12,6 +12,6 @@ public:
 	Enemy(float x, float y);
 	Enemy(float x, float y, float vx, float vy);
 	void Update();
-	void OnCollisionEnter(GameObject *other);
+	void OnCollisionEnter(std::shared_ptr<GameObject> other);
 	std::string GetType(){ return "enemy"; }
 };

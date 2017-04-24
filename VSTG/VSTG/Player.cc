@@ -37,7 +37,7 @@ void Player::Update(){
 	if (cooldown > 0){
 		cooldown--;
 	}else if (fire){
-		Game::layerDefault.insert(new Bullet(position.x, position.y));
+		Game::layerDefault.insert(std::make_shared<Bullet>(Bullet(position.x, position.y)));
 		cooldown = 10;
 	}
 	float sqlen = velocity.x*velocity.x + velocity.y*velocity.y;
@@ -105,9 +105,9 @@ void Player::OnKeyReleased(sf::Event::KeyEvent key){
 
 }
 
-void Player::OnCollisionEnter(GameObject *other){
+void Player::OnCollisionEnter(std::shared_ptr<GameObject> other){
 	if (other->GetType() == "enemy"){
-		Game::layerDelete.insert(this);
+		Game::layerDelete.insert(shared_from_this());
 		Essential::isGameOver = true;
 	}
 }

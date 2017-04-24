@@ -21,5 +21,5 @@ public:
 	void OnKeyPressed(sf::Event::KeyEvent key);
 	void OnKeyReleased(sf::Event::KeyEvent key);
 	std::string GetType(){ return "player"; }
-	void OnCollisionEnter(GameObject *other);
+	void OnCollisionEnter(std::shared_ptr<GameObject> other);
 };
