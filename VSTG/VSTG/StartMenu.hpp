@@ -11,5 +11,6 @@ private:
 	sf::Font font;
 public:
 	StartMenu(sf::RenderWindow& wnd);
+	virtual ~StartMenu() = default;
 	Essential::GameState Run();
 };

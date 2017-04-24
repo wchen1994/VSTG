@@ -20,14 +20,14 @@ A touhou like game
 #pragma comment(lib, "sfml-audio.lib")
 
 int main(){
-	Scene *pScene;
+	std::unique_ptr<Scene> pScene;
 	std::list<std::unique_ptr<Scene>> lScenes;
 
 	Essential::GameState gameState = Essential::MENU;
 
-	// Honestly I don't know why I need to break it into two statement
-	StartMenu sm(Essential::wnd);
-	lScenes.push_back(std::make_unique<StartMenu>(sm));
+	// The drawing of font in StartMenu has been disabled
+	// because it lead to assertion error while failed loading
+	lScenes.push_back(std::make_unique<StartMenu>(StartMenu(Essential::wnd)));
 
 	while(!lScenes.empty()){
 		gameState = (lScenes.back())->Run();
