@@ -38,6 +38,7 @@ int main(){
 				lScenes.pop_back();
 				break;
 			case Essential::GAME:
+				Essential::isGameOver = false;
 				lScenes.push_back(std::make_unique<Game>(Game(Essential::wnd)));
 				break;
 			default:
