@@ -11,7 +11,8 @@ private:
 public:
 	Enemy(float x, float y);
 	Enemy(float x, float y, float vx, float vy);
-	void Update();
+	void Update(float dt);
+	void FixedUpdate(const float& dt);
 	void OnCollisionEnter(std::shared_ptr<GameObject> other);
 	std::string GetType(){ return "enemy"; }
 };

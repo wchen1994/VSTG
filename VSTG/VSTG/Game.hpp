@@ -7,11 +7,16 @@
 #include "GameObject.hpp"
 #include "Scene.hpp"
 #include "Essential.hpp"
+#include "FrameTimer.h"
 
 class Game : public Scene{
 private:
 	sf::Event event;
 	sf::RenderWindow& wnd;
+	FrameTimer ft;
+	float dt;//Delta time
+	float culDt = 0.0f;//Culmulative delta time
+	static constexpr float fixedUpdateDuration = 1 / 60.0f;
 public:
 	Game(sf::RenderWindow& wnd);
 	~Game();

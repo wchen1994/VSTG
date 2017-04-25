@@ -10,7 +10,8 @@ private:
 	float radius;
 public:
 	Bullet(float x, float y);
-	void Update();
+	void Update(float dt);
+	void FixedUpdate(const float& dt);
 	std::string GetType(){ return "bullet"; }
 	void OnCollisionEnter(std::shared_ptr<GameObject> other);
 };

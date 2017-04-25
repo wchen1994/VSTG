@@ -35,13 +35,15 @@ Enemy::Enemy(float x, float y, float vx, float vy) :
 	drawing = pSprite;
 }
 
-void Enemy::Update(){
-	position += velocity;
-
-	if (position.x < 0 || position.x > 800 || position.y > 600){
-		Game::layerDelete.insert(shared_from_this());	
+void Enemy::Update(float dt){
+	if (position.x < 0 || position.x > 800 || position.y > 600) {
+		Game::layerDelete.insert(shared_from_this());
 	}
+}
 
+void Enemy::FixedUpdate(const float & dt)
+{
+	position += velocity * dt;
 	pSprite->setPosition(position);
 }
 

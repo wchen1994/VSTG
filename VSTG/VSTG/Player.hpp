@@ -8,16 +8,18 @@
 class Player : public GameObject{
 private:
 	std::shared_ptr<sf::CircleShape> pSprite;
-	sf::Vector2<float> velocity;
+	sf::Vector2f velocity;
 	float originX, originY;
 	float radius;
 	float speed;
 	bool up, down, left, right;
 	bool fire;
-	int cooldown;
+	float cooldown;
+	static constexpr float cooldownDuration = 0.05f;
 public:
 	Player();
-	void Update();
+	void Update(float dt);
+	void FixedUpdate(const float& dt);
 	void OnKeyPressed(sf::Event::KeyEvent key);
 	void OnKeyReleased(sf::Event::KeyEvent key);
 	std::string GetType(){ return "player"; }

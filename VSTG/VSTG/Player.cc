@@ -12,7 +12,7 @@ Player::Player() :
 	position.y = 300;
 	velocity.x = 0;
 	velocity.y = 0;
-	speed = 3;
+	speed = 180;
 	cooldown = 0;
 	originX = originY = radius;
 	pSprite = std::make_shared<sf::CircleShape>(sf::CircleShape());
@@ -22,29 +22,25 @@ Player::Player() :
 	drawing = pSprite;
 }
 
-void Player::Update(){
-	velocity.x = 0;
-	velocity.y = 0;
+void Player::Update(float dt){
+	velocity = { 0.0f,0.0f };
 	if (up)
-		velocity.y -= 100;
+		velocity.y -= 1.0f;
 	if (down)
-		velocity.y += 100;
+		velocity.y += 1.0f;
 	if (left)
-		velocity.x -= 100;
+		velocity.x -= 1.0f;
 	if (right)
-		velocity.x += 100;
+		velocity.x += 1.0f;
+}
 
-	if (cooldown > 0){
-		cooldown--;
-	}else if (fire){
-		Game::layerDefault.insert(std::make_shared<Bullet>(Bullet(position.x, position.y)));
-		cooldown = 10;
-	}
-	float sqlen = velocity.x*velocity.x + velocity.y*velocity.y;
-	
-	if (sqlen != 0){
-		sqlen = sqrt(sqlen);
-		position += velocity/sqlen * speed;
+void Player::FixedUpdate(const float & dt)
+{
+	// Player Movement
+	const float sqlen = velocity.x*velocity.x + velocity.y*velocity.y;
+	if (sqlen != 0) {
+		const float len = sqrt(sqlen);
+		position += velocity / len * speed * dt;
 		if (position.x < 0)
 			position.x = 0;
 		if (position.x > 800)
@@ -54,8 +50,16 @@ void Player::Update(){
 		if (position.y > 600)
 			position.y = 600;
 	}
-
 	pSprite->setPosition(position);
+
+	// Player Fire
+	if (cooldown > 0) {
+		cooldown -= dt;
+	}
+	else if (fire) {
+		Game::layerDefault.insert(std::make_shared<Bullet>(Bullet(position.x, position.y)));
+		cooldown = cooldownDuration;
+	}
 }
 
 void Player::OnKeyPressed(sf::Event::KeyEvent key){

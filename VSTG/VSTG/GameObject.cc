@@ -16,7 +16,11 @@ void GameObject::Draw(sf::RenderWindow& wnd){
 	}
 }
 
-void GameObject::Update(){
+void GameObject::Update(float dt){
+}
+
+void GameObject::FixedUpdate(const float & dt)
+{
 }
 
 void GameObject::OnKeyPressed(sf::Event::KeyEvent key){

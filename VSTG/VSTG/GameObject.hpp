@@ -19,7 +19,8 @@ public:
 	float getSize(){ return colliderSize; }
 	virtual ~GameObject();
 	virtual void Draw(sf::RenderWindow& wnd);
-	virtual void Update();
+	virtual void Update(float dt);
+	virtual void FixedUpdate(const float& dt);
 	virtual void OnKeyPressed(sf::Event::KeyEvent key);
 	virtual void OnKeyReleased(sf::Event::KeyEvent key);
 	virtual void OnCollisionEnter(std::shared_ptr<GameObject> other);

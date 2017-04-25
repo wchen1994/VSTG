@@ -14,7 +14,8 @@ Game::Game(sf::RenderWindow& wnd) :
 	Scene(),
 	wnd(wnd)
 {
-	wnd.setFramerateLimit(60);
+	//wnd.setFramerateLimit(60);
+	//culDt = 0.0f;
 }
 
 Game::~Game(){
@@ -41,24 +42,24 @@ Essential::GameState Game::Run(){
 	return Essential::POP;
 }
 
-void Game::Update(){
+void Game::Update() {
 	//Event Handle
-	while(wnd.pollEvent(event)){
-		switch (event.type){
-			case sf::Event::KeyPressed:
-				for (auto it=layerDefault.begin();
-				it != layerDefault.end(); it++){
-					(*it)->OnKeyPressed(event.key);
-				}
-				break;
-			case sf::Event::KeyReleased:
-				for (auto it=layerDefault.begin();
-				it != layerDefault.end(); it++){
-					(*it)->OnKeyReleased(event.key);
-				}
-				break;
-			default:
-				Essential::defHandleMsg(event);
+	while (wnd.pollEvent(event)) {
+		switch (event.type) {
+		case sf::Event::KeyPressed:
+			for (auto it = layerDefault.begin();
+				it != layerDefault.end(); it++) {
+				(*it)->OnKeyPressed(event.key);
+			}
+			break;
+		case sf::Event::KeyReleased:
+			for (auto it = layerDefault.begin();
+				it != layerDefault.end(); it++) {
+				(*it)->OnKeyReleased(event.key);
+			}
+			break;
+		default:
+			Essential::defHandleMsg(event);
 		}
 	}
 
@@ -68,8 +69,18 @@ void Game::Update(){
 	wnd.clear();
 
 	//Update
-	for (auto it=layerDefault.begin(); it != layerDefault.end(); it++){
-		(*it)->Update();
+	dt = ft.Mark();
+	for (auto it = layerDefault.begin(); it != layerDefault.end(); it++) {
+		(*it)->Update(dt);
+	}
+
+	//FixedUpdate
+	culDt += dt;
+	while (culDt >= fixedUpdateDuration) {
+		for (auto it = layerDefault.begin(); it != layerDefault.end(); it++) {
+			(*it)->FixedUpdate(fixedUpdateDuration);
+		}
+		culDt -= fixedUpdateDuration;
 	}
 
 	//Collision
@@ -90,14 +101,6 @@ void Game::Update(){
 	}
 
 	//Remove
-//	GameObject *pDelete;
-//	while(!layerDelete.empty()){
-//		pDelete = (*layerDelete.begin());
-//		layerDefault.erase(pDelete);
-//		delete pDelete;
-//		layerDelete.erase(pDelete);
-//	}
-
 	for (auto it = layerDelete.begin(); it != layerDelete.end(); it++) {
 		layerDefault.erase(*it);
 	}

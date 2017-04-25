@@ -7,7 +7,7 @@ Bullet::Bullet(float x, float y) :
 	position.x = x;
 	position.y = y;
 	velocity.x = 0;
-	velocity.y = -5;
+	velocity.y = -300;
 	colliderSize = radius = 3;
 	pSprite = std::make_shared<sf::CircleShape>(sf::CircleShape());
 	pSprite->setRadius(radius);
@@ -16,12 +16,17 @@ Bullet::Bullet(float x, float y) :
 	drawing = pSprite;
 }
 
-void Bullet::Update(){
-	if (position.y < 0){
+void Bullet::Update(float dt)
+{
+	if (position.y < 0) {
 		Game::layerDelete.insert(shared_from_this());
-	} else {
-		position += velocity;
 	}
+}
+
+void Bullet::FixedUpdate(const float& dt)
+{
+	position += velocity * dt;
+
 	pSprite->setPosition(position);
 }
 

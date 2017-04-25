@@ -45,5 +45,8 @@ int main(){
 		}
 	}
 
+//	Game mGame(Essential::wnd);
+//	mGame.Run();
+
 	return 0;
 }
