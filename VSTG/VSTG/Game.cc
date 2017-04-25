@@ -12,6 +12,7 @@ std::set<std::shared_ptr<GameObject>> Game::layerEnemy;
 std::set<std::shared_ptr<GameObject>> Game::layerBullet;
 std::set<std::shared_ptr<GameObject>> Game::layerPlayer;
 std::set<std::shared_ptr<GameObject>> Game::layerDelete;
+Board Game::brd(Essential::ScreenWidth, Essential::ScreenHeight, 150, 150);
 
 Game::Game(sf::RenderWindow& wnd) :
 	Scene(),
@@ -28,6 +29,9 @@ Game::~Game(){
 //	for (auto it=layerDelete.begin(); it!=layerDelete.end(); it++){
 //		delete *it;
 //	}
+	layerEnemy.clear();
+	layerBullet.clear();
+	layerPlayer.clear();
 	layerDelete.clear();
 }
 

@@ -8,6 +8,7 @@
 #include "Scene.hpp"
 #include "Essential.hpp"
 #include "FrameTimer.h"
+#include "Board.hpp"
 
 class Game : public Scene{
 private:
@@ -28,4 +29,5 @@ public:
 	static std::set<std::shared_ptr<GameObject>> layerBullet;
 	static std::set<std::shared_ptr<GameObject>> layerPlayer;
 	static std::set<std::shared_ptr<GameObject>> layerDelete;
+	static Board brd;
 };
