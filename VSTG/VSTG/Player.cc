@@ -22,7 +22,7 @@ Player::Player() :
 	drawing = pSprite;
 }
 
-void Player::Update(float dt){
+void Player::Update(const float& dt){
 	velocity = { 0.0f,0.0f };
 	if (up)
 		velocity.y -= 1.0f;

@@ -16,7 +16,7 @@ void GameObject::Draw(sf::RenderWindow& wnd){
 	}
 }
 
-void GameObject::Update(float dt){
+void GameObject::Update(const float& dt){
 }
 
 void GameObject::FixedUpdate(const float & dt)

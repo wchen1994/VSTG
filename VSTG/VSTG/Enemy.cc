@@ -8,8 +8,8 @@ Enemy::Enemy(float x, float y=0) :
 	position.x = x;
 	position.y = y;
 	velocity.x = 0;
-	velocity.y = 2;
-	colliderSize = radius = 10;
+	velocity.y = speed;
+	colliderSize = radius;
 	pSprite = std::make_shared<sf::CircleShape>(sf::CircleShape());
 	pSprite->setRadius(radius);
 	pSprite->setPosition(position);
@@ -24,10 +24,10 @@ Enemy::Enemy(float x, float y, float vx, float vy) :
 	position.y = y;
 	if (vy <= 0)
 		vy = 1;
-	float len = sqrt(vx*vx + vy*vy);
-	velocity.x = vx * 2 / len;
-	velocity.y = vy * 2 / len;
-	colliderSize = radius = 10;
+	const float len = sqrt(vx*vx + vy*vy);
+	velocity.x = vx * speed / len;
+	velocity.y = vy * speed / len;
+	colliderSize = radius;
 	pSprite = std::make_shared<sf::CircleShape>(sf::CircleShape());
 	pSprite->setRadius(radius);
 	pSprite->setPosition(position);
@@ -35,7 +35,7 @@ Enemy::Enemy(float x, float y, float vx, float vy) :
 	drawing = pSprite;
 }
 
-void Enemy::Update(float dt){
+void Enemy::Update(const float& dt){
 	if (position.x < 0 || position.x > 800 || position.y > 600) {
 		Game::layerDelete.insert(shared_from_this());
 	}

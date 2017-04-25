@@ -14,8 +14,6 @@ Game::Game(sf::RenderWindow& wnd) :
 	Scene(),
 	wnd(wnd)
 {
-	//wnd.setFramerateLimit(60);
-	//culDt = 0.0f;
 }
 
 Game::~Game(){
@@ -64,7 +62,7 @@ void Game::Update() {
 	}
 
 	//Enemy create
-	//GameObject::layerDefault.insert(new Enemy(rand()%800, 0, rand()%100-50, rand()%50));
+	layerDefault.insert(std::make_shared<Enemy>(Enemy( float(rand() % 800), 0.0f, float(rand()%100-59), float(rand()%50) )));
 
 	wnd.clear();
 

@@ -16,7 +16,7 @@ Bullet::Bullet(float x, float y) :
 	drawing = pSprite;
 }
 
-void Bullet::Update(float dt)
+void Bullet::Update(const float& dt)
 {
 	if (position.y < 0) {
 		Game::layerDelete.insert(shared_from_this());

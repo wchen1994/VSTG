@@ -18,7 +18,7 @@ private:
 	static constexpr float cooldownDuration = 0.05f;
 public:
 	Player();
-	void Update(float dt);
+	void Update(const float& dt);
 	void FixedUpdate(const float& dt);
 	void OnKeyPressed(sf::Event::KeyEvent key);
 	void OnKeyReleased(sf::Event::KeyEvent key);
