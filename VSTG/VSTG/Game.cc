@@ -8,6 +8,9 @@
 
 
 std::set<std::shared_ptr<GameObject>> Game::layerDefault;
+std::set<std::shared_ptr<GameObject>> Game::layerEnemy;
+std::set<std::shared_ptr<GameObject>> Game::layerBullet;
+std::set<std::shared_ptr<GameObject>> Game::layerPlayer;
 std::set<std::shared_ptr<GameObject>> Game::layerDelete;
 
 Game::Game(sf::RenderWindow& wnd) :
@@ -29,7 +32,9 @@ Game::~Game(){
 }
 
 Essential::GameState Game::Run(){ 
-	layerDefault.insert(std::make_shared<Player>(Player()));
+	const std::shared_ptr<Player> pPlayer = std::make_shared<Player>(Player());
+	layerDefault.insert(pPlayer);
+	layerPlayer.insert(pPlayer);
 
 	while(wnd.isOpen()){ 
 		Update();
@@ -61,16 +66,13 @@ void Game::Update() {
 		}
 	}
 
-	//Enemy create
-	layerDefault.insert(std::make_shared<Enemy>(Enemy( float(rand() % 800), 0.0f, float(rand()%100-59), float(rand()%50) )));
-
-	wnd.clear();
-
 	//Update
 	dt = ft.Mark();
 	for (auto it = layerDefault.begin(); it != layerDefault.end(); it++) {
 		(*it)->Update(dt);
 	}
+
+	std::cout << "\rFPS: " << 1 / dt;
 
 	//FixedUpdate
 	culDt += dt;
@@ -79,12 +81,21 @@ void Game::Update() {
 			(*it)->FixedUpdate(fixedUpdateDuration);
 		}
 		culDt -= fixedUpdateDuration;
-	}
 
-	//Collision
-	for (auto it=layerDefault.begin(); it != layerDefault.end(); it++){
-		for (auto it2=layerDefault.begin(); it2 != layerDefault.end(); it2++){
-			if(it != it2){
+		//Enemy create
+		const std::shared_ptr<Enemy>pEnemy = std::make_shared<Enemy>(Enemy(float(rand() % 800), 0.0f, 0.0f, 1.0f));
+		layerDefault.insert(pEnemy);
+		layerEnemy.insert(pEnemy);
+
+		//Collision
+		for (auto it = layerEnemy.begin(); it != layerEnemy.end(); it++) {
+			for (auto it2 = layerBullet.begin(); it2 != layerBullet.end(); it2++) {
+				sf::Vector2<float> diffPos = (*it)->getPosition() - (*it2)->getPosition();
+				float len = (*it)->getSize() + (*it2)->getSize();
+				if (diffPos.x*diffPos.x + diffPos.y*diffPos.y <= len*len)
+					(*it)->OnCollisionEnter(*it2);
+			}
+			for (auto it2 = layerPlayer.begin(); it2 != layerPlayer.end(); it2++) {
 				sf::Vector2<float> diffPos = (*it)->getPosition() - (*it2)->getPosition();
 				float len = (*it)->getSize() + (*it2)->getSize();
 				if (diffPos.x*diffPos.x + diffPos.y*diffPos.y <= len*len)
@@ -93,16 +104,19 @@ void Game::Update() {
 		}
 	}
 
-	//Drawing
-	for (auto it=layerDefault.begin(); it != layerDefault.end(); it++){
-		(*it)->Draw(wnd);
-	}
-
 	//Remove
 	for (auto it = layerDelete.begin(); it != layerDelete.end(); it++) {
 		layerDefault.erase(*it);
+		layerPlayer.erase(*it);
+		layerBullet.erase(*it);
+		layerEnemy.erase(*it);
 	}
 	layerDelete.clear();
 
+	wnd.clear();
+	//Drawing
+	for (auto it = layerDefault.begin(); it != layerDefault.end(); it++) {
+		(*it)->Draw(wnd);
+	}
 	wnd.display();
 }

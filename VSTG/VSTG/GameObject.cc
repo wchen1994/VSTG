@@ -1,7 +1,8 @@
 #include"GameObject.hpp"
 
 GameObject::GameObject() :
-	position(0,0)
+	position(0,0),
+	enable_shared_from_this()
 {
 	colliderSize = 0;
 	drawing = NULL;

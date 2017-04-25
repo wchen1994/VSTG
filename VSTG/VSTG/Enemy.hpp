@@ -7,7 +7,7 @@ class Enemy : public GameObject{
 private:
 	std::shared_ptr<sf::CircleShape> pSprite;
 	sf::Vector2<float> velocity;
-	static constexpr float speed = 60.0f;
+	static constexpr float speed = 120.0f;
 	static constexpr float radius=10.0f;
 public:
 	Enemy(float x, float y);

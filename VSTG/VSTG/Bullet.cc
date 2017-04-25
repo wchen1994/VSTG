@@ -33,5 +33,6 @@ void Bullet::FixedUpdate(const float& dt)
 void Bullet::OnCollisionEnter(std::shared_ptr<GameObject> other){
 	if (other->GetType() == "enemy"){
 		Game::layerDelete.insert(shared_from_this());
+		Game::layerDelete.insert(other);
 	}
 }

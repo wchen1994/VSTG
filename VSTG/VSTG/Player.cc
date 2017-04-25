@@ -57,7 +57,9 @@ void Player::FixedUpdate(const float & dt)
 		cooldown -= dt;
 	}
 	else if (fire) {
-		Game::layerDefault.insert(std::make_shared<Bullet>(Bullet(position.x, position.y)));
+		const std::shared_ptr<Bullet> pBullet = std::make_shared<Bullet>(Bullet(position.x, position.y));
+		Game::layerDefault.insert(pBullet);
+		Game::layerBullet.insert(pBullet);
 		cooldown = cooldownDuration;
 	}
 }

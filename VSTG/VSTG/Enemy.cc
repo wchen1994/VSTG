@@ -36,7 +36,7 @@ Enemy::Enemy(float x, float y, float vx, float vy) :
 }
 
 void Enemy::Update(const float& dt){
-	if (position.x < 0 || position.x > 800 || position.y > 600) {
+	if (position.x < -radius || position.x > 800 + radius || position.y > 600) {
 		Game::layerDelete.insert(shared_from_this());
 	}
 }
@@ -51,5 +51,10 @@ void Enemy::OnCollisionEnter(std::shared_ptr<GameObject> other){
 	std::string type = other->GetType();
 	if (type == "bullet"){
 		Game::layerDelete.insert(shared_from_this());
+		Game::layerDelete.insert(other);
+	}
+	else if (type == "player") {
+		Game::layerDelete.insert(other);
+		Essential::isGameOver = true;
 	}
 }

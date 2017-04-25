@@ -24,5 +24,8 @@ public:
 	void Update();
 public:
 	static std::set<std::shared_ptr<GameObject>> layerDefault;
+	static std::set<std::shared_ptr<GameObject>> layerEnemy;
+	static std::set<std::shared_ptr<GameObject>> layerBullet;
+	static std::set<std::shared_ptr<GameObject>> layerPlayer;
 	static std::set<std::shared_ptr<GameObject>> layerDelete;
 };
