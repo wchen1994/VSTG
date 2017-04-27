@@ -1,7 +1,8 @@
 #include "Board.hpp"
 #include <stdlib.h>
+#include <assert.h>
 
-Board::Tile::Tile(float & width_in, float & height_in)
+Board::Tile::Tile(int & width_in, int & height_in)
 {
 	width = width_in;
 	height = height_in;
@@ -22,59 +23,122 @@ void Board::Tile::AddObject(std::shared_ptr<GameObject> pObject)
 	layerObject.insert(pObject);
 }
 
+void Board::Tile::clear()
+{
+	layerObject.clear();
+}
 
-Board::Board(float & boardWidth_in, float & boardHeight_in, float & tileWidth_in, float & tileHeight_in)
+
+Board::Board(const int & boardWidth_in, const int & boardHeight_in, const int & tileWidth_in, const int & tileHeight_in)
 {
 	boardWidth = boardWidth_in;
 	boardHeight = boardHeight_in;
 	tileWidth = tileWidth_in;
 	tileHeight = tileHeight_in;
-	nCol = int(boardWidth / tileWidth + 1);
-	nRow = int(boardHeight / tileHeight + 1);
-	for (int i = 0; i < nCol*nRow; i++) {
+	nCol = boardWidth / tileWidth + 1;
+	nRow = boardHeight / tileHeight + 1;
+
+	// Include additional tile for out of scope
+	for (int i = 0; i <= nCol*nRow; i++) {
 		tiles.push_back(std::make_shared<Tile>(Tile(tileWidth, tileHeight)));
 	}
 }
 
-void Board::UpdateBoard()
+
+std::vector<sf::Vector2i> Board::GetPotentialPos(const int id_x, const int id_y) const
 {
-	for (int i = 0; i < nCol*nRow; i++) {
-		std::set<std::shared_ptr<GameObject>> &layer = tiles[i]->GetLayer();
-		for (auto it_pObject = layer.begin(); it_pObject != layer.end(); it_pObject++) {
-			sf::Vector2f &pos = (*it_pObject)->getPosition();
-			const int x_new = int(pos.x / tileWidth);
-			const int y_new = int(pos.y / tileHeight);
-			if (x_new != i % nCol && y_new != i / nCol) {
-				tiles[i]->RemoveObject(*it_pObject);
-				tiles[y_new * nCol + x_new]->AddObject(*it_pObject);
-			}
+	std::vector<sf::Vector2i> sHLPos;
+
+	for (int y = std::max(0, id_y - 1); y <= std::min(nRow - 1, id_y + 1); y++) {
+		for (int x = std::max(0, id_x - 1); x <= std::min(nCol - 1, id_x + 1); x++) {
+			sHLPos.push_back(sf::Vector2i(x, y));
 		}
 	}
+	return sHLPos;
 }
 
-std::set<std::shared_ptr<Board::Tile>> Board::GetPotentialTile(int id_x, int id_y) const
+std::set<std::shared_ptr<Board::Tile>> Board::GetPotentialTile(const int id_x, const int id_y) const
 {
 	std::set<std::shared_ptr<Board::Tile>> sTile;
-	for (int y = std::max(0, id_y - 1); y <= std::min(nRow, id_y + 1); y++) {
-		for (int x = std::max(0, id_x - 1); x <= std::min(nCol, id_x + 1); x++) {
+	for (int y = std::max(0, id_y - 1); y <= std::min(nRow-1, id_y + 1); y++) {
+		for (int x = std::max(0, id_x - 1); x <= std::min(nCol-1, id_x + 1); x++) {
 			sTile.insert(tiles[y*nCol + x]);
 		}
 	}
 	return sTile;
 }
 
-void Board::RemoveObject(std::shared_ptr<GameObject> pObject)
+void Board::RemoveObject(const std::shared_ptr<GameObject> pObject)
 {
-	const sf::Vector2f pos = pObject->getPosition();
-	const int id_x = int(pos.x / tileWidth);
-	const int id_y = int(pos.y / tileHeight);
-	tiles[id_y * nCol + id_x]->RemoveObject(pObject);
+	sf::Vector2i& brdPos = pObject->GetBrdPos();
+	RemoveObject(brdPos, pObject);
 }
 
-void Board::AddObject(std::shared_ptr<GameObject> pObject)
+void Board::RemoveObject(const sf::Vector2i& brdPos, const std::shared_ptr<GameObject> pObject)
 {
-	const sf::Vector2f pos = pObject->getPosition();
-	const int id_x = int(pos.x / tileWidth);
-	const int id_y = int(pos.y / tileHeight);
-	tiles[id_y * nCol + id_x]->AddObject(pObject);
+	if (brdPos.x < 0 || brdPos.x >= nCol || brdPos.y < 0 || brdPos.y >= nRow) {
+		tiles[nCol * nRow]->RemoveObject(pObject);
+	}
+	else {
+		tiles[brdPos.y*nCol + brdPos.x]->RemoveObject(pObject);
+	}
 }
+
+void Board::AddObject(const std::shared_ptr<GameObject> pObject)
+{
+	sf::Vector2i& pos = pObject->GetBrdPos();
+	AddObject(pos, pObject);
+}
+
+void Board::AddObject(const sf::Vector2i& brdPos, const std::shared_ptr<GameObject> pObject)
+{
+	if (brdPos.x < 0 || brdPos.x >= nCol || brdPos.y < 0 || brdPos.y >= nRow) {
+		tiles[nCol * nRow]->AddObject(pObject);
+	}
+	else {
+		tiles[brdPos.y*nCol + brdPos.x]->AddObject(pObject);
+	}
+}
+
+void Board::View(sf::RenderTarget & gfx)
+{
+	for (int i = 0; i < nCol*nRow; i++) {
+		const int x = i % nCol;
+		const int y = i / nCol;
+
+		sf::Vertex lines[] = {
+			sf::Vertex(sf::Vector2f(float((x + 1)*tileWidth), float(y*tileHeight))),
+			sf::Vertex(sf::Vector2f(float((x + 1)*tileWidth), float((y + 1)*tileHeight))),
+			sf::Vertex(sf::Vector2f(float((x)*tileWidth), float((y + 1)*tileHeight)))
+		};
+		gfx.draw(lines, 3, sf::LineStrip);
+	}
+}
+
+void Board::HighlightTile(sf::RenderTarget & gfx, sf::Vector2i pos)
+{
+	sf::RectangleShape rect;
+	rect.setPosition(sf::Vector2f(float(pos.x * tileWidth), float(pos.y * tileHeight)));
+	rect.setSize(sf::Vector2f(float(tileWidth), float(tileHeight)));
+	rect.setFillColor(sf::Color::Red);
+	gfx.draw(rect);
+}
+
+std::vector<size_t> Board::GetCount()
+{
+	std::vector<size_t> counts;
+	counts.resize(nCol*nRow + 1);
+	for (int i = 0; i <= nCol*nRow; i++) {
+		counts[i] = tiles[i]->GetLayer().size();
+	}
+	return counts;
+}
+
+void Board::clear()
+{
+	for (int i = 0; i <= nCol*nRow; i++) {
+		tiles[i]->clear();
+	}
+}
+
+
