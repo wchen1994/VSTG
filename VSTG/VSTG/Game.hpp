@@ -17,7 +17,10 @@ private:
 	FrameTimer ft;
 	float dt;//Delta time
 	float culDt = 0.0f;//Culmulative delta time
+	float logTimer = 0.0f;
 	static constexpr float fixedUpdateDuration = 1 / 60.0f;
+	size_t nDeletes = 0;
+	std::vector<sf::Vector2i> vHLPos;
 public:
 	Game(sf::RenderWindow& wnd);
 	~Game();
@@ -25,9 +28,10 @@ public:
 	void Update();
 public:
 	static std::set<std::shared_ptr<GameObject>> layerDefault;
-	static std::set<std::shared_ptr<GameObject>> layerEnemy;
 	static std::set<std::shared_ptr<GameObject>> layerBullet;
 	static std::set<std::shared_ptr<GameObject>> layerPlayer;
 	static std::set<std::shared_ptr<GameObject>> layerDelete;
 	static Board brd;
+	static constexpr int tileWidth = 50;
+	static constexpr int tileHeight = 50;
 };

@@ -2,6 +2,7 @@
 
 GameObject::GameObject() :
 	position(0,0),
+	brdPos(0,0),
 	enable_shared_from_this()
 {
 	colliderSize = 0;
