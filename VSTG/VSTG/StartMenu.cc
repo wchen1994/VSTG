@@ -19,6 +19,9 @@ Essential::GameState StartMenu::Run(){
 						Essential::isGameOver = false;
 						return Essential::GAME;
 					}
+					if (event.key.code == sf::Keyboard::E) {
+						return Essential::EDITOR;
+					}
 					break;
 				default:
 					Essential::defHandleMsg(event);

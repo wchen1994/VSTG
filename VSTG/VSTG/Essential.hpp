@@ -7,7 +7,7 @@ class Essential{
 public:
 	static bool isGameOver;
 	static bool isExit;
-	enum GameState{MENU, GAME, POP};
+	enum GameState{MENU, GAME, EDITOR, POP};
 	static GameState gameState;
 	static constexpr int ScreenWidth = 800;
 	static constexpr int ScreenHeight = 600;

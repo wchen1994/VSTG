@@ -54,6 +54,9 @@
     <ClCompile Include="stg.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SceneMapEditor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Board.hpp">
@@ -87,6 +90,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="StartMenu.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneMapEditor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
