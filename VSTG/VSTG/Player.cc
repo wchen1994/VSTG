@@ -118,7 +118,7 @@ void Player::OnKeyReleased(sf::Event::KeyEvent key){
 }
 
 void Player::OnCollisionEnter(std::shared_ptr<GameObject> other){
-	if (other->GetType() == Enemy::objectID){
+	if (other->GetHash() == Enemy::hasdID){
 		Game::layerDelete.insert(shared_from_this());
 		Essential::isGameOver = true;
 	}

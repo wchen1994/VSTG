@@ -55,12 +55,12 @@ void Enemy::FixedUpdate(const float & dt)
 }
 
 void Enemy::OnCollisionEnter(std::shared_ptr<GameObject> other){
-	std::string type = other->GetType();
-	if (type == Bullet::objectID){
+	size_t hash = other->GetHash();
+	if (hash == Bullet::hasdID){
 		Game::layerDelete.insert(shared_from_this());
 		Game::layerDelete.insert(other);
 	}
-	else if (type == Player::objectID) {
+	else if (hash == Player::hasdID) {
 		Game::layerDelete.insert(other);
 		Essential::isGameOver = true;
 	}
