@@ -1,4 +1,6 @@
 #include "Enemy.hpp"
+#include "Bullet.hpp"
+#include "Player.hpp"
 #include "Game.hpp"
 #include <cmath>
 
@@ -26,6 +28,11 @@ Enemy::Enemy(float x, float y, float vx, float vy) :
 	pSprite->setPosition(position);
 	pSprite->setOrigin(radius, radius);
 	drawing = pSprite;
+
+	// Setup ID
+	strcpy_s(objectID, "Enemy0");
+	std::hash<std::string> hashGen;
+	hasdID = hashGen(objectID);
 }
 
 void Enemy::Update(const float& dt){
@@ -49,11 +56,11 @@ void Enemy::FixedUpdate(const float & dt)
 
 void Enemy::OnCollisionEnter(std::shared_ptr<GameObject> other){
 	std::string type = other->GetType();
-	if (type == "bullet"){
+	if (type == Bullet::objectID){
 		Game::layerDelete.insert(shared_from_this());
 		Game::layerDelete.insert(other);
 	}
-	else if (type == "player") {
+	else if (type == Player::objectID) {
 		Game::layerDelete.insert(other);
 		Essential::isGameOver = true;
 	}

@@ -22,6 +22,5 @@ public:
 	void FixedUpdate(const float& dt);
 	void OnKeyPressed(sf::Event::KeyEvent key);
 	void OnKeyReleased(sf::Event::KeyEvent key);
-	std::string GetType() const { return "player"; }
 	void OnCollisionEnter(std::shared_ptr<GameObject> other);
 };

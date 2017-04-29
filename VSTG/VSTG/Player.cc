@@ -1,5 +1,6 @@
 #include "Player.hpp"
 #include "Bullet.hpp"
+#include "Enemy.hpp"
 #include "Essential.hpp"
 #include "Game.hpp"
 
@@ -20,6 +21,11 @@ Player::Player() :
 	pSprite->setOrigin(originX, originY);
 	pSprite->setPosition(position);
 	drawing = pSprite;
+
+	// Setup ID
+	strcpy_s(objectID, "Player0");
+	std::hash<std::string> hashGen;
+	hasdID = hashGen(objectID);
 }
 
 void Player::Update(const float& dt){
@@ -112,7 +118,7 @@ void Player::OnKeyReleased(sf::Event::KeyEvent key){
 }
 
 void Player::OnCollisionEnter(std::shared_ptr<GameObject> other){
-	if (other->GetType() == "enemy"){
+	if (other->GetType() == Enemy::objectID){
 		Game::layerDelete.insert(shared_from_this());
 		Essential::isGameOver = true;
 	}

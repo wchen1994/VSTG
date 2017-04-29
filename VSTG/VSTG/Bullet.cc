@@ -1,4 +1,5 @@
 #include "Bullet.hpp"
+#include "Enemy.hpp"
 #include "Game.hpp"
 
 Bullet::Bullet(float x, float y) :
@@ -14,6 +15,11 @@ Bullet::Bullet(float x, float y) :
 	pSprite->setPosition(x, y);
 	pSprite->setOrigin(radius, radius);
 	drawing = pSprite;
+
+	// Setup ID
+	strcpy_s(objectID, "Bullet0");
+	std::hash<std::string> hashGen;
+	hasdID = hashGen(objectID);
 }
 
 void Bullet::Update(const float& dt)
@@ -31,7 +37,7 @@ void Bullet::FixedUpdate(const float& dt)
 }
 
 void Bullet::OnCollisionEnter(std::shared_ptr<GameObject> other){
-	if (other->GetType() == "enemy"){
+	if (other->GetType() == Enemy::objectID){
 		Game::layerDelete.insert(shared_from_this());
 		Game::layerDelete.insert(other);
 	}

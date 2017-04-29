@@ -1,5 +1,8 @@
 #include"GameObject.hpp"
 
+char GameObject::objectID[128];
+size_t GameObject::hasdID;
+
 GameObject::GameObject() :
 	position(0,0),
 	brdPos(0,0),
@@ -7,6 +10,11 @@ GameObject::GameObject() :
 {
 	colliderSize = 0;
 	drawing = NULL;
+	// Setup ID
+	for (auto& c : objectID) {
+		c = '\0';
+	}
+	hasdID = 0;
 }
 
 GameObject::~GameObject(){

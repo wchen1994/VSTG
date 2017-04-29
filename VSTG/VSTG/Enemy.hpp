@@ -15,5 +15,4 @@ public:
 	void Update(const float& dt);
 	void FixedUpdate(const float& dt);
 	void OnCollisionEnter(std::shared_ptr<GameObject> other);
-	std::string GetType() const { return "enemy"; }
 };

@@ -14,6 +14,8 @@ protected:
 	std::shared_ptr<sf::Drawable> drawing;
 	float colliderSize;
 	sf::Vector2i brdPos;
+	static char objectID[128];
+	static size_t hasdID;
 public:
 	GameObject();
 	sf::Vector2<float> getPosition(){ return position; }
@@ -25,6 +27,7 @@ public:
 	virtual void OnKeyPressed(sf::Event::KeyEvent key);
 	virtual void OnKeyReleased(sf::Event::KeyEvent key);
 	virtual void OnCollisionEnter(std::shared_ptr<GameObject> other);
-	virtual std::string GetType() const { return ""; }
+	virtual std::string GetType() const { return objectID; }
+	virtual size_t GetHash() const { return hasdID; }
 	sf::Vector2i GetBrdPos() const { return brdPos; }
 };
