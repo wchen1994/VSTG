@@ -2,6 +2,7 @@
 
 #include <fstream>
 #include <iostream>
+#include <set>
 
 #include "Scene.hpp"
 #include "Essential.hpp"
@@ -12,8 +13,11 @@ private:
 	class Data {
 	private:
 		float sponsTime;
-		std::shared_ptr<GameObject> pSponsObject;
-		std::vector<sf::Vector2i> followPaths;
+		sf::Vector2f initPos;
+		char objectID[128];
+		size_t hasdID;
+		int numPaths;
+		sf::Vector2i followPaths[16];
 	};
 public:
 	SceneMapEditor();
@@ -22,8 +26,12 @@ public:
 	bool WriteToFile(const std::string filepath);
 private:
 	bool isExit;
+	static constexpr float eraseSize= 20.0f;
 	std::ifstream infile;
 	std::ofstream outfile;
 	std::string line;
 	std::vector<Data> vdata;
+	std::list<sf::CircleShape*> lShape;
+	std::list<sf::CircleShape*> lShapeBuffer;
+private:
 };

@@ -3,15 +3,17 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 
-class Essential{
+class Essential {
 public:
 	static bool isGameOver;
 	static bool isExit;
-	enum GameState{MENU, GAME, EDITOR, POP};
+	enum GameState { MENU, GAME, EDITOR, POP };
 	static GameState gameState;
 	static constexpr int ScreenWidth = 800;
 	static constexpr int ScreenHeight = 600;
 	static sf::RenderWindow wnd;
 	static void defHandleMsg(const sf::Event &eventType);
-};
+	static sf::Vector2f vec2i2f(const sf::Vector2i& vec);
+	static sf::Vector2i vec2f2i(const sf::Vector2f& vec);
 
+};
