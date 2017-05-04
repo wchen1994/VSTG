@@ -2,23 +2,21 @@
 #include "Essential.hpp"
 #include "Enemy.hpp"
 
-SceneMapEditor::SceneMapEditor() : isExit(false)
+SceneMapEditor::SceneMapEditor() : isExit(false), objectEraser(eraseSize), objectBrush(brushSize)
 {
+	objectEraser.setOrigin(eraseSize, eraseSize);
+	objectEraser.setOutlineColor(sf::Color::White);
+	objectEraser.setFillColor(sf::Color::Transparent);
+	objectEraser.setOutlineThickness(0.0f);
+
+	objectBrush.setOrigin(5.0f, 5.0f);
+	objectBrush.setFillColor(sf::Color::Red);
 }
 
 Essential::GameState SceneMapEditor::Run()
 {
 	sf::Event event;
-	sf::CircleShape shapeDef(5.0f);
-	shapeDef.setOrigin(5.0f, 5.0f);
-	shapeDef.setFillColor(sf::Color::Red);
-	sf::CircleShape eraser(eraseSize);
-	eraser.setOrigin(eraseSize, eraseSize);
-	eraser.setOutlineColor(sf::Color::White);
-	eraser.setFillColor(sf::Color::Transparent);
-	eraser.setOutlineThickness(0.0f);
 
-	lShape.push_back(new sf::CircleShape(shapeDef));
 	while (Essential::wnd.isOpen() && !isExit) {
 		while (Essential::wnd.pollEvent(event)) {
 			Essential::defHandleMsg(event);
@@ -28,15 +26,16 @@ Essential::GameState SceneMapEditor::Run()
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
 			isExit = true;
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-			lShape.push_back(new sf::CircleShape(shapeDef));
+			lShape.push_back(new sf::CircleShape(objectBrush));
+			lShape.sort(compare_yaxis);
 		}
 		//
 		// Left click need to spone only one object
 		//
 
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
-			eraser.setOutlineThickness(1.0f);
-			for (auto it = lShape.begin(), it2 = --lShape.end(); it != it2; it++) {
+			objectEraser.setOutlineThickness(1.0f);
+			for (auto it = lShape.begin(); it != lShape.end(); it++) {
 				const sf::Vector2f mpos = Essential::vec2i2f(sf::Mouse::getPosition(Essential::wnd));
 				
 				//Not correct position
@@ -49,14 +48,12 @@ Essential::GameState SceneMapEditor::Run()
 			}
 		}
 		else {
-			eraser.setOutlineThickness(0.0f);
+			objectEraser.setOutlineThickness(0.0f);
 		}
 
 		// Update element pos
-		eraser.setPosition(Essential::vec2i2f(sf::Mouse::getPosition(Essential::wnd)));
-
-		const sf::Vector2f fpos = Essential::vec2i2f(sf::Mouse::getPosition(Essential::wnd));
-		lShape.back()->setPosition(fpos);
+		objectEraser.setPosition(Essential::vec2i2f(sf::Mouse::getPosition(Essential::wnd)));
+		objectBrush.setPosition(Essential::vec2i2f(sf::Mouse::getPosition(Essential::wnd)));
 
 		//Remove Shape
 		for (auto it = lShapeBuffer.begin(); it != lShapeBuffer.end(); it++) {
@@ -70,7 +67,8 @@ Essential::GameState SceneMapEditor::Run()
 		for (auto& shape : lShape) {
 			Essential::wnd.draw(*shape);
 		}
-		Essential::wnd.draw(eraser);
+		Essential::wnd.draw(objectEraser);
+		Essential::wnd.draw(objectBrush);
 		Essential::wnd.display();
 	}
 
@@ -103,6 +101,14 @@ bool SceneMapEditor::WriteToFile(const std::string filepath)
 	}
 	catch (const std::ifstream::failure &e) {
 		std::cout << "Exception opening/reading file." << std::endl;
+	}
+	return false;
+}
+
+bool SceneMapEditor::compare_yaxis(const sf::Shape *first, const sf::Shape *second)
+{
+	if (first->getPosition().y > second->getPosition().y) {
+		return true;
 	}
 	return false;
 }

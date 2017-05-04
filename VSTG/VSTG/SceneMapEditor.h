@@ -27,11 +27,15 @@ public:
 private:
 	bool isExit;
 	static constexpr float eraseSize= 20.0f;
+	static constexpr float brushSize = 5.0f;
 	std::ifstream infile;
 	std::ofstream outfile;
 	std::string line;
 	std::vector<Data> vdata;
 	std::list<sf::CircleShape*> lShape;
 	std::list<sf::CircleShape*> lShapeBuffer;
+	sf::CircleShape objectBrush;
+	sf::CircleShape objectEraser;
 private:
+	static bool compare_yaxis(const sf::Shape *first, const sf::Shape *second);
 };
