@@ -8,6 +8,15 @@
 #include "Essential.hpp"
 #include "GameObject.hpp"
 
+struct YCmp {
+	bool operator()(const sf::Shape *lhs, const sf::Shape *rhs) const {
+		if (lhs->getPosition().y > rhs->getPosition().y) {
+			return true;
+		}
+		return false;
+	}
+};
+
 class SceneMapEditor : public Scene {
 private:
 	class Data {
@@ -32,10 +41,8 @@ private:
 	std::ofstream outfile;
 	std::string line;
 	std::vector<Data> vdata;
-	std::list<sf::CircleShape*> lShape;
-	std::list<sf::CircleShape*> lShapeBuffer;
+	std::set<sf::CircleShape*, YCmp> sortedpShapes;
+	std::list<sf::CircleShape*> lShapeDel;
 	sf::CircleShape objectBrush;
 	sf::CircleShape objectEraser;
-private:
-	static bool compare_yaxis(const sf::Shape *first, const sf::Shape *second);
 };

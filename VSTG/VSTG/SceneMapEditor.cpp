@@ -26,8 +26,7 @@ Essential::GameState SceneMapEditor::Run()
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
 			isExit = true;
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-			lShape.push_back(new sf::CircleShape(objectBrush));
-			lShape.sort(compare_yaxis);
+			sortedpShapes.insert(new sf::CircleShape(objectBrush));
 		}
 		//
 		// Left click need to spone only one object
@@ -35,15 +34,13 @@ Essential::GameState SceneMapEditor::Run()
 
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
 			objectEraser.setOutlineThickness(1.0f);
-			for (auto it = lShape.begin(); it != lShape.end(); it++) {
+			for (auto it = sortedpShapes.begin(); it != sortedpShapes.end(); it++) {
 				const sf::Vector2f mpos = Essential::vec2i2f(sf::Mouse::getPosition(Essential::wnd));
-				
-				//Not correct position
 				const sf::Vector2f spos = (*it)->getPosition();
 				const sf::Vector2f fDist = spos - mpos;
 				float sqlen = fDist.x*fDist.x + fDist.y*fDist.y;
 				if (sqlen < eraseSize*eraseSize) {
-					lShapeBuffer.push_back(*it);
+					lShapeDel.push_back(*it);
 				}
 			}
 		}
@@ -56,16 +53,16 @@ Essential::GameState SceneMapEditor::Run()
 		objectBrush.setPosition(Essential::vec2i2f(sf::Mouse::getPosition(Essential::wnd)));
 
 		//Remove Shape
-		for (auto it = lShapeBuffer.begin(); it != lShapeBuffer.end(); it++) {
+		for (auto it = lShapeDel.begin(); it != lShapeDel.end(); it++) {
+			sortedpShapes.erase(*it);
 			delete *it;
-			lShape.remove(*it);
 		}
-		lShapeBuffer.clear();
+		lShapeDel.clear();
 
 		// Drawing
 		Essential::wnd.clear();
-		for (auto& shape : lShape) {
-			Essential::wnd.draw(*shape);
+		for (auto& pShape : sortedpShapes) {
+			Essential::wnd.draw(*pShape);
 		}
 		Essential::wnd.draw(objectEraser);
 		Essential::wnd.draw(objectBrush);
@@ -105,10 +102,4 @@ bool SceneMapEditor::WriteToFile(const std::string filepath)
 	return false;
 }
 
-bool SceneMapEditor::compare_yaxis(const sf::Shape *first, const sf::Shape *second)
-{
-	if (first->getPosition().y > second->getPosition().y) {
-		return true;
-	}
-	return false;
-}
+
