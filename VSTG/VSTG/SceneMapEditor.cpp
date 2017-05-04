@@ -23,19 +23,6 @@ Essential::GameState SceneMapEditor::Run()
 	while (Essential::wnd.isOpen() && !isExit) {
 		while (Essential::wnd.pollEvent(event)) {
 			switch (event.type) {
-			case sf::Event::MouseButtonReleased:
-				if (event.mouseButton.button == sf::Mouse::Left) {
-					if (dragObject) {
-						sortedpShapes.insert(dragObject); // Remove and insert back to ensure sorted set
-					}
-					else {
-						// Add Object
-						sortedpShapes.insert(new sf::CircleShape(objectBrush));
-					}
-					dragObject = NULL;
-					isMouseLeft = false;
-				}
-				break;
 			default:
 				Essential::defHandleMsg(event);
 			}
@@ -68,6 +55,17 @@ Essential::GameState SceneMapEditor::Run()
 				}
 			}
 			isMouseLeft = true;
+		}
+		else if (isMouseLeft == true){
+			if (dragObject) {
+				sortedpShapes.insert(dragObject); // Remove and insert back to ensure sorted set
+			}
+			else {
+				// Add Object
+				sortedpShapes.insert(new sf::CircleShape(objectBrush));
+			}
+			dragObject = NULL;
+			isMouseLeft = false;
 		}
 
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
