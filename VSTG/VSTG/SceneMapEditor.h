@@ -35,6 +35,8 @@ public:
 	bool WriteToFile(const std::string filepath);
 private:
 	bool isExit;
+	bool isDrag;
+	bool isMouseLeft;
 	static constexpr float eraseSize= 20.0f;
 	static constexpr float brushSize = 5.0f;
 	std::ifstream infile;
@@ -45,4 +47,5 @@ private:
 	std::list<sf::CircleShape*> lShapeDel;
 	sf::CircleShape objectBrush;
 	sf::CircleShape objectEraser;
+	sf::CircleShape *dragObject;
 };
