@@ -5,6 +5,7 @@
 SceneMapEditor::SceneMapEditor() : 
 	isExit(false), isDrag(false), isMouseLeft(false), 
 	objectEraser(eraseSize), objectBrush(brushSize),
+	timeAtBottom(0.0f), timeScale(100.0f),
 	dragObject(NULL)
 {
 	objectEraser.setOrigin(eraseSize, eraseSize);
@@ -23,9 +24,11 @@ Essential::GameState SceneMapEditor::Run()
 	while (Essential::wnd.isOpen() && !isExit) {
 		while (Essential::wnd.pollEvent(event)) {
 			switch (event.type) {
-			default:
-				Essential::defHandleMsg(event);
+			case sf::Event::MouseWheelScrolled:
+				timeAtBottom += scrollSpeed * event.mouseWheelScroll.delta;
+				timeAtBottom = timeAtBottom < 0 ? 0.0f : timeAtBottom;
 			}
+			Essential::defHandleMsg(event);
 		}
 
 		//Handle input
@@ -108,11 +111,17 @@ Essential::GameState SceneMapEditor::Run()
 
 		// Drawing
 		Essential::wnd.clear();
+		// draw time line
+		for (float i = timeScale - int(timeAtBottom) % int(timeScale); i < Essential::ScreenHeight; i += timeScale) {
+			DrawLine(Essential::wnd, Essential::ScreenHeight - i);
+		}
+		// draw Shape
 		for (auto& pShape : sortedpShapes) {
 			Essential::wnd.draw(*pShape);
 		}
+		// draw tool
 		Essential::wnd.draw(objectEraser);
-		Essential::wnd.draw(objectBrush);
+		Essential::wnd.draw(objectBrush);	
 		Essential::wnd.display();
 	}
 
@@ -147,6 +156,15 @@ bool SceneMapEditor::WriteToFile(const std::string filepath)
 		std::cout << "Exception opening/reading file." << std::endl;
 	}
 	return false;
+}
+
+void SceneMapEditor::DrawLine(sf::RenderTarget & gfx, const float y)
+{
+	const sf::Vertex line[] = {
+		sf::Vertex(sf::Vector2f(0.0f, y)),
+		sf::Vertex(sf::Vector2f(float(Essential::ScreenWidth), y))
+	};
+	gfx.draw(line, 2, sf::LineStrip);
 }
 
 

@@ -37,6 +37,9 @@ private:
 	bool isExit;
 	bool isDrag;
 	bool isMouseLeft;
+	float timeAtBottom;
+	float timeScale;
+	static constexpr float scrollSpeed = 30.0f;
 	static constexpr float eraseSize= 20.0f;
 	static constexpr float brushSize = 5.0f;
 	std::ifstream infile;
@@ -48,4 +51,6 @@ private:
 	sf::CircleShape objectBrush;
 	sf::CircleShape objectEraser;
 	sf::CircleShape *dragObject;
+private:
+	void DrawLine(sf::RenderTarget & gfx, const float y);
 };
