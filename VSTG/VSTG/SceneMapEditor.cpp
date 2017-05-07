@@ -55,7 +55,8 @@ Essential::GameState SceneMapEditor::Run()
 			if (!isMouseLeft) {
 				// Find object around for drag
 				for (auto it = sortedpShapes.begin(); it != sortedpShapes.end(); it++) {
-					const sf::Vector2f mpos = Essential::vec2i2f(sf::Mouse::getPosition(Essential::wnd));
+					sf::Vector2f mpos = Essential::vec2i2f(sf::Mouse::getPosition(Essential::wnd));
+					mpos.y -= timeAtBottom;
 					const sf::Vector2f spos = (*it)->getPosition();
 					const sf::Vector2f fDist = spos - mpos;
 					const float sqlen = fDist.x*fDist.x + fDist.y*fDist.y;
@@ -71,7 +72,9 @@ Essential::GameState SceneMapEditor::Run()
 			else {
 				if (dragObject) {
 					// Drag
-					dragObject->setPosition(Essential::vec2i2f(sf::Mouse::getPosition(Essential::wnd)));
+					sf::Vector2f vec = Essential::vec2i2f(sf::Mouse::getPosition(Essential::wnd));
+					vec.y -= timeAtBottom;
+					dragObject->setPosition(vec);
 				}
 			}
 			isMouseLeft = true;
@@ -82,6 +85,9 @@ Essential::GameState SceneMapEditor::Run()
 			}
 			else {
 				// Add Object
+				sf::Vector2f vec = Essential::vec2i2f(sf::Mouse::getPosition(Essential::wnd));
+				vec.y -= timeAtBottom;
+				objectBrush.setPosition(vec);
 				sortedpShapes.insert(new sf::CircleShape(objectBrush));
 			}
 			dragObject = NULL;
@@ -98,7 +104,8 @@ Essential::GameState SceneMapEditor::Run()
 				dragObject = NULL;
 			}
 			for (auto it = sortedpShapes.begin(); it != sortedpShapes.end(); it++) {
-				const sf::Vector2f mpos = Essential::vec2i2f(sf::Mouse::getPosition(Essential::wnd));
+				sf::Vector2f mpos = Essential::vec2i2f(sf::Mouse::getPosition(Essential::wnd));
+				mpos.y -= timeAtBottom;
 				const sf::Vector2f spos = (*it)->getPosition();
 				const sf::Vector2f fDist = spos - mpos;
 				float sqlen = fDist.x*fDist.x + fDist.y*fDist.y;
@@ -133,8 +140,13 @@ Essential::GameState SceneMapEditor::Run()
 			DrawLine(Essential::wnd, Essential::ScreenHeight - i);
 		}
 		// draw Shape
-		for (auto& pShape : sortedpShapes) {
-			Essential::wnd.draw(*pShape);
+		for (auto pShape : sortedpShapes) {
+			sf::Vector2f vec = pShape->getPosition();
+			// Change Position accoridng timeAxis
+			vec.y += timeAtBottom;
+			sf::CircleShape shape(*pShape);
+			shape.setPosition(vec);
+			Essential::wnd.draw(shape);
 		}
 		// draw tool
 		Essential::wnd.draw(objectEraser);
