@@ -19,6 +19,7 @@ A touhou like game
 #pragma comment(lib, "sfml-system.lib")
 #pragma comment(lib, "sfml-window.lib")
 #pragma comment(lib, "sfml-audio.lib")
+#pragma comment(lib, "nfd_d.lib")
 
 int main(){
 	std::unique_ptr<Scene> pScene;

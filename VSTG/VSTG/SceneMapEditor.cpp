@@ -2,6 +2,11 @@
 #include "Essential.hpp"
 #include "Enemy.hpp"
 
+#include "nfd.h"
+
+#include <ShObjIdl.h>
+#include <Windows.h>
+
 SceneMapEditor::SceneMapEditor() : 
 	isExit(false), isDrag(false), isMouseLeft(false), 
 	objectEraser(eraseSize), objectBrush(brushSize),
@@ -27,6 +32,11 @@ Essential::GameState SceneMapEditor::Run()
 			case sf::Event::MouseWheelScrolled:
 				timeAtBottom += scrollSpeed * event.mouseWheelScroll.delta;
 				timeAtBottom = timeAtBottom < 0 ? 0.0f : timeAtBottom;
+				break;
+			case sf::Event::KeyPressed:
+				if (event.key.code == sf::Keyboard::W) {
+					WriteToFile();
+				}
 			}
 			Essential::defHandleMsg(event);
 		}
@@ -130,6 +140,7 @@ Essential::GameState SceneMapEditor::Run()
 
 bool SceneMapEditor::LoadFromFile(const std::string filepath)
 {
+	std::ifstream infile;
 	try{
 		infile.open("filepath");
 		while (std::getline(infile, line)) {
@@ -145,17 +156,89 @@ bool SceneMapEditor::LoadFromFile(const std::string filepath)
 
 bool SceneMapEditor::WriteToFile(const std::string filepath)
 {
+	std::ofstream outfile;
 	try {
-		infile.open("filepath");
-		for (int i = 0; i < vdata.size(); i++) {
-			// data block into data;
+		using namespace std;
+		ofstream outfile;
+		outfile.open(filepath, ofstream::out);
+		char str[1024];
+		for (auto shape : sortedpShapes) {
+			sf::Vector2f vec = shape->getPosition();
+			vec.y = vec.y / timeScale;
+			sprintf_s(str, "%f,%f", vec.x, vec.y);
+			outfile << str << endl;
 		}
-		infile.close();
+		outfile.close();
 	}
 	catch (const std::ifstream::failure &e) {
 		std::cout << "Exception opening/reading file." << std::endl;
 	}
 	return false;
+}
+
+bool SceneMapEditor::WriteToFile()
+{
+	//NFD
+	nfdchar_t *outPath = NULL;
+	nfdresult_t result = NFD_SaveDialog("tmap", NULL, &outPath);
+
+	bool rc = false;
+	if (result == NFD_OKAY)
+	{
+		rc = WriteToFile(outPath);
+		free(outPath);
+	}
+	else if (result == NFD_CANCEL)
+	{
+		puts("User pressed cancel.");
+	}
+	else
+	{
+		printf("Error: %s\n", NFD_GetError());
+	}
+
+//===========================================================================
+// Window File open diaglog
+//===========================================================================
+//	HRESULT hr = CoInitializeEx(NULL, COINIT_APARTMENTTHREADED |
+//		COINIT_DISABLE_OLE1DDE);
+//	if (SUCCEEDED(hr))
+//	{
+//		IFileOpenDialog *pFileOpen;
+//
+//		// Create the FileOpenDialog object.
+//		hr = CoCreateInstance(CLSID_FileOpenDialog, NULL, CLSCTX_ALL,
+//			IID_IFileOpenDialog, reinterpret_cast<void**>(&pFileOpen));
+//
+//		if (SUCCEEDED(hr))
+//		{
+//			// Show the Open dialog box.
+//			hr = pFileOpen->Show(NULL);
+//
+//			// Get the file name from the dialog box.
+//			if (SUCCEEDED(hr))
+//			{
+//				IShellItem *pItem;
+//				hr = pFileOpen->GetResult(&pItem);
+//				if (SUCCEEDED(hr))
+//				{
+//					PSTR pszFilePath;
+//					hr = pItem->GetDisplayName(SIGDN_FILESYSPATH, &pszFilePath);
+//
+//					// Display the file name to the user.
+//					if (SUCCEEDED(hr))
+//					{
+//						MessageBox(NULL, pszFilePath, "File Path", MB_OK);
+//						CoTaskMemFree(pszFilePath);
+//					}
+//					pItem->Release();
+//				}
+//			}
+//			pFileOpen->Release();
+//		}
+//	}
+
+	return rc;
 }
 
 void SceneMapEditor::DrawLine(sf::RenderTarget & gfx, const float y)

@@ -33,6 +33,7 @@ public:
 	Essential::GameState Run();
 	bool LoadFromFile(const std::string filepath);
 	bool WriteToFile(const std::string filepath);
+	bool WriteToFile();
 private:
 	bool isExit;
 	bool isDrag;
@@ -42,8 +43,6 @@ private:
 	static constexpr float scrollSpeed = 30.0f;
 	static constexpr float eraseSize= 20.0f;
 	static constexpr float brushSize = 5.0f;
-	std::ifstream infile;
-	std::ofstream outfile;
 	std::string line;
 	std::vector<Data> vdata;
 	std::set<sf::CircleShape*, YCmp> sortedpShapes;
