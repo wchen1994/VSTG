@@ -8,7 +8,7 @@
 
 struct YCmp {
 	bool operator()(const sf::Shape *lhs, const sf::Shape *rhs) const {
-		if (lhs->getPosition().y > rhs->getPosition().y) {
+		if (lhs->getPosition().y * 10000 + lhs->getPosition().x > rhs->getPosition().y * 10000 + rhs->getPosition().x) {
 			return true;
 		}
 		return false;
