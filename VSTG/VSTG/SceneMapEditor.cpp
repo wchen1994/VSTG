@@ -4,8 +4,8 @@
 
 #include "nfd.h"
 
-#include <ShObjIdl.h>
-#include <Windows.h>
+#include <regex>
+#include <fstream>
 
 SceneMapEditor::SceneMapEditor() : 
 	isExit(false), isDrag(false), isMouseLeft(false), 
@@ -19,7 +19,7 @@ SceneMapEditor::SceneMapEditor() :
 	objectEraser.setOutlineThickness(0.0f);
 
 	objectBrush.setOrigin(5.0f, 5.0f);
-	objectBrush.setFillColor(sf::Color::Red);
+	objectBrush.setFillColor(sf::Color(255, 0, 0, 100));
 }
 
 Essential::GameState SceneMapEditor::Run()
@@ -34,8 +34,15 @@ Essential::GameState SceneMapEditor::Run()
 				timeAtBottom = timeAtBottom < 0 ? 0.0f : timeAtBottom;
 				break;
 			case sf::Event::KeyPressed:
-				if (event.key.code == sf::Keyboard::W) {
+				switch (event.key.code) {
+				case sf::Keyboard::W:
 					WriteToFile();
+					break;
+				case sf::Keyboard::M:
+					MergeFromFile();
+					break;
+				default:
+					break;
 				}
 			}
 			Essential::defHandleMsg(event);
@@ -141,10 +148,23 @@ Essential::GameState SceneMapEditor::Run()
 bool SceneMapEditor::LoadFromFile(const std::string filepath)
 {
 	std::ifstream infile;
+	std::string line;
+	std::regex rgx("(\\d*.\\d*),\\s*(\\d*.\\d*)");
+	std::smatch match;
+	sf::Vector2f vec;
 	try{
-		infile.open("filepath");
+		infile.open(filepath);		
 		while (std::getline(infile, line)) {
-			// line into data block
+			const std::string s(line);
+			if (std::regex_search(s.begin(), s.end(), match, rgx)) {
+				vec.x = std::stof(match[1]);
+				vec.y = std::stof(match[2]) * timeScale;
+
+				// Insert Object
+				sf::CircleShape *pShape = new sf::CircleShape(objectBrush);
+				pShape->setPosition(vec);
+				sortedpShapes.insert(pShape);
+			}
 		}
 		infile.close();
 	}
@@ -152,6 +172,30 @@ bool SceneMapEditor::LoadFromFile(const std::string filepath)
 		std::cout << "Exception opening/reading file." << std::endl;
 	}
 	return false;
+}
+
+bool SceneMapEditor::MergeFromFile()
+{
+	//NFD
+	nfdchar_t *outPath = NULL;
+	nfdresult_t result = NFD_OpenDialog("tmap", NULL, &outPath);
+
+	bool rc = false;
+	if (result == NFD_OKAY)
+	{
+		rc = LoadFromFile(outPath);
+		free(outPath);
+	}
+	else if (result == NFD_CANCEL)
+	{
+		puts("User pressed cancel.");
+	}
+	else
+	{
+		printf("Error: %s\n", NFD_GetError());
+	}
+
+	return rc;
 }
 
 bool SceneMapEditor::WriteToFile(const std::string filepath)
@@ -172,8 +216,9 @@ bool SceneMapEditor::WriteToFile(const std::string filepath)
 	}
 	catch (const std::ifstream::failure &e) {
 		std::cout << "Exception opening/reading file." << std::endl;
+		return false;
 	}
-	return false;
+	return true;
 }
 
 bool SceneMapEditor::WriteToFile()
@@ -196,47 +241,6 @@ bool SceneMapEditor::WriteToFile()
 	{
 		printf("Error: %s\n", NFD_GetError());
 	}
-
-//===========================================================================
-// Window File open diaglog
-//===========================================================================
-//	HRESULT hr = CoInitializeEx(NULL, COINIT_APARTMENTTHREADED |
-//		COINIT_DISABLE_OLE1DDE);
-//	if (SUCCEEDED(hr))
-//	{
-//		IFileOpenDialog *pFileOpen;
-//
-//		// Create the FileOpenDialog object.
-//		hr = CoCreateInstance(CLSID_FileOpenDialog, NULL, CLSCTX_ALL,
-//			IID_IFileOpenDialog, reinterpret_cast<void**>(&pFileOpen));
-//
-//		if (SUCCEEDED(hr))
-//		{
-//			// Show the Open dialog box.
-//			hr = pFileOpen->Show(NULL);
-//
-//			// Get the file name from the dialog box.
-//			if (SUCCEEDED(hr))
-//			{
-//				IShellItem *pItem;
-//				hr = pFileOpen->GetResult(&pItem);
-//				if (SUCCEEDED(hr))
-//				{
-//					PSTR pszFilePath;
-//					hr = pItem->GetDisplayName(SIGDN_FILESYSPATH, &pszFilePath);
-//
-//					// Display the file name to the user.
-//					if (SUCCEEDED(hr))
-//					{
-//						MessageBox(NULL, pszFilePath, "File Path", MB_OK);
-//						CoTaskMemFree(pszFilePath);
-//					}
-//					pItem->Release();
-//				}
-//			}
-//			pFileOpen->Release();
-//		}
-//	}
 
 	return rc;
 }

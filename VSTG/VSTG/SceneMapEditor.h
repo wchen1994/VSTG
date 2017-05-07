@@ -1,7 +1,5 @@
 #pragma once
 
-#include <fstream>
-#include <iostream>
 #include <set>
 
 #include "Scene.hpp"
@@ -32,6 +30,7 @@ public:
 	SceneMapEditor();
 	Essential::GameState Run();
 	bool LoadFromFile(const std::string filepath);
+	bool MergeFromFile();
 	bool WriteToFile(const std::string filepath);
 	bool WriteToFile();
 private:
@@ -43,7 +42,6 @@ private:
 	static constexpr float scrollSpeed = 30.0f;
 	static constexpr float eraseSize= 20.0f;
 	static constexpr float brushSize = 5.0f;
-	std::string line;
 	std::vector<Data> vdata;
 	std::set<sf::CircleShape*, YCmp> sortedpShapes;
 	std::list<sf::CircleShape*> lShapeDel;
