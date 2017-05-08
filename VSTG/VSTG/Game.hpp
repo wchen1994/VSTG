@@ -9,6 +9,7 @@
 #include "Essential.hpp"
 #include "FrameTimer.h"
 #include "Board.hpp"
+#include "Map.h"
 
 class Game : public Scene{
 private:
@@ -20,7 +21,7 @@ private:
 	float logTimer = 0.0f;
 	static constexpr float fixedUpdateDuration = 1 / 60.0f;
 	size_t nDeletes = 0;
-	std::vector<sf::Vector2i> vHLPos;
+	Map map;
 public:
 	Game(sf::RenderWindow& wnd);
 	~Game();
@@ -34,4 +35,9 @@ public:
 	static Board brd;
 	static constexpr int tileWidth = 50;
 	static constexpr int tileHeight = 50;
+
+#ifdef _BOARD_DEBUG
+private:
+	std::vector<sf::Vector2i> vHLPos;
+#endif
 };

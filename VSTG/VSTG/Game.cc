@@ -16,7 +16,8 @@ Board Game::brd(Essential::ScreenWidth, Essential::ScreenHeight, 50, 50);
 
 Game::Game(sf::RenderWindow& wnd) :
 	Scene(),
-	wnd(wnd)
+	wnd(wnd),
+	map("Resources/Lv1.tmap")
 {
 }
 
@@ -66,6 +67,7 @@ void Game::Update() {
 
 	//Update
 	dt = ft.Mark();
+	map.Update(dt);
 	for (auto it = layerDefault.begin(); it != layerDefault.end(); it++) {
 		(*it)->Update(dt);
 	}
@@ -73,11 +75,11 @@ void Game::Update() {
 	//FixedUpdate
 	culDt += dt;
 	while (culDt >= fixedUpdateDuration) {
-		// Create Enemy
-		const std::shared_ptr<Enemy>pEnemy = std::make_shared<Enemy>(Enemy(float(rand() % 800), 0.0f, 0.0f, 1.0f));
-		layerDefault.insert(pEnemy);
-		//		layerEnemy.insert(pEnemy);
-		brd.AddObject(pEnemy);
+//		// Create Enemy
+//		const std::shared_ptr<Enemy>pEnemy = std::make_shared<Enemy>(Enemy(float(rand() % 800), 0.0f));
+//		layerDefault.insert(pEnemy);
+//		//		layerEnemy.insert(pEnemy);
+//		brd.AddObject(pEnemy);
 
 		for (auto it = layerDefault.begin(); it != layerDefault.end(); it++) {
 			(*it)->FixedUpdate(fixedUpdateDuration);
@@ -112,6 +114,7 @@ void Game::Update() {
 		}
 	}
 
+#ifdef _BOARD_DEBUG
 	vHLPos.clear();
 	for (auto it = layerBullet.begin(); it != layerBullet.end(); it++) {
 		const std::vector<sf::Vector2i> sPos = brd.GetPotentialPos(*it);
@@ -119,6 +122,7 @@ void Game::Update() {
 			vHLPos.push_back(pos);
 		}
 	}
+#endif
 
 #ifdef _DEBUG
 
