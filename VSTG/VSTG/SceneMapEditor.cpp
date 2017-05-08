@@ -86,9 +86,12 @@ Essential::GameState SceneMapEditor::Run()
 			else {
 				// Add Object
 				sf::Vector2f vec = Essential::vec2i2f(sf::Mouse::getPosition(Essential::wnd));
-				vec.y -= timeAtBottom;
-				objectBrush.setPosition(vec);
-				sortedpShapes.insert(new sf::CircleShape(objectBrush));
+				if (vec.x >= 0 && vec.x < Essential::ScreenWidth &&
+					vec.y >= 0 && vec.y < Essential::ScreenHeight) { // Mouse in Screen
+					vec.y -= timeAtBottom;
+					objectBrush.setPosition(vec);
+					sortedpShapes.insert(new sf::CircleShape(objectBrush));
+				}
 			}
 			dragObject = NULL;
 			isMouseLeft = false;
@@ -157,11 +160,11 @@ Essential::GameState SceneMapEditor::Run()
 	return Essential::GameState::POP;
 }
 
-bool SceneMapEditor::LoadFromFile(const std::string filepath)
+bool SceneMapEditor::MergeFromFile(const std::string filepath)
 {
 	std::ifstream infile;
 	std::string line;
-	std::regex rgx("(\\d*.\\d*),\\s*(\\d*.\\d*)");
+	std::regex rgx("(\\d*\\.\\d*),\\s*(-?\\d*\\.\\d*)");
 	std::smatch match;
 	sf::Vector2f vec;
 	try{
@@ -170,7 +173,8 @@ bool SceneMapEditor::LoadFromFile(const std::string filepath)
 			const std::string s(line);
 			if (std::regex_search(s.begin(), s.end(), match, rgx)) {
 				vec.x = std::stof(match[1]);
-				vec.y = std::stof(match[2]) * timeScale;
+//				vec.y = std::stof(match[2]) * timeScale;
+				vec.y = time2dim(std::stof(match[2]));
 
 				// Insert Object
 				sf::CircleShape *pShape = new sf::CircleShape(objectBrush);
@@ -195,7 +199,7 @@ bool SceneMapEditor::MergeFromFile()
 	bool rc = false;
 	if (result == NFD_OKAY)
 	{
-		rc = LoadFromFile(outPath);
+		rc = MergeFromFile(outPath);
 		free(outPath);
 	}
 	else if (result == NFD_CANCEL)
@@ -220,7 +224,8 @@ bool SceneMapEditor::WriteToFile(const std::string filepath)
 		char str[1024];
 		for (auto shape : sortedpShapes) {
 			sf::Vector2f vec = shape->getPosition();
-			vec.y = vec.y / timeScale;
+//			vec.y = vec.y / timeScale;
+			vec.y = dim2time(vec.y);
 			sprintf_s(str, "%f,%f", vec.x, vec.y);
 			outfile << str << endl;
 		}
@@ -265,5 +270,16 @@ void SceneMapEditor::DrawLine(sf::RenderTarget & gfx, const float y)
 	};
 	gfx.draw(line, 2, sf::LineStrip);
 }
+
+float SceneMapEditor::time2dim(const float & time)
+{
+	return -(time * timeScale) + Essential::ScreenHeight;
+}
+
+float SceneMapEditor::dim2time(const float & dim)
+{
+	return -(dim - Essential::ScreenHeight) / timeScale;
+}
+
 
 

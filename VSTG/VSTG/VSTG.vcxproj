@@ -129,6 +129,7 @@
     <ClCompile Include="FrameTimer.cpp" />
     <ClCompile Include="Game.cc" />
     <ClCompile Include="GameObject.cc" />
+    <ClCompile Include="Map.cpp" />
     <ClCompile Include="Moveable.cc" />
     <ClCompile Include="Player.cc" />
     <ClCompile Include="Recorder.cc" />
@@ -145,6 +146,7 @@
     <ClInclude Include="FrameTimer.h" />
     <ClInclude Include="Game.hpp" />
     <ClInclude Include="GameObject.hpp" />
+    <ClInclude Include="Map.h" />
     <ClInclude Include="Player.hpp" />
     <ClInclude Include="Recorder.h" />
     <ClInclude Include="Scene.hpp" />
