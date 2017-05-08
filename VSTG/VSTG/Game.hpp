@@ -21,6 +21,7 @@ private:
 	float logTimer = 0.0f;
 	static constexpr float fixedUpdateDuration = 1 / 60.0f;
 	size_t nDeletes = 0;
+	bool isFocused;
 	Map map;
 public:
 	Game(sf::RenderWindow& wnd);

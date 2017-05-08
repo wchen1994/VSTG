@@ -17,7 +17,8 @@ Board Game::brd(Essential::ScreenWidth, Essential::ScreenHeight, 50, 50);
 Game::Game(sf::RenderWindow& wnd) :
 	Scene(),
 	wnd(wnd),
-	map("Resources/Lv1.tmap")
+	map("Resources/Lv1.tmap"),
+	isFocused(true)
 {
 }
 
@@ -36,8 +37,34 @@ Essential::GameState Game::Run(){
 	layerPlayer.insert(pPlayer);
 
 	while(wnd.isOpen()){ 
-		Update();
-		if (Essential::isGameOver){
+		//Event Handle
+		while (wnd.pollEvent(event)) {
+			switch (event.type) {
+			case sf::Event::KeyPressed:
+				for (auto it = layerDefault.begin();
+					it != layerDefault.end(); it++) {
+					(*it)->OnKeyPressed(event.key);
+				}
+				break;
+			case sf::Event::KeyReleased:
+				for (auto it = layerDefault.begin();
+					it != layerDefault.end(); it++) {
+					(*it)->OnKeyReleased(event.key);
+				}
+				break;
+			case sf::Event::LostFocus:
+				isFocused = false;
+				break;
+			case sf::Event::GainedFocus:
+				ft.Mark();
+				isFocused = true;
+			default:
+				Essential::defHandleMsg(event);
+			}
+		}
+		if (isFocused)
+			Update();
+		if (Essential::isGameOver) {
 			return Essential::POP;
 		}
 	}
@@ -45,25 +72,7 @@ Essential::GameState Game::Run(){
 }
 
 void Game::Update() {
-	//Event Handle
-	while (wnd.pollEvent(event)) {
-		switch (event.type) {
-		case sf::Event::KeyPressed:
-			for (auto it = layerDefault.begin();
-				it != layerDefault.end(); it++) {
-				(*it)->OnKeyPressed(event.key);
-			}
-			break;
-		case sf::Event::KeyReleased:
-			for (auto it = layerDefault.begin();
-				it != layerDefault.end(); it++) {
-				(*it)->OnKeyReleased(event.key);
-			}
-			break;
-		default:
-			Essential::defHandleMsg(event);
-		}
-	}
+
 
 	//Update
 	dt = ft.Mark();
