@@ -5,9 +5,8 @@
 #include <cmath>
 
 Enemy::Enemy(float x, float y=0) :
-	GameObject()
+	Enemy(x, y, 0, speed)
 {
-	Enemy(x, y, 0, speed);
 }
 
 Enemy::Enemy(float x, float y, float vx, float vy) :
