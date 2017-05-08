@@ -18,7 +18,8 @@ protected:
 	static size_t hasdID;
 public:
 	GameObject();
-	sf::Vector2<float> getPosition(){ return position; }
+	sf::Vector2<float> getPosition() const { return position; }
+	void setPosition(const sf::Vector2f &vec) { position = vec; }
 	float getSize(){ return colliderSize; }
 	virtual ~GameObject();
 	virtual void Draw(sf::RenderWindow& wnd);
