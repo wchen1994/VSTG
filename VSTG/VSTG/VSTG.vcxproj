@@ -137,6 +137,7 @@
     <ClCompile Include="SceneMapEditor.cpp" />
     <ClCompile Include="StartMenu.cc" />
     <ClCompile Include="stg.cc" />
+    <ClCompile Include="TextManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Board.hpp" />
@@ -152,6 +153,7 @@
     <ClInclude Include="Scene.hpp" />
     <ClInclude Include="SceneMapEditor.h" />
     <ClInclude Include="StartMenu.hpp" />
+    <ClInclude Include="TextManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -3,6 +3,8 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 
+#include "TextManager.h"
+
 class Essential {
 public:
 	static bool isGameOver;
@@ -12,6 +14,7 @@ public:
 	static constexpr int ScreenWidth = 800;
 	static constexpr int ScreenHeight = 600;
 	static sf::RenderWindow wnd;
+	static TextManager textManger;
 	static void defHandleMsg(const sf::Event &eventType);
 	static sf::Vector2f vec2i2f(const sf::Vector2i& vec);
 	static sf::Vector2i vec2f2i(const sf::Vector2f& vec);
