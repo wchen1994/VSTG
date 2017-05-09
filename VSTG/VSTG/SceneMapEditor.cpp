@@ -8,7 +8,7 @@
 #include <fstream>
 
 SceneMapEditor::SceneMapEditor() : 
-	isExit(false), isDrag(false), isMouseLeft(false), 
+	isExit(false), isDrag(false), isMouseLeft(false), isFocused(true),
 	objectEraser(eraseSize), objectBrush(brushSize),
 	timeAtBottom(0.0f), timeScale(100.0f),
 	dragObject(NULL)
@@ -41,120 +41,23 @@ Essential::GameState SceneMapEditor::Run()
 				case sf::Keyboard::M:
 					MergeFromFile();
 					break;
+				case sf::Keyboard::Q:
+					isExit = true;
+					break;
 				default:
 					break;
 				}
+			case sf::Event::LostFocus:
+				isFocused = false;
+				break;
+			case sf::Event::GainedFocus:
+				isFocused = true;
+				break;
 			}
 			Essential::defHandleMsg(event);
 		}
-
-		//Handle input
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
-			isExit = true;
-		if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-			if (!isMouseLeft) {
-				// Find object around for drag
-				for (auto it = sortedpShapes.begin(); it != sortedpShapes.end(); it++) {
-					sf::Vector2f mpos = Essential::vec2i2f(sf::Mouse::getPosition(Essential::wnd));
-					mpos.y -= timeAtBottom;
-					const sf::Vector2f spos = (*it)->getPosition();
-					const sf::Vector2f fDist = spos - mpos;
-					const float sqlen = fDist.x*fDist.x + fDist.y*fDist.y;
-					const float olen = (*it)->getRadius();
-					if (sqlen < olen * olen) {
-						dragObject = *it;
-						break;
-					}
-				}
-				if (dragObject)
-					sortedpShapes.erase(dragObject); // Remove and insert later to ensure sorted set
-			}
-			else {
-				if (dragObject) {
-					// Drag
-					sf::Vector2f vec = Essential::vec2i2f(sf::Mouse::getPosition(Essential::wnd));
-					vec.y -= timeAtBottom;
-					dragObject->setPosition(vec);
-				}
-			}
-			isMouseLeft = true;
-		}
-		else if (isMouseLeft == true){
-			if (dragObject) {
-				sortedpShapes.insert(dragObject); // Remove and insert back to ensure sorted set
-			}
-			else {
-				// Add Object
-				sf::Vector2f vec = Essential::vec2i2f(sf::Mouse::getPosition(Essential::wnd));
-				if (vec.x >= 0 && vec.x < Essential::ScreenWidth &&
-					vec.y >= 0 && vec.y < Essential::ScreenHeight) { // Mouse in Screen
-					vec.y -= timeAtBottom;
-					objectBrush.setPosition(vec);
-					sortedpShapes.insert(new sf::CircleShape(objectBrush));
-				}
-			}
-			dragObject = NULL;
-			isMouseLeft = false;
-		}
-
-		if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
-			objectEraser.setOutlineThickness(1.0f);
-			{ // Avoid situation both key are pressed
-				isMouseLeft = false;
-				if (dragObject) {
-					sortedpShapes.insert(dragObject);
-				}
-				dragObject = NULL;
-			}
-			for (auto it = sortedpShapes.begin(); it != sortedpShapes.end(); it++) {
-				sf::Vector2f mpos = Essential::vec2i2f(sf::Mouse::getPosition(Essential::wnd));
-				mpos.y -= timeAtBottom;
-				const sf::Vector2f spos = (*it)->getPosition();
-				const sf::Vector2f fDist = spos - mpos;
-				float sqlen = fDist.x*fDist.x + fDist.y*fDist.y;
-				if (sqlen < eraseSize*eraseSize) {
-					lShapeDel.push_back(*it);
-				}
-			}
-		}
-		else {
-			objectEraser.setOutlineThickness(0.0f);
-		}
-
-		// Update element pos
-		objectEraser.setPosition(Essential::vec2i2f(sf::Mouse::getPosition(Essential::wnd)));
-		objectBrush.setPosition(Essential::vec2i2f(sf::Mouse::getPosition(Essential::wnd)));
-
-		//Remove Shape
-		for (auto it = lShapeDel.begin(); it != lShapeDel.end(); it++) {
-			sortedpShapes.erase(*it);
-			delete *it;
-		}
-		lShapeDel.clear();
-
-		// Debug Log
-		system("CLS");
-		std::cout << sortedpShapes.size() << std::endl;
-
-		// Drawing
-		Essential::wnd.clear();
-		// draw time line
-		for (float i = timeScale - int(timeAtBottom) % int(timeScale); i < Essential::ScreenHeight; i += timeScale) {
-			DrawLine(Essential::wnd, Essential::ScreenHeight - i);
-		}
-		// draw Shape
-		for (auto pShape : sortedpShapes) {
-			sf::Vector2f vec = pShape->getPosition();
-			// Change Position accoridng timeAxis
-			vec.y += timeAtBottom;
-			sf::CircleShape shape(*pShape);
-			shape.setPosition(vec);
-			Essential::wnd.draw(shape);
-		}
-		// draw tool
-		Essential::wnd.draw(objectEraser);
-		Essential::wnd.draw(objectBrush);	
-		Essential::wnd.display();
+		if (isFocused)
+			Update();
 	}
 
 	return Essential::GameState::POP;
@@ -260,6 +163,121 @@ bool SceneMapEditor::WriteToFile()
 	}
 
 	return rc;
+}
+
+void SceneMapEditor::Update()
+{
+	//Handle input
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+		if (!isMouseLeft) {
+			// Find object around for drag
+			for (auto it = sortedpShapes.begin(); it != sortedpShapes.end(); it++) {
+				sf::Vector2f mpos = Essential::vec2i2f(sf::Mouse::getPosition(Essential::wnd));
+				mpos.y -= timeAtBottom;
+				const sf::Vector2f spos = (*it)->getPosition();
+				const sf::Vector2f fDist = spos - mpos;
+				const float sqlen = fDist.x*fDist.x + fDist.y*fDist.y;
+				const float olen = (*it)->getRadius();
+				if (sqlen < olen * olen) {
+					dragObject = *it;
+					break;
+				}
+			}
+			if (dragObject)
+				sortedpShapes.erase(dragObject); // Remove and insert later to ensure sorted set
+		}
+		else {
+			if (dragObject) {
+				// Drag
+				sf::Vector2f vec = Essential::vec2i2f(sf::Mouse::getPosition(Essential::wnd));
+				vec.y -= timeAtBottom;
+				dragObject->setPosition(vec);
+			}
+		}
+		isMouseLeft = true;
+	}
+	else if (isMouseLeft == true) {
+		if (dragObject) {
+			sortedpShapes.insert(dragObject); // Remove and insert back to ensure sorted set
+		}
+		else {
+			// Add Object
+			sf::Vector2f vec = Essential::vec2i2f(sf::Mouse::getPosition(Essential::wnd));
+			if (vec.x >= 0 && vec.x < Essential::ScreenWidth &&
+				vec.y >= 0 && vec.y < Essential::ScreenHeight) { // Mouse in Screen
+				vec.y -= timeAtBottom;
+				objectBrush.setPosition(vec);
+				sortedpShapes.insert(new sf::CircleShape(objectBrush));
+			}
+		}
+		dragObject = NULL;
+		isMouseLeft = false;
+	}
+
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
+		objectEraser.setOutlineThickness(1.0f);
+		{ // Avoid situation both key are pressed
+			isMouseLeft = false;
+			if (dragObject) {
+				sortedpShapes.insert(dragObject);
+			}
+			dragObject = NULL;
+		}
+		for (auto it = sortedpShapes.begin(); it != sortedpShapes.end(); it++) {
+			sf::Vector2f mpos = Essential::vec2i2f(sf::Mouse::getPosition(Essential::wnd));
+			mpos.y -= timeAtBottom;
+			const sf::Vector2f spos = (*it)->getPosition();
+			const sf::Vector2f fDist = spos - mpos;
+			float sqlen = fDist.x*fDist.x + fDist.y*fDist.y;
+			if (sqlen < eraseSize*eraseSize) {
+				lShapeDel.push_back(*it);
+			}
+		}
+	}
+	else {
+		objectEraser.setOutlineThickness(0.0f);
+	}
+
+	// Update element pos
+	objectEraser.setPosition(Essential::vec2i2f(sf::Mouse::getPosition(Essential::wnd)));
+	objectBrush.setPosition(Essential::vec2i2f(sf::Mouse::getPosition(Essential::wnd)));
+
+	//Remove Shape
+	for (auto it = lShapeDel.begin(); it != lShapeDel.end(); it++) {
+		sortedpShapes.erase(*it);
+		delete *it;
+	}
+	lShapeDel.clear();
+
+	// Debug Log
+	system("CLS");
+	std::cout << sortedpShapes.size() << std::endl;
+	if (isFocused) {
+		std::cout << "Focused" << std::endl;
+	}
+	else {
+		std::cout << "Lost" << std::endl;
+	}
+
+	// Drawing
+	Essential::wnd.clear();
+	// draw time line
+	for (float i = timeScale - int(timeAtBottom) % int(timeScale); i < Essential::ScreenHeight; i += timeScale) {
+		DrawLine(Essential::wnd, Essential::ScreenHeight - i);
+	}
+	// draw Shape
+	for (auto pShape : sortedpShapes) {
+		sf::Vector2f vec = pShape->getPosition();
+		// Change Position accoridng timeAxis
+		vec.y += timeAtBottom;
+		sf::CircleShape shape(*pShape);
+		shape.setPosition(vec);
+		Essential::wnd.draw(shape);
+	}
+	// draw tool
+	Essential::wnd.draw(objectEraser);
+	Essential::wnd.draw(objectBrush);
+	Essential::wnd.display();
 }
 
 void SceneMapEditor::DrawLine(sf::RenderTarget & gfx, const float y)

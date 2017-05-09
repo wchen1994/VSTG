@@ -37,6 +37,7 @@ private:
 	bool isExit;
 	bool isDrag;
 	bool isMouseLeft;
+	bool isFocused;
 	float timeAtBottom;
 	float timeScale;
 	static constexpr float scrollSpeed = 30.0f;
@@ -49,6 +50,7 @@ private:
 	sf::CircleShape objectEraser;
 	sf::CircleShape *dragObject;
 private:
+	void Update();
 	void DrawLine(sf::RenderTarget & gfx, const float y);
 	float time2dim(const float & dim);
 	float dim2time(const float & time);
