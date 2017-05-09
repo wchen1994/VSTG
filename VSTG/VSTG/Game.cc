@@ -17,7 +17,7 @@ Board Game::brd(Essential::ScreenWidth, Essential::ScreenHeight, 50, 50);
 Game::Game(sf::RenderWindow& wnd) :
 	Scene(),
 	wnd(wnd),
-	map("Resources/Lv1.tmap"),
+	map("Maps/Lv1.tmap"),
 	isFocused(true)
 {
 }
