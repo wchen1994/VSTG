@@ -14,9 +14,9 @@ public:
 	static constexpr int ScreenWidth = 800;
 	static constexpr int ScreenHeight = 600;
 	static sf::RenderWindow wnd;
-	static TextManager textManger;
+	static TextManager textManager;
 	static void defHandleMsg(const sf::Event &eventType);
 	static sf::Vector2f vec2i2f(const sf::Vector2i& vec);
 	static sf::Vector2i vec2f2i(const sf::Vector2f& vec);
-
+	static sf::Font textFont;
 };

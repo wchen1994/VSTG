@@ -124,6 +124,7 @@
   <ItemGroup>
     <ClCompile Include="Board.cc" />
     <ClCompile Include="Bullet.cc" />
+    <ClCompile Include="Button.cpp" />
     <ClCompile Include="Enemy.cc" />
     <ClCompile Include="Essential.cc" />
     <ClCompile Include="FrameTimer.cpp" />
@@ -147,6 +148,7 @@
     <ClInclude Include="FrameTimer.h" />
     <ClInclude Include="Game.hpp" />
     <ClInclude Include="GameObject.hpp" />
+    <ClInclude Include="Button.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Player.hpp" />
     <ClInclude Include="Recorder.h" />

@@ -6,7 +6,9 @@ bool Essential::isGameOver = false;
 bool Essential::isExit = false;
 Essential::GameState Essential::gameState = GAME;
 sf::RenderWindow Essential::wnd(sf::VideoMode(Essential::ScreenWidth, Essential::ScreenHeight), "Game", sf::Style::Close|sf::Style::Titlebar);
-TextManager Essential::textManger("Resources/texts/zh_ch.csv");
+TextManager Essential::textManager("Resources/texts/zh_ch.csv");
+sf::Font Essential::textFont;
+
 void Essential::defHandleMsg(const sf::Event &event){
 	switch(event.type){
 		case sf::Event::Closed:

@@ -4,14 +4,15 @@
 #include <fstream>
 #include <sstream>
 #include <regex>
+#include <SFML/System.hpp>
 
 #define MAX_TEXT_NUM 2048
 
 class TextManager {
 public:
 	TextManager(const std::string& filepath);
-	std::string getText(uint32_t id) { return texts[id % MAX_TEXT_NUM]; }
+	sf::String getText(uint32_t id) { return texts[id % MAX_TEXT_NUM]; }
 private:
-	std::ifstream csvfile;
-	std::string texts[MAX_TEXT_NUM];
+	std::wifstream csvfile;
+	sf::String texts[MAX_TEXT_NUM];
 };

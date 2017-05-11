@@ -2,13 +2,14 @@
 
 #include "Scene.hpp"
 #include "Essential.hpp"
+#include "Button.h"
 
 class StartMenu : public Scene{
 private:
 	sf::Event event;
 	sf::RenderWindow& wnd;
-	sf::Text text;
-	sf::Font font;
+	sf::Texture butTexture;
+	Button but;
 public:
 	StartMenu(sf::RenderWindow& wnd);
 	virtual ~StartMenu() = default;

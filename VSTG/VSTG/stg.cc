@@ -15,10 +15,10 @@ A touhou like game
 #include "StartMenu.hpp"
 #include "SceneMapEditor.h"
 
-#pragma comment(lib, "sfml-graphics.lib")
-#pragma comment(lib, "sfml-system.lib")
-#pragma comment(lib, "sfml-window.lib")
-#pragma comment(lib, "sfml-audio.lib")
+#pragma comment(lib, "sfml-graphics-d.lib")
+#pragma comment(lib, "sfml-system-d.lib")
+#pragma comment(lib, "sfml-window-d.lib")
+#pragma comment(lib, "sfml-audio-d.lib")
 #pragma comment(lib, "nfd_d.lib")
 
 int main(){
@@ -26,7 +26,7 @@ int main(){
 	std::list<std::unique_ptr<Scene>> lScenes;
 
 	Essential::GameState gameState = Essential::MENU;
-
+	Essential::textFont.loadFromFile("Resources/Fonts/msyh.ttf");
 	// The drawing of font in StartMenu has been disabled
 	// because it lead to assertion error while failed loading
 	lScenes.push_back(std::make_unique<StartMenu>(StartMenu(Essential::wnd)));
