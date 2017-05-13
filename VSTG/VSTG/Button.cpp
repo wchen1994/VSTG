@@ -27,9 +27,18 @@ void Button::setSprites(const sf::Vector2i pos[], const sf::Vector2i & size)
 	this->size.x = size.x;
 	this->size.y = size.y;
 	text.setFont(Essential::textFont);
-	text.setString(&(lable.toWideString()[1]));
-	text.setCharacterSize(50);
+	text.setString(lable.toWideString());
+	text.setCharacterSize(30);
 	text.setFillColor(sf::Color::White);
+}
+
+void Button::setPosition(const sf::Vector2f & pos)
+{
+	for (auto &sprite : sprites) {
+		sprite.setPosition(pos);
+	}
+	text.setPosition(pos);
+	position = pos;
 }
 
 void Button::Update()

@@ -11,10 +11,18 @@ wnd(wnd)
 
 Essential::GameState StartMenu::Run(){
 
-	but.setTexture(butTexture);
-//	but.setLable(L"¿ªÊ¼ÓÎÏ·");
-	but.setLable(Essential::textManager.getText(0));
-	but.setSprites(sf::Vector2i(0, 0), sf::Vector2i(0, 110), sf::Vector2i(0, 50), sf::Vector2i(100, 50));
+	butStart.setTexture(butTexture);
+	butStart.setLable(Essential::textManager.getText(0));
+	butStart.setSprites(sf::Vector2i(0, 0), sf::Vector2i(0, 110), sf::Vector2i(0, 50), sf::Vector2i(100, 50));
+	butStart.setPosition(sf::Vector2f(50.0, 40.0));
+	butEdit.setTexture(butTexture);
+	butEdit.setLable(Essential::textManager.getText(1));
+	butEdit.setSprites(sf::Vector2i(0, 0), sf::Vector2i(0, 110), sf::Vector2i(0, 50), sf::Vector2i(100, 50));
+	butEdit.setPosition(sf::Vector2f(50.0, 90.0));
+	butExit.setTexture(butTexture);
+	butExit.setLable(Essential::textManager.getText(2));
+	butExit.setSprites(sf::Vector2i(0, 0), sf::Vector2i(0, 110), sf::Vector2i(0, 50), sf::Vector2i(100, 50));
+	butExit.setPosition(sf::Vector2f(50.0, 140.0));
 
 	while(wnd.isOpen()){
 		while(wnd.pollEvent(event)){
@@ -32,15 +40,26 @@ Essential::GameState StartMenu::Run(){
 			}
 		}
 
-		but.Update();
+		// Button Update
+		butStart.Update();
+		butEdit.Update();
+		butExit.Update();
 
-		if (but.getStatus() == Button::ButtonState::Push) {
-			Essential::isGameOver = false;
+		// Button Handle
+		if (butStart.getStatus() == Button::ButtonState::Push) {
 			return Essential::GAME;
+		}
+		if (butEdit.getStatus() == Button::ButtonState::Push) {
+			return Essential::EDITOR;
+		}
+		if (butExit.getStatus() == Button::ButtonState::Push) {
+			return Essential::POP;
 		}
 
 		wnd.clear(sf::Color(100,255,255));
-		but.Draw(wnd);
+		butStart.Draw(wnd);
+		butEdit.Draw(wnd);
+		butExit.Draw(wnd);
 		wnd.display();
 	}
 	return Essential::POP;

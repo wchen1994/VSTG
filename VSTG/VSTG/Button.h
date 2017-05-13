@@ -12,6 +12,7 @@ public:
 	void setLable(sf::String s) { lable = s; }
 	void setSprites(const sf::Vector2i &ipos, const sf::Vector2i &ppos, const sf::Vector2i &fpos, const sf::Vector2i &size);
 	void setSprites(const sf::Vector2i pos[], const sf::Vector2i & size);
+	void setPosition(const sf::Vector2f & pos);
 	void Update();
 	void Draw(sf::RenderTarget &gfx);
 	void setState(ButtonState s) { state = s; }
@@ -19,7 +20,7 @@ public:
 	ButtonState getStatus() const { return state; }
 private:
 	ButtonState state;
-	sf::Vector2i position;
+	sf::Vector2f position;
 	sf::Vector2i size;
 	sf::Sprite sprites[3];
 	sf::Texture texture;
