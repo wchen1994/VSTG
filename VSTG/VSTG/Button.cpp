@@ -28,7 +28,7 @@ void Button::setSprites(const sf::Vector2i pos[], const sf::Vector2i & size)
 	this->size.y = size.y;
 	text.setFont(Essential::textFont);
 	text.setString(lable.toWideString());
-	text.setCharacterSize(30);
+	text.setCharacterSize(uint32_t(30 * Essential::textScale));
 	text.setFillColor(sf::Color::White);
 }
 
