@@ -1,6 +1,8 @@
 #pragma once
 
 #include <set>
+#include <chrono>
+#include <thread>
 
 #include "Scene.hpp"
 #include "Essential.hpp"
