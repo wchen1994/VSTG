@@ -13,16 +13,16 @@ Essential::GameState StartMenu::Run(){
 
 	butStart.setTexture(butTexture);
 	butStart.setLable(Essential::textManager.getText(0));
-	butStart.setSprites(sf::Vector2i(0, 0), sf::Vector2i(0, 110), sf::Vector2i(0, 50), sf::Vector2i(100, 50));
-	butStart.setPosition(sf::Vector2f(50.0, 40.0));
+	butStart.setSprites(sf::Vector2i(0, 0), sf::Vector2i(0, 110), sf::Vector2i(0, 51), sf::Vector2i(150, 50));
+	butStart.setPosition(sf::Vector2f(550.0, 340.0));
 	butEdit.setTexture(butTexture);
 	butEdit.setLable(Essential::textManager.getText(1));
-	butEdit.setSprites(sf::Vector2i(0, 0), sf::Vector2i(0, 110), sf::Vector2i(0, 50), sf::Vector2i(100, 50));
-	butEdit.setPosition(sf::Vector2f(50.0, 90.0));
+	butEdit.setSprites(sf::Vector2i(0, 0), sf::Vector2i(0, 110), sf::Vector2i(0, 51), sf::Vector2i(150, 50));
+	butEdit.setPosition(sf::Vector2f(550.0, 400.0));
 	butExit.setTexture(butTexture);
 	butExit.setLable(Essential::textManager.getText(2));
-	butExit.setSprites(sf::Vector2i(0, 0), sf::Vector2i(0, 110), sf::Vector2i(0, 50), sf::Vector2i(100, 50));
-	butExit.setPosition(sf::Vector2f(50.0, 140.0));
+	butExit.setSprites(sf::Vector2i(0, 0), sf::Vector2i(0, 110), sf::Vector2i(0, 51), sf::Vector2i(150, 50));
+	butExit.setPosition(sf::Vector2f(550.0, 460.0));
 
 	while(wnd.isOpen()){
 		while(wnd.pollEvent(event)){
