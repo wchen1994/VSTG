@@ -18,7 +18,8 @@ Game::Game(sf::RenderWindow& wnd) :
 	Scene(),
 	wnd(wnd),
 	map("Maps/Lv1.tmap"),
-	isFocused(true)
+	isFocused(true), isMenuTriger(false),
+	escMenu(sf::IntRect(50,80,206,139),"Are you sure to exit?", ObjMenu::MENUFLAG::YES_NO)
 {
 }
 
@@ -36,11 +37,14 @@ Essential::GameState Game::Run(){
 	layerDefault.insert(pPlayer);
 	layerPlayer.insert(pPlayer);
 
-	while(wnd.isOpen()){ 
+	while (wnd.isOpen()) {
 		//Event Handle
 		while (wnd.pollEvent(event)) {
 			switch (event.type) {
 			case sf::Event::KeyPressed:
+				if (event.key.code == sf::Keyboard::Escape) {
+					isMenuTriger = !isMenuTriger;
+				}
 				for (auto it = layerDefault.begin();
 					it != layerDefault.end(); it++) {
 					(*it)->OnKeyPressed(event.key);
@@ -56,14 +60,29 @@ Essential::GameState Game::Run(){
 				isFocused = false;
 				break;
 			case sf::Event::GainedFocus:
-				ft.Mark();
 				isFocused = true;
 			default:
 				Essential::defHandleMsg(event);
 			}
 		}
-		if (isFocused)
+		if (isFocused && !isMenuTriger) {
 			Update();
+		}
+		else {
+			ft.Mark();
+			const int rc = escMenu.MenuUpdate();
+			switch (rc) {
+			case 1:
+				Essential::isGameOver = true;
+				break;
+			case 2:
+				isMenuTriger = !isMenuTriger;
+				break;
+			default:
+				break;
+			}
+		}
+		DrawScene();
 		if (Essential::isGameOver) {
 			return Essential::POP;
 		}
@@ -166,9 +185,12 @@ void Game::Update() {
 		brd.RemoveObject(*it);
 	}
 	layerDelete.clear();
+}
 
-	wnd.clear();
+void Game::DrawScene()
+{
 	//Drawing
+	wnd.clear();
 #ifdef _BOARD_DEBUG
 	for (auto it = vHLPos.begin(); it != vHLPos.end(); it++) {
 		brd.HighlightTile(wnd, *it);
@@ -178,6 +200,9 @@ void Game::Update() {
 
 	for (auto it = layerDefault.begin(); it != layerDefault.end(); it++) {
 		(*it)->Draw(wnd);
+	}
+	if (isMenuTriger) {
+		escMenu.Draw(wnd);
 	}
 	wnd.display();
 }

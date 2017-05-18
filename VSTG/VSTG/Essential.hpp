@@ -4,6 +4,7 @@
 #include <SFML/Window.hpp>
 
 #include "TextManager.h"
+#include "ResManager.h"
 
 class Essential {
 public:
@@ -20,4 +21,5 @@ public:
 	static sf::Vector2i vec2f2i(const sf::Vector2f& vec);
 	static sf::Font textFont;
 	static float textScale;
+	static ResManager resManager;
 };

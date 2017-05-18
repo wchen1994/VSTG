@@ -10,6 +10,7 @@
 #include "FrameTimer.h"
 #include "Board.hpp"
 #include "Map.h"
+#include "ObjMenu.h"
 
 class Game : public Scene{
 private:
@@ -22,12 +23,16 @@ private:
 	static constexpr float fixedUpdateDuration = 1 / 60.0f;
 	size_t nDeletes = 0;
 	bool isFocused;
+	bool isMenuTriger;
+	bool isGamePause;
 	Map map;
+	ObjMenu escMenu;
 public:
 	Game(sf::RenderWindow& wnd);
 	~Game();
 	Essential::GameState Run();
 	void Update();
+	void DrawScene();
 public:
 	static std::set<std::shared_ptr<GameObject>> layerDefault;
 	static std::set<std::shared_ptr<GameObject>> layerBullet;

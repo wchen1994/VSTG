@@ -8,7 +8,7 @@ class StartMenu : public Scene{
 private:
 	sf::Event event;
 	sf::RenderWindow& wnd;
-	sf::Texture butTexture;
+	std::shared_ptr<sf::Texture> butTexture;
 	Button butStart;
 	Button butEdit;
 	Button butExit;

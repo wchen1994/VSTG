@@ -113,12 +113,12 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\SFML-2.4.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\SFML-2.4.2\include;C:\Users\wchen\Source\Repos\nativefiledialog\src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>C:\SFML-2.4.2\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\SFML-2.4.2\lib;C:\Users\wchen\Source\Repos\nativefiledialog\build\lib\Release\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -132,8 +132,10 @@
     <ClCompile Include="GameObject.cc" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Moveable.cc" />
+    <ClCompile Include="ObjMenu.cpp" />
     <ClCompile Include="Player.cc" />
     <ClCompile Include="Recorder.cc" />
+    <ClCompile Include="ResManager.cpp" />
     <ClCompile Include="Scene.cc" />
     <ClCompile Include="SceneMapEditor.cpp" />
     <ClCompile Include="StartMenu.cc" />
@@ -152,8 +154,10 @@
     <ClInclude Include="Map.h" />
     <ClInclude Include="Player.hpp" />
     <ClInclude Include="Recorder.h" />
+    <ClInclude Include="ResManager.h" />
     <ClInclude Include="Scene.hpp" />
     <ClInclude Include="SceneMapEditor.h" />
+    <ClInclude Include="ObjMenu.h" />
     <ClInclude Include="StartMenu.hpp" />
     <ClInclude Include="TextManager.h" />
   </ItemGroup>

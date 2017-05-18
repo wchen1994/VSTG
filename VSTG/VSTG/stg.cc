@@ -15,11 +15,20 @@ A touhou like game
 #include "StartMenu.hpp"
 #include "SceneMapEditor.h"
 
+#ifdef _DEBUG
 #pragma comment(lib, "sfml-graphics-d.lib")
 #pragma comment(lib, "sfml-system-d.lib")
 #pragma comment(lib, "sfml-window-d.lib")
 #pragma comment(lib, "sfml-audio-d.lib")
 #pragma comment(lib, "nfd_d.lib")
+#else
+#pragma comment(lib, "sfml-graphics.lib")
+#pragma comment(lib, "sfml-system.lib")
+#pragma comment(lib, "sfml-window.lib")
+#pragma comment(lib, "sfml-audio.lib")
+#pragma comment(lib, "nfd.lib")
+#endif
+
 
 int main(){
 	std::unique_ptr<Scene> pScene;
@@ -32,6 +41,7 @@ int main(){
 	lScenes.push_back(std::make_unique<StartMenu>(StartMenu(Essential::wnd)));
 
 	while(!lScenes.empty()){
+		Essential::resManager.killLonePtr();
 		gameState = (lScenes.back())->Run();
 		switch (gameState){
 			case Essential::POP:
