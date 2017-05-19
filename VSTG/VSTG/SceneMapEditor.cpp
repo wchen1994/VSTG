@@ -12,7 +12,7 @@ SceneMapEditor::SceneMapEditor() :
 	objectEraser(eraseSize), objectBrush(brushSize),
 	timeAtBottom(0.0f), timeScale(100.0f),
 	dragObject(NULL),
-	escMenu(sf::IntRect(50, 80, 206, 139), "Are you sure to exit?", ObjMenu::MENUFLAG::YES_NO)
+	escMenu(sf::IntRect(50, 80, 206, 139), Essential::textManager.getText(4), ObjMenu::MENUFLAG::YES_NO)
 {
 	objectEraser.setOrigin(eraseSize, eraseSize);
 	objectEraser.setOutlineColor(sf::Color::White);

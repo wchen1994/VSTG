@@ -23,27 +23,27 @@ void ObjMenu::Init()
 	switch (flag) {
 	case MENUFLAG::OK:
 		but1.setTexture(*butTexture);
-		but1.setLable("OK");
+		but1.setLable(Essential::textManager.getText(7));
 		but1.setSprites(sf::Vector2i(0, 0), sf::Vector2i(0, 110), sf::Vector2i(0, 51), sf::Vector2i(90, 40));
 		but1.setPosition(sf::Vector2f(float(rect.left + rect.width / 2), float(rect.top + rect.height / 2)));
 		break;
 	case MENUFLAG::OK_CANCEL:
 		but1.setTexture(*butTexture);
-		but1.setLable("OK");
+		but1.setLable(Essential::textManager.getText(7));
 		but1.setSprites(sf::Vector2i(0, 0), sf::Vector2i(0, 110), sf::Vector2i(0, 51), sf::Vector2i(90, 40));
 		but1.setPosition(sf::Vector2f(float(rect.left), float(rect.top + rect.height / 2)));
 		but2.setTexture(*butTexture);
-		but2.setLable("CANCEL");
+		but2.setLable(Essential::textManager.getText(8));
 		but2.setSprites(sf::Vector2i(0, 0), sf::Vector2i(0, 110), sf::Vector2i(0, 51), sf::Vector2i(90, 40));
 		but2.setPosition(sf::Vector2f(float(rect.left + rect.width / 2), float(rect.top + rect.height / 2)));
 		break;
 	case MENUFLAG::YES_NO:
 		but1.setTexture(*butTexture);
-		but1.setLable("YES");
+		but1.setLable(Essential::textManager.getText(5));
 		but1.setSprites(sf::Vector2i(0, 0), sf::Vector2i(0, 110), sf::Vector2i(0, 51), sf::Vector2i(90, 40));
 		but1.setPosition(sf::Vector2f(float(rect.left), float(rect.top + rect.height / 2)));
 		but2.setTexture(*butTexture);
-		but2.setLable("NO");
+		but2.setLable(Essential::textManager.getText(6));
 		but2.setSprites(sf::Vector2i(0, 0), sf::Vector2i(0, 110), sf::Vector2i(0, 51), sf::Vector2i(90, 40));
 		but2.setPosition(sf::Vector2f(float(rect.left + rect.width / 2), float(rect.top + rect.height / 2)));
 		break;

@@ -19,7 +19,7 @@ Game::Game(sf::RenderWindow& wnd) :
 	wnd(wnd),
 	map("Maps/Lv1.tmap"),
 	isFocused(true), isMenuTriger(false),
-	escMenu(sf::IntRect(50,80,206,139),"Are you sure to exit?", ObjMenu::MENUFLAG::YES_NO)
+	escMenu(sf::IntRect(50, 80, 206, 139), Essential::textManager.getText(4), ObjMenu::MENUFLAG::YES_NO)
 {
 }
 
