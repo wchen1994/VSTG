@@ -61,25 +61,28 @@ Essential::GameState Game::Run(){
 				break;
 			case sf::Event::GainedFocus:
 				isFocused = true;
+				break;
 			default:
 				Essential::defHandleMsg(event);
 			}
 		}
-		if (isFocused && !isMenuTriger) {
-			Update();
-		}
-		else {
-			ft.Mark();
-			const int rc = escMenu.MenuUpdate();
-			switch (rc) {
-			case 1:
-				Essential::isGameOver = true;
-				break;
-			case 2:
-				isMenuTriger = !isMenuTriger;
-				break;
-			default:
-				break;
+		if (isFocused) {
+			if (!isMenuTriger) {
+				Update();
+			}
+			else {
+				ft.Mark();
+				const int rc = escMenu.MenuUpdate();
+				switch (rc) {
+				case 1:
+					Essential::isGameOver = true;
+					break;
+				case 2:
+					isMenuTriger = !isMenuTriger;
+					break;
+				default:
+					break;
+				}
 			}
 		}
 		DrawScene();
