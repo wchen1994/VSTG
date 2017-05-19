@@ -5,9 +5,7 @@ ObjMenu::ObjMenu(sf::IntRect rect, sf::String title, uint32_t flag) : hasInit(fa
 {
 	this->flag = flag;
 	menuTexture = Essential::resManager.GetRes("Resources/Textures/menu01.png");
-	butTexture = Essential::resManager.GetRes("Resources/Textures/button01.png"); //Can not load texture
-//	butTexture = std::make_shared<sf::Texture>(sf::Texture());
-//	butTexture->loadFromFile("Resources/Textures/button02.png");
+	butTexture = Essential::resManager.GetRes("Resources/Textures/button01.png");
 	bg.setTexture(*menuTexture);
 	bg.setPosition(float(rect.left), float(rect.top));
 	bg.setTextureRect(sf::IntRect(0, 0, rect.width, rect.height));
