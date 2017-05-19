@@ -7,6 +7,7 @@
 #include "Scene.hpp"
 #include "Essential.hpp"
 #include "GameObject.hpp"
+#include "ObjMenu.h"
 
 struct YCmp {
 	bool operator()(const sf::Shape *lhs, const sf::Shape *rhs) const {
@@ -31,6 +32,7 @@ private:
 public:
 	SceneMapEditor();
 	Essential::GameState Run();
+	void DrawScene();
 	bool MergeFromFile(const std::string filepath);
 	bool MergeFromFile();
 	bool WriteToFile(const std::string filepath);
@@ -40,6 +42,7 @@ private:
 	bool isDrag;
 	bool isMouseLeft;
 	bool isFocused;
+	bool isMenuTriger;
 	float timeAtBottom;
 	float timeScale;
 	static constexpr float scrollSpeed = 30.0f;
@@ -51,6 +54,7 @@ private:
 	sf::CircleShape objectBrush;
 	sf::CircleShape objectEraser;
 	sf::CircleShape *dragObject;
+	ObjMenu escMenu;
 private:
 	void Update();
 	void DrawLine(sf::RenderTarget & gfx, const float y);

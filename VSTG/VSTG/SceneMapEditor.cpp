@@ -8,10 +8,11 @@
 #include <fstream>
 
 SceneMapEditor::SceneMapEditor() : 
-	isExit(false), isDrag(false), isMouseLeft(false), isFocused(true),
+	isExit(false), isDrag(false), isMouseLeft(false), isFocused(true), isMenuTriger(false),
 	objectEraser(eraseSize), objectBrush(brushSize),
 	timeAtBottom(0.0f), timeScale(100.0f),
-	dragObject(NULL)
+	dragObject(NULL),
+	escMenu(sf::IntRect(50, 80, 206, 139), "Are you sure to exit?", ObjMenu::MENUFLAG::YES_NO)
 {
 	objectEraser.setOrigin(eraseSize, eraseSize);
 	objectEraser.setOutlineColor(sf::Color::White);
@@ -43,25 +44,67 @@ Essential::GameState SceneMapEditor::Run()
 					MergeFromFile();
 					break;
 				case sf::Keyboard::Q:
-					isExit = true;
+				case sf::Keyboard::Escape:
+					isMenuTriger = !isMenuTriger;
 					break;
 				default:
 					break;
 				}
+				break;
 			case sf::Event::LostFocus:
 				isFocused = false;
 				break;
 			case sf::Event::GainedFocus:
 				isFocused = true;
 				break;
+			default:
+				Essential::defHandleMsg(event);
 			}
-			Essential::defHandleMsg(event);
 		}
-		if (isFocused)
-			Update();
+		if (isFocused) {
+			if (!isMenuTriger) {
+				Update();
+			} else {
+				const int rc = escMenu.MenuUpdate();
+				if (rc == 1) // 1 for first button
+					isExit = true;
+				else if (rc == 2) // 2 for second button
+					isMenuTriger = false;
+			}
+		}
+		DrawScene();
 	}
 
 	return Essential::GameState::POP;
+}
+
+void SceneMapEditor::DrawScene()
+{
+	// Drawing
+	Essential::wnd.clear();
+	// draw time line
+	for (float i = timeScale - int(timeAtBottom) % int(timeScale); i < Essential::ScreenHeight; i += timeScale) {
+		DrawLine(Essential::wnd, Essential::ScreenHeight - i);
+	}
+	// draw Shape
+	for (auto pShape : sortedpShapes) {
+		sf::Vector2f vec = pShape->getPosition();
+		// Change Position accoridng timeAxis
+		vec.y += timeAtBottom;
+		sf::CircleShape shape(*pShape);
+		shape.setPosition(vec);
+		Essential::wnd.draw(shape);
+	}
+
+	// draw tool
+	Essential::wnd.draw(objectEraser);
+	Essential::wnd.draw(objectBrush);
+
+	// draw menu
+	if (isMenuTriger)
+		escMenu.Draw(Essential::wnd);
+
+	Essential::wnd.display();
 }
 
 bool SceneMapEditor::MergeFromFile(const std::string filepath)
@@ -260,25 +303,7 @@ void SceneMapEditor::Update()
 		std::cout << "Lost" << std::endl;
 	}
 
-	// Drawing
-	Essential::wnd.clear();
-	// draw time line
-	for (float i = timeScale - int(timeAtBottom) % int(timeScale); i < Essential::ScreenHeight; i += timeScale) {
-		DrawLine(Essential::wnd, Essential::ScreenHeight - i);
-	}
-	// draw Shape
-	for (auto pShape : sortedpShapes) {
-		sf::Vector2f vec = pShape->getPosition();
-		// Change Position accoridng timeAxis
-		vec.y += timeAtBottom;
-		sf::CircleShape shape(*pShape);
-		shape.setPosition(vec);
-		Essential::wnd.draw(shape);
-	}
-	// draw tool
-	Essential::wnd.draw(objectEraser);
-	Essential::wnd.draw(objectBrush);
-	Essential::wnd.display();
+
 }
 
 void SceneMapEditor::DrawLine(sf::RenderTarget & gfx, const float y)
