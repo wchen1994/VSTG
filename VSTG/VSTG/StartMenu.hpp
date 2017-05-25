@@ -12,6 +12,7 @@ private:
 	Button butStart;
 	Button butEdit;
 	Button butExit;
+	bool isFocus;
 public:
 	StartMenu(sf::RenderWindow& wnd);
 	virtual ~StartMenu() = default;

@@ -38,25 +38,32 @@ Essential::GameState StartMenu::Run(){
 						return Essential::EDITOR;
 					}
 					break;
+				case sf::Event::GainedFocus:
+					isFocus = true;
+					break;
+				case sf::Event::LostFocus:
+					isFocus = false;
 				default:
 					Essential::defHandleMsg(event);
 			}
 		}
 
-		// Button Update
-		butStart.Update();
-		butEdit.Update();
-		butExit.Update();
+		if (isFocus) {
+			// Button Update
+			butStart.Update();
+			butEdit.Update();
+			butExit.Update();
 
-		// Button Handle
-		if (butStart.getStatus() == Button::ButtonState::Push) {
-			return Essential::GAME;
-		}
-		if (butEdit.getStatus() == Button::ButtonState::Push) {
-			return Essential::EDITOR;
-		}
-		if (butExit.getStatus() == Button::ButtonState::Push) {
-			return Essential::POP;
+			// Button Handle
+			if (butStart.getStatus() == Button::ButtonState::Push) {
+				return Essential::GAME;
+			}
+			if (butEdit.getStatus() == Button::ButtonState::Push) {
+				return Essential::EDITOR;
+			}
+			if (butExit.getStatus() == Button::ButtonState::Push) {
+				return Essential::POP;
+			}
 		}
 
 		wnd.clear(sf::Color(100,255,255));
