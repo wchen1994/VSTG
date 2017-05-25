@@ -23,7 +23,7 @@ void Map::Update(const float dt)
 		if (culTime > vec.y) {
 			std::shared_ptr<GameObject> pObject = objQueue.front();
 			objQueue.pop();
-			vec.y = Essential::GameCanvas.left;
+			vec.y = float(Essential::GameCanvas.left);
 			pObject->setPosition(vec);
 			Game::layerDefault.insert(pObject);
 			Game::brd.AddObject(pObject);
@@ -49,7 +49,7 @@ void Map::LoadFile(const std::string filepath)
 		}
 		file.close();
 	}
-	catch (const std::error_code &e) {
-
+	catch (...) {
+		assert(false);
 	}
 }

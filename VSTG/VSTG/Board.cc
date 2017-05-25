@@ -8,7 +8,7 @@ Board::Tile::Tile(int & width_in, int & height_in)
 	height = height_in;
 }
 
-std::set<std::shared_ptr<GameObject>> Board::Tile::GetLayer() const
+std::set<std::shared_ptr<GameObject>>& Board::Tile::GetLayer()
 {
 	return layerObject;
 }
@@ -45,21 +45,20 @@ Board::Board(const int & boardWidth_in, const int & boardHeight_in, const int & 
 }
 
 
-std::vector<sf::Vector2i> Board::GetPotentialPos(const int id_x, const int id_y) const
+Essential::setVecInt& Board::GetPotentialPos(const int id_x, const int id_y)
 {
-	std::vector<sf::Vector2i> sHLPos;
-
+	sHLPos.clear();
 	for (int y = std::max(0, id_y - 1); y <= std::min(nRow - 1, id_y + 1); y++) {
 		for (int x = std::max(0, id_x - 1); x <= std::min(nCol - 1, id_x + 1); x++) {
-			sHLPos.push_back(sf::Vector2i(x, y));
+			sHLPos.insert(sf::Vector2i(x, y));
 		}
 	}
 	return sHLPos;
 }
 
-std::set<std::shared_ptr<Board::Tile>> Board::GetPotentialTile(const int id_x, const int id_y) const
+std::set<std::shared_ptr<Board::Tile>>& Board::GetPotentialTile(const int id_x, const int id_y) 
 {
-	std::set<std::shared_ptr<Board::Tile>> sTile;
+	sTile.clear();
 	for (int y = std::max(0, id_y - 1); y <= std::min(nRow-1, id_y + 1); y++) {
 		for (int x = std::max(0, id_x - 1); x <= std::min(nCol-1, id_x + 1); x++) {
 			sTile.insert(tiles[y*nCol + x]);

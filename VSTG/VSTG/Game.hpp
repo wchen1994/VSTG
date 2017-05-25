@@ -12,6 +12,9 @@
 #include "Map.h"
 #include "ObjMenu.h"
 
+#define _DEBUG_BOARD
+#define _DEBUG_LOG
+
 class Game : public Scene{
 private:
 	sf::Event event;
@@ -43,8 +46,8 @@ public:
 	static constexpr int tileWidth = 50;
 	static constexpr int tileHeight = 50;
 
-#ifdef _BOARD_DEBUG
+#ifdef _DEBUG_BOARD
 private:
-	std::vector<sf::Vector2i> vHLPos;
+	Essential::setVecInt vHLPos;
 #endif
 };

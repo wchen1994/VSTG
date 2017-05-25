@@ -2,6 +2,7 @@
 
 #include "GameObject.hpp"
 #include "SFML/Graphics.hpp"
+#include "Essential.hpp"
 #include <set>
 #include <vector>
 
@@ -11,7 +12,7 @@ public:
 	public:
 		Tile(int& width_in, int& height_in);
 		~Tile() { clear(); }
-		std::set<std::shared_ptr<GameObject>> GetLayer() const;
+		std::set<std::shared_ptr<GameObject>>& GetLayer();
 		void RemoveObject(std::shared_ptr<GameObject> pObject);
 		void AddObject(std::shared_ptr<GameObject> pObject);
 		void clear();
@@ -25,20 +26,20 @@ public:
 	Board(const int& boardWidth_in, const int& boardHeight_in, const int& tileWidth_in, const int& tileHeight_in);
 	~Board() { clear(); }
 
-	std::vector<sf::Vector2i> GetPotentialPos(const int id_x, const int id_y) const;
-	std::vector<sf::Vector2i> GetPotentialPos(const float& pos_x, const float& pos_y) const {
+	Essential::setVecInt& GetPotentialPos(const int id_x, const int id_y);
+	Essential::setVecInt& GetPotentialPos(const float& pos_x, const float& pos_y) {
 		return GetPotentialPos(int(pos_x / tileWidth), int(pos_y / tileHeight));
 	}
-	std::vector<sf::Vector2i> GetPotentialPos(const std::shared_ptr<GameObject>& pObject) const {
+	Essential::setVecInt& GetPotentialPos(const std::shared_ptr<GameObject>& pObject) {
 		const sf::Vector2f pos = pObject->getPosition();
 		return GetPotentialPos(pos.x, pos.y);
 	}
 
-	std::set<std::shared_ptr<Tile>> GetPotentialTile(const int id_x, const int id_y) const;
-	std::set<std::shared_ptr<Tile>> GetPotentialTile(const float& pos_x, const float& pos_y) const {
+	std::set<std::shared_ptr<Tile>>& GetPotentialTile(const int id_x, const int id_y);
+	std::set<std::shared_ptr<Tile>>& GetPotentialTile(const float& pos_x, const float& pos_y) {
 		return GetPotentialTile(int(pos_x / tileWidth), int(pos_y / tileHeight));
 	}
-	std::set<std::shared_ptr<Tile>> GetPotentialTile(const std::shared_ptr<GameObject>& pObject) const {
+	std::set<std::shared_ptr<Tile>>& GetPotentialTile(const std::shared_ptr<GameObject>& pObject) {
 		const sf::Vector2f pos = pObject->getPosition();
 		return GetPotentialTile(pos.x, pos.y);
 	}
@@ -59,4 +60,6 @@ private:
 	int nRow;
 	int nCol;
 	std::vector<std::shared_ptr<Tile>> tiles;
+	Essential::setVecInt sHLPos;
+	std::set<std::shared_ptr<Board::Tile>> sTile;
 };

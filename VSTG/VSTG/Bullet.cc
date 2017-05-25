@@ -24,9 +24,12 @@ Bullet::Bullet(float x, float y) :
 
 void Bullet::Update(const float& dt)
 {
-	if (position.y < 0) {
+	if (!Essential::inGamecanvas(position)) {
 		Game::layerDelete.insert(shared_from_this());
 	}
+//	if (position.y < 0) {
+//		Game::layerDelete.insert(shared_from_this());
+//	}
 }
 
 void Bullet::FixedUpdate(const float& dt)

@@ -88,6 +88,9 @@ Essential::GameState Game::Run(){
 				}
 			}
 		}
+		else {
+			ft.Mark();
+		}
 		DrawScene();
 		if (Essential::isGameOver) {
 			return Essential::POP;
@@ -109,11 +112,6 @@ void Game::Update() {
 	//FixedUpdate
 	culDt += dt;
 	while (culDt >= fixedUpdateDuration) {
-//		// Create Enemy
-//		const std::shared_ptr<Enemy>pEnemy = std::make_shared<Enemy>(Enemy(float(rand() % 800), 0.0f));
-//		layerDefault.insert(pEnemy);
-//		//		layerEnemy.insert(pEnemy);
-//		brd.AddObject(pEnemy);
 
 		for (auto it = layerDefault.begin(); it != layerDefault.end(); it++) {
 			(*it)->FixedUpdate(fixedUpdateDuration);
@@ -122,9 +120,9 @@ void Game::Update() {
 
 		//Bullet collision
 		for (auto it = layerBullet.begin(); it != layerBullet.end(); it++) {
-			std::set<std::shared_ptr<Board::Tile>> sTile = brd.GetPotentialTile(*it);
+			const std::set<std::shared_ptr<Board::Tile>>& sTile = brd.GetPotentialTile(*it);
 			for (auto it_tile = sTile.begin(); it_tile != sTile.end(); it_tile++) {
-				const std::set<std::shared_ptr<GameObject>> sObject = (*it_tile)->GetLayer();
+				const std::set<std::shared_ptr<GameObject>>& sObject = (*it_tile)->GetLayer();
 				for (auto it2 = sObject.begin(); it2 != sObject.end(); it2++) {
 					sf::Vector2<float> diffPos = (*it)->getPosition() - (*it2)->getPosition();
 					float len = (*it)->getSize() + (*it2)->getSize();
@@ -148,17 +146,17 @@ void Game::Update() {
 		}
 	}
 
-#ifdef _BOARD_DEBUG
+#ifdef _DEBUG_BOARD
 	vHLPos.clear();
 	for (auto it = layerBullet.begin(); it != layerBullet.end(); it++) {
-		const std::vector<sf::Vector2i> sPos = brd.GetPotentialPos(*it);
+		const Essential::setVecInt& sPos = brd.GetPotentialPos(*it);
 		for (auto pos : sPos) {
-			vHLPos.push_back(pos);
+			vHLPos.insert(pos);
 		}
 	}
 #endif
 
-#ifdef _DEBUG
+#ifdef _DEBUG_LOG
 
 	//Log
 	if (logTimer > 0) {
@@ -200,7 +198,7 @@ void Game::DrawScene()
 	
 	wnd.draw(background);
 
-#ifdef _BOARD_DEBUG
+#ifdef _DEBUG_BOARD
 	for (auto it = vHLPos.begin(); it != vHLPos.end(); it++) {
 		brd.HighlightTile(wnd, *it);
 	}

@@ -144,7 +144,7 @@ bool SceneMapEditor::MergeFromFile(const std::string filepath)
 		}
 		infile.close();
 	}
-	catch (const std::ifstream::failure &e) {
+	catch (...) {
 		std::cout << "Exception opening/reading file." << std::endl;
 	}
 	return false;
@@ -193,7 +193,7 @@ bool SceneMapEditor::WriteToFile(const std::string filepath)
 		}
 		outfile.close();
 	}
-	catch (const std::ifstream::failure &e) {
+	catch (...) {
 		std::cout << "Exception opening/reading file." << std::endl;
 		return false;
 	}
@@ -332,7 +332,7 @@ void SceneMapEditor::Update()
 void SceneMapEditor::DrawLine(sf::RenderTarget & gfx, const float y)
 {
 	const sf::Vertex line[] = {
-		sf::Vertex(sf::Vector2f(Essential::GameCanvas.left, y)),
+		sf::Vertex(sf::Vector2f(float(Essential::GameCanvas.left), y)),
 		sf::Vertex(sf::Vector2f(float(Essential::GameCanvas.left + Essential::GameCanvas.width), y))
 	};
 	gfx.draw(line, 2, sf::LineStrip);

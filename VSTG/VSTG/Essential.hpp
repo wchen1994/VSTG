@@ -2,6 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
+#include <set>
 
 #include "TextManager.h"
 #include "ResManager.h"
@@ -25,5 +26,25 @@ public:
 	static float textScale;
 	static ResManager resManager;
 	static sf::IntRect GameCanvas;
+	static bool inGamecanvas(const sf::Vector2f & pos);
 	static float windowScale;
+
+public:
+	template<class T>
+	struct vec2Compare {
+		bool operator()(const sf::Vector2<T>& lhs, const sf::Vector2<T>& rhs) const {
+			if (lhs.y > rhs.y) {
+				return true;
+			}
+			else if (lhs.y == rhs.y){
+				if (lhs.x > rhs.x)
+					return true;
+			}
+			return false;
+		}
+	};
+
+	typedef std::set<sf::Vector2i, vec2Compare<int>> setVecInt;
 };
+
+

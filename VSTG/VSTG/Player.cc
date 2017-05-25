@@ -9,8 +9,8 @@ Player::Player() :
 {
 	up = down = left = right = false;
 	fire = false; radius = 5;
-	position.x = 400;
-	position.y = 300;
+	position.x = float(Essential::GameCanvas.left + Essential::GameCanvas.width/2);
+	position.y = float(Essential::GameCanvas.top + Essential::GameCanvas.height * 4/5);
 	velocity.x = 0;
 	velocity.y = 0;
 	speed = 180;
@@ -44,17 +44,23 @@ void Player::FixedUpdate(const float & dt)
 {
 	// Player Movement
 	const float sqlen = velocity.x*velocity.x + velocity.y*velocity.y;
+	static float boundary[] = { 
+		float(Essential::GameCanvas.left),
+		float(Essential::GameCanvas.left + Essential::GameCanvas.width - 1),
+		float(Essential::GameCanvas.top),
+		float(Essential::GameCanvas.top + Essential::GameCanvas.height - 1),
+	};
 	if (sqlen != 0) {
 		const float len = sqrt(sqlen);
 		position += velocity / len * speed * dt;
-		if (position.x < 0)
-			position.x = 0;
-		if (position.x > 800)
-			position.x = 800;
-		if (position.y < 0)
-			position.y = 0;
-		if (position.y > 600)
-			position.y = 600;
+		if (position.x < boundary[0])
+			position.x = boundary[0];
+		if (position.x > boundary[1])
+			position.x = boundary[1];
+		if (position.y < boundary[2])
+			position.y = boundary[2];
+		if (position.y > boundary[3])
+			position.y = boundary[3];
 	}
 	pSprite->setPosition(position);
 
@@ -65,7 +71,7 @@ void Player::FixedUpdate(const float & dt)
 	else if (fire) {
 		const std::shared_ptr<Bullet> pBullet = std::make_shared<Bullet>(Bullet(position.x, position.y));
 		Game::layerDefault.insert(pBullet);
-		Game::layerBullet.insert(pBullet);
+		Game::layerBullet.insert(pBullet); // Something went wrong
 		cooldown = cooldownDuration;
 	}
 }
