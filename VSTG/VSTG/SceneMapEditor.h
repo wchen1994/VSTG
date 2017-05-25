@@ -55,6 +55,7 @@ private:
 	sf::CircleShape objectEraser;
 	sf::CircleShape *dragObject;
 	ObjMenu escMenu;
+	sf::RectangleShape paintboard;
 private:
 	void Update();
 	void DrawLine(sf::RenderTarget & gfx, const float y);

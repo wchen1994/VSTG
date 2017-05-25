@@ -12,7 +12,7 @@ sf::Font Essential::textFont;
 float Essential::textScale = 1.0;
 ResManager Essential::resManager;
 sf::IntRect Essential::GameCanvas(25, 25, 500, 550);
-float Essential::windowScale = 1.5f;
+float Essential::windowScale = 1.0f;
 
 void Essential::defHandleMsg(const sf::Event &event){
 	switch(event.type){
@@ -34,4 +34,6 @@ void Essential::defHandleMsg(const sf::Event &event){
 }
 
 sf::Vector2f Essential::vec2i2f(const sf::Vector2i& vec) { return sf::Vector2f(float(vec.x), float(vec.y)); }
+sf::Vector2f Essential::vec2i2f(int & x, int & y) { return sf::Vector2f(float(x), float(y)); }
 sf::Vector2i Essential::vec2f2i(const sf::Vector2f& vec) { return sf::Vector2i(int(vec.x), int(vec.y)); }
+sf::Vector2i Essential::vec2f2i(float & x, float & y) { return sf::Vector2i(int(x), int(y)); }

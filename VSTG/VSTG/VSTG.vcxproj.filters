@@ -69,9 +69,6 @@
     <ClCompile Include="ResManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ObjScene.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Board.hpp">
@@ -119,13 +116,10 @@
     <ClInclude Include="Button.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ObjMenu.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ResManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ObjScene.h">
+    <ClInclude Include="ObjMenu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
