@@ -133,8 +133,8 @@
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Moveable.cc" />
     <ClCompile Include="ObjMenu.cpp" />
+    <ClCompile Include="ObjScene.cpp" />
     <ClCompile Include="Player.cc" />
-    <ClCompile Include="Recorder.cc" />
     <ClCompile Include="ResManager.cpp" />
     <ClCompile Include="Scene.cc" />
     <ClCompile Include="SceneMapEditor.cpp" />
@@ -152,6 +152,7 @@
     <ClInclude Include="GameObject.hpp" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="Map.h" />
+    <ClInclude Include="ObjScene.h" />
     <ClInclude Include="Player.hpp" />
     <ClInclude Include="Recorder.h" />
     <ClInclude Include="ResManager.h" />

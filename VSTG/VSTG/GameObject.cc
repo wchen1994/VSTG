@@ -20,9 +20,9 @@ GameObject::GameObject() :
 GameObject::~GameObject(){
 };
 
-void GameObject::Draw(sf::RenderWindow& wnd){
+void GameObject::Draw(sf::RenderTarget& gfx){
 	if (drawing){
-		wnd.draw(*drawing);
+		gfx.draw(*drawing);
 	}
 }
 

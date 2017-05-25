@@ -22,7 +22,7 @@ public:
 	void setPosition(const sf::Vector2f &vec) { position = vec; }
 	float getSize(){ return colliderSize; }
 	virtual ~GameObject();
-	virtual void Draw(sf::RenderWindow& wnd);
+	virtual void Draw(sf::RenderTarget& gfx);
 	virtual void Update(const float& dt);
 	virtual void FixedUpdate(const float& dt);
 	virtual void OnKeyPressed(sf::Event::KeyEvent key);
