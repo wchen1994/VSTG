@@ -43,9 +43,11 @@ void Button::setPosition(const sf::Vector2f & pos)
 
 void Button::Update()
 {
-	sf::Vector2i vec = sf::Mouse::getPosition(Essential::wnd);
-	if (vec.x > position.x && vec.x < position.x + size.x &&
-		vec.y > position.y && vec.y < position.y + size.y) {
+	sf::Vector2i vecI = sf::Mouse::getPosition(Essential::wnd);
+	sf::Vector2f vecF = { float(vecI.x), float(vecI.y) };
+	vecF /= Essential::windowScale;
+	if (vecF.x > position.x && vecF.x < position.x + size.x &&
+		vecF.y > position.y && vecF.y < position.y + size.y) {
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
 			state = ButtonState::Push;
 		}
