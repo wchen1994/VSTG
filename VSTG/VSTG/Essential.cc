@@ -1,20 +1,32 @@
 #include <iostream>
 #include "Essential.hpp"
+#include <cstdlib>
 
 
 bool Essential::isGameOver = false;
 bool Essential::isExit = false;
 Essential::GameState Essential::gameState = GAME;
-sf::RenderWindow Essential::wnd(sf::VideoMode(Essential::ScreenWidth, Essential::ScreenHeight), "Game", sf::Style::Close|sf::Style::Titlebar);
+sf::RenderWindow Essential::wnd(sf::VideoMode(Essential::ScreenWidth, Essential::ScreenHeight), "Game", sf::Style::Default);
 TextManager Essential::textManager("Resources/texts/zh_ch.csv");
 sf::Font Essential::textFont;
 float Essential::textScale = 1.0;
 ResManager Essential::resManager;
+sf::IntRect Essential::GameCanvas(25, 25, 500, 550);
+float Essential::windowScale = 1.5f;
 
 void Essential::defHandleMsg(const sf::Event &event){
 	switch(event.type){
 		case sf::Event::Closed:
 			Essential::wnd.close();
+			break;
+		case sf::Event::Resized:
+			windowScale = std:: max<float>(event.size.height/600.0f, event.size.width/800.0f);
+			if (windowScale > 1) {
+				Essential::wnd.setSize(sf::Vector2u(int(800 * windowScale), int(600 * windowScale)));
+			}
+			else {
+				Essential::wnd.setSize(sf::Vector2u(800, 600 ));
+			}
 			break;
 		default:
 			break;

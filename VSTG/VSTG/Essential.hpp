@@ -22,4 +22,6 @@ public:
 	static sf::Font textFont;
 	static float textScale;
 	static ResManager resManager;
+	static sf::IntRect GameCanvas;
+	static float windowScale;
 };
