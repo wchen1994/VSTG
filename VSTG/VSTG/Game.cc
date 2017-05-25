@@ -21,6 +21,9 @@ Game::Game(sf::RenderWindow& wnd) :
 	isFocused(true), isMenuTriger(false),
 	escMenu(sf::IntRect(50, 80, 206, 139), Essential::textManager.getText(4), ObjMenu::MENUFLAG::YES_NO)
 {
+	background.setPosition(Essential::vec2i2f(Essential::GameCanvas.left, Essential::GameCanvas.top));
+	background.setSize(Essential::vec2i2f(Essential::GameCanvas.width, Essential::GameCanvas.height));
+	background.setFillColor(sf::Color(100, 100, 100));
 }
 
 Game::~Game(){
@@ -194,6 +197,9 @@ void Game::DrawScene()
 {
 	//Drawing
 	wnd.clear();
+	
+	wnd.draw(background);
+
 #ifdef _BOARD_DEBUG
 	for (auto it = vHLPos.begin(); it != vHLPos.end(); it++) {
 		brd.HighlightTile(wnd, *it);

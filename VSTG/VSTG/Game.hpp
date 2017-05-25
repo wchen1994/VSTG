@@ -27,6 +27,7 @@ private:
 	bool isGamePause;
 	Map map;
 	ObjMenu escMenu;
+	sf::RectangleShape background;
 public:
 	Game(sf::RenderWindow& wnd);
 	~Game();

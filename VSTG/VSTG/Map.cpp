@@ -23,7 +23,7 @@ void Map::Update(const float dt)
 		if (culTime > vec.y) {
 			std::shared_ptr<GameObject> pObject = objQueue.front();
 			objQueue.pop();
-			vec.y = 0;
+			vec.y = Essential::GameCanvas.left;
 			pObject->setPosition(vec);
 			Game::layerDefault.insert(pObject);
 			Game::brd.AddObject(pObject);
@@ -43,6 +43,7 @@ void Map::LoadFile(const std::string filepath)
 			const std::string s(line);
 			if (std::regex_search(s.begin(), s.end(), match, rgx)) {
 				sf::Vector2f vec = { std::stof(match[1]), std::stof(match[2]) };
+				vec.x += float(Essential::GameCanvas.left);
 				objQueue.push(std::make_shared<Enemy>(Enemy(vec.x, vec.y)));
 			}
 		}
