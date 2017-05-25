@@ -100,9 +100,13 @@ void SceneMapEditor::DrawScene()
 		sf::Vector2f vec = pShape->getPosition();
 		// Change Position accoridng timeAxis
 		vec.y += timeAtBottom;
-		sf::CircleShape shape(*pShape);
-		shape.setPosition(vec);
-		Essential::wnd.draw(shape);
+
+		// Draw if in paintboard
+		if (inPaintboard(vec)) {
+			sf::CircleShape shape(*pShape);
+			shape.setPosition(vec);
+			Essential::wnd.draw(shape);
+		}
 	}
 
 	// draw tool
@@ -180,6 +184,7 @@ bool SceneMapEditor::WriteToFile(const std::string filepath)
 		char str[1024];
 		for (auto shape : sortedpShapes) {
 			sf::Vector2f vec = shape->getPosition();
+			vec -= Essential::vec2i2f(Essential::GameCanvas.left, Essential::GameCanvas.top);
 			// Pos Transform
 			vec.y = dim2time(vec.y);
 			// Write
@@ -227,10 +232,7 @@ void SceneMapEditor::Update()
 	mpos /= Essential::windowScale;
 
 	// if mouse inside the paintboard
-	sf::Vector2f topLeft = Essential::vec2i2f(Essential::GameCanvas.left, Essential::GameCanvas.top);
-	sf::Vector2f botRight = topLeft + Essential::vec2i2f(Essential::GameCanvas.width, Essential::GameCanvas.height);
-	if (mpos.x >= topLeft.x && mpos.y >= topLeft.y &&
-		mpos.x < botRight.x && mpos.y < botRight.y) {
+	if (inPaintboard(mpos)) {
 		//Handle input
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
 			if (!isMouseLeft) {
@@ -344,6 +346,13 @@ float SceneMapEditor::time2dim(const float & time)
 float SceneMapEditor::dim2time(const float & dim)
 {
 	return -(dim - Essential::ScreenHeight) / timeScale;
+}
+
+bool SceneMapEditor::inPaintboard(const sf::Vector2f & pos)
+{
+	sf::Vector2f topLeft = Essential::vec2i2f(Essential::GameCanvas.left, Essential::GameCanvas.top);
+	sf::Vector2f botRight = topLeft + Essential::vec2i2f(Essential::GameCanvas.width, Essential::GameCanvas.height);
+	return pos.x >= topLeft.x && pos.y >= topLeft.y && pos.x < botRight.x && pos.y < botRight.y;
 }
 
 

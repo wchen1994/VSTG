@@ -61,4 +61,5 @@ private:
 	void DrawLine(sf::RenderTarget & gfx, const float y);
 	float time2dim(const float & dim);
 	float dim2time(const float & time);
+	bool inPaintboard(const sf::Vector2f& pos);
 };
