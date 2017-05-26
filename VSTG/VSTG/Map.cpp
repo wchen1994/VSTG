@@ -23,7 +23,7 @@ void Map::Update(const float dt)
 		if (culTime > vec.y) {
 			std::shared_ptr<GameObject> pObject = objQueue.front();
 			objQueue.pop();
-			vec.y = float(Essential::GameCanvas.left);
+			vec.y = float(Essential::GameCanvas.top) - 100.0f;
 			pObject->setPosition(vec);
 			SceneGame::layerDefault.insert(pObject);
 			SceneGame::brd.AddObject(pObject);
