@@ -15,7 +15,7 @@
 #define _DEBUG_BOARD
 #define _DEBUG_LOG
 
-class Game : public Scene{
+class SceneGame : public Scene{
 private:
 	sf::Event event;
 	sf::RenderWindow& wnd;
@@ -32,8 +32,8 @@ private:
 	ObjMenu escMenu;
 	sf::RectangleShape background;
 public:
-	Game(sf::RenderWindow& wnd);
-	~Game();
+	SceneGame(sf::RenderWindow& wnd);
+	~SceneGame();
 	Essential::GameState Run();
 	void Update();
 	void DrawScene();

@@ -1,31 +1,28 @@
-#include "StartMenu.hpp"
+#include "SceneStartMenu.hpp"
 #include "Essential.hpp"
 #include <assert.h>
 
-StartMenu::StartMenu(sf::RenderWindow& wnd)
+SceneStartMenu::SceneStartMenu(sf::RenderWindow& wnd)
 :
 wnd(wnd)
 {
-//	butTexture.loadFromFile("Resources/Textures/button01.png");
-	butTexture = Essential::resManager.GetRes("Resources/Textures/button01.png");
-}
-
-Essential::GameState StartMenu::Run(){
-
-	butStart.setTexture(*butTexture);
+	butStart.setTexture("Resources/Textures/button01.png");
 	butStart.setLable(Essential::textManager.getText(1));
 	butStart.setSprites(sf::Vector2i(0, 0), sf::Vector2i(0, 110), sf::Vector2i(0, 51), sf::Vector2i(150, 50));
 	butStart.setPosition(sf::Vector2f(550.0, 340.0));
 
-	butEdit.setTexture(*butTexture);
+	butEdit.setTexture("Resources/Textures/button01.png");
 	butEdit.setLable(Essential::textManager.getText(2));
 	butEdit.setSprites(sf::Vector2i(0, 0), sf::Vector2i(0, 110), sf::Vector2i(0, 51), sf::Vector2i(150, 50));
 	butEdit.setPosition(sf::Vector2f(550.0, 400.0));
 
-	butExit.setTexture(*butTexture);
+	butExit.setTexture("Resources/Textures/button01.png");
 	butExit.setLable(Essential::textManager.getText(3));
 	butExit.setSprites(sf::Vector2i(0, 0), sf::Vector2i(0, 110), sf::Vector2i(0, 51), sf::Vector2i(150, 50));
 	butExit.setPosition(sf::Vector2f(550.0, 460.0));
+}
+
+Essential::GameState SceneStartMenu::Run(){
 
 	while(wnd.isOpen()){
 		while(wnd.pollEvent(event)){

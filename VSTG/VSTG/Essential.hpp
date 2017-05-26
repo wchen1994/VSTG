@@ -5,7 +5,7 @@
 #include <set>
 
 #include "TextManager.h"
-#include "ResManager.h"
+#include "AssetManager.h"
 
 class Essential {
 public:
@@ -24,10 +24,10 @@ public:
 	static sf::Vector2i vec2f2i(float& x, float& y);
 	static sf::Font textFont;
 	static float textScale;
-	static ResManager resManager;
 	static sf::IntRect GameCanvas;
 	static bool inGamecanvas(const sf::Vector2f & pos);
 	static float windowScale;
+	static AssetManager assetManager;
 
 public:
 	template<class T>

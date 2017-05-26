@@ -1,8 +1,8 @@
-#include "Bullet.hpp"
-#include "Enemy.hpp"
-#include "Game.hpp"
+#include "ObjBullet.hpp"
+#include "ObjEnemy.hpp"
+#include "SceneGame.hpp"
 
-Bullet::Bullet(float x, float y) :
+ObjBullet::ObjBullet(float x, float y) :
 	GameObject()
 {
 	position.x = x;
@@ -22,26 +22,26 @@ Bullet::Bullet(float x, float y) :
 	hasdID = hashGen(objectID);
 }
 
-void Bullet::Update(const float& dt)
+void ObjBullet::Update(const float dt)
 {
 	if (!Essential::inGamecanvas(position)) {
-		Game::layerDelete.insert(shared_from_this());
+		SceneGame::layerDelete.insert(shared_from_this());
 	}
 //	if (position.y < 0) {
-//		Game::layerDelete.insert(shared_from_this());
+//		SceneGame::layerDelete.insert(shared_from_this());
 //	}
 }
 
-void Bullet::FixedUpdate(const float& dt)
+void ObjBullet::FixedUpdate(const float dt)
 {
 	position += velocity * dt;
 
 	pSprite->setPosition(position);
 }
 
-void Bullet::OnCollisionEnter(std::shared_ptr<GameObject> other){
-	if (other->GetHash() == Enemy::hasdID){
-		Game::layerDelete.insert(shared_from_this());
-		Game::layerDelete.insert(other);
+void ObjBullet::OnCollisionEnter(std::shared_ptr<GameObject> pOther){
+	if (pOther->GetHash() == ObjEnemy::hasdID){
+		SceneGame::layerDelete.insert(shared_from_this());
+		SceneGame::layerDelete.insert(pOther);
 	}
 }

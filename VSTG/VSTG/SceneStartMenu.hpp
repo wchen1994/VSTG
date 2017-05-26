@@ -4,7 +4,7 @@
 #include "Essential.hpp"
 #include "Button.h"
 
-class StartMenu : public Scene{
+class SceneStartMenu : public Scene{
 private:
 	sf::Event event;
 	sf::RenderWindow& wnd;
@@ -14,7 +14,7 @@ private:
 	Button butExit;
 	bool isFocus;
 public:
-	StartMenu(sf::RenderWindow& wnd);
-	virtual ~StartMenu() = default;
+	SceneStartMenu(sf::RenderWindow& wnd);
+	virtual ~SceneStartMenu() = default;
 	Essential::GameState Run();
 };

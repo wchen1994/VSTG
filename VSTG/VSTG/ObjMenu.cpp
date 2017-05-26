@@ -1,12 +1,11 @@
 #include "ObjMenu.h"
 #include "Essential.hpp"
 
-ObjMenu::ObjMenu(sf::IntRect rect, sf::String title, uint32_t flag) : hasInit(false)
+ObjMenu::ObjMenu(sf::IntRect rect, sf::String title, uint32_t flag)
 {
 	this->flag = flag;
-	menuTexture = Essential::resManager.GetRes("Resources/Textures/menu01.png");
-	butTexture = Essential::resManager.GetRes("Resources/Textures/button01.png");
-	bg.setTexture(*menuTexture);
+	pBG = Essential::assetManager.GetTexture("Resources/Textures/menu01.png");
+	bg.setTexture(*pBG);
 	bg.setPosition(float(rect.left), float(rect.top));
 	bg.setTextureRect(sf::IntRect(0, 0, rect.width, rect.height));
 	this->title = title;
@@ -16,45 +15,38 @@ ObjMenu::ObjMenu(sf::IntRect rect, sf::String title, uint32_t flag) : hasInit(fa
 	
 	this->rect = rect;
 
-}
-
-void ObjMenu::Init()
-{
 	switch (flag) {
 	case MENUFLAG::OK:
-		but1.setTexture(*butTexture);
+		but1.setTexture("Resources/Textures/button01.png");
 		but1.setLable(Essential::textManager.getText(7));
 		but1.setSprites(sf::Vector2i(0, 0), sf::Vector2i(0, 110), sf::Vector2i(0, 51), sf::Vector2i(90, 40));
 		but1.setPosition(sf::Vector2f(float(rect.left + rect.width / 2), float(rect.top + rect.height / 2)));
 		break;
 	case MENUFLAG::OK_CANCEL:
-		but1.setTexture(*butTexture);
+		but1.setTexture("Resources/Textures/button01.png");
 		but1.setLable(Essential::textManager.getText(7));
 		but1.setSprites(sf::Vector2i(0, 0), sf::Vector2i(0, 110), sf::Vector2i(0, 51), sf::Vector2i(90, 40));
 		but1.setPosition(sf::Vector2f(float(rect.left), float(rect.top + rect.height / 2)));
-		but2.setTexture(*butTexture);
+		but2.setTexture("Resources/Textures/button01.png");
 		but2.setLable(Essential::textManager.getText(8));
 		but2.setSprites(sf::Vector2i(0, 0), sf::Vector2i(0, 110), sf::Vector2i(0, 51), sf::Vector2i(90, 40));
 		but2.setPosition(sf::Vector2f(float(rect.left + rect.width / 2), float(rect.top + rect.height / 2)));
 		break;
 	case MENUFLAG::YES_NO:
-		but1.setTexture(*butTexture);
+		but1.setTexture("Resources/Textures/button01.png");
 		but1.setLable(Essential::textManager.getText(5));
 		but1.setSprites(sf::Vector2i(0, 0), sf::Vector2i(0, 110), sf::Vector2i(0, 51), sf::Vector2i(90, 40));
 		but1.setPosition(sf::Vector2f(float(rect.left), float(rect.top + rect.height / 2)));
-		but2.setTexture(*butTexture);
+		but2.setTexture("Resources/Textures/button01.png");
 		but2.setLable(Essential::textManager.getText(6));
 		but2.setSprites(sf::Vector2i(0, 0), sf::Vector2i(0, 110), sf::Vector2i(0, 51), sf::Vector2i(90, 40));
 		but2.setPosition(sf::Vector2f(float(rect.left + rect.width / 2), float(rect.top + rect.height / 2)));
 		break;
 	}
-	hasInit = true;
 }
 
 uint32_t ObjMenu::MenuUpdate()
 {
-	if (!hasInit)
-		Init();
 	switch (flag) {
 	case MENUFLAG::OK:
 		but1.Update();

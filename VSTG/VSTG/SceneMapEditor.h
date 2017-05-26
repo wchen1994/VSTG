@@ -59,7 +59,7 @@ private:
 private:
 	void Update();
 	void DrawLine(sf::RenderTarget & gfx, const float y);
-	float time2dim(const float & dim);
-	float dim2time(const float & time);
-	bool inPaintboard(const sf::Vector2f& pos);
+	float time2dim(const float & dim) const;
+	float dim2time(const float & time) const;
+	bool inPaintboard(const sf::Vector2f& pos) const;
 };

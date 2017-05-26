@@ -23,11 +23,9 @@ public:
 	float getSize(){ return colliderSize; }
 	virtual ~GameObject();
 	virtual void Draw(sf::RenderTarget& gfx);
-	virtual void Update(const float& dt);
-	virtual void FixedUpdate(const float& dt);
-	virtual void OnKeyPressed(sf::Event::KeyEvent key);
-	virtual void OnKeyReleased(sf::Event::KeyEvent key);
-	virtual void OnCollisionEnter(std::shared_ptr<GameObject> other);
+	virtual void Update(const float dt);
+	virtual void FixedUpdate(const float dt);
+	virtual void OnCollisionEnter(std::shared_ptr<GameObject> pOther);
 	virtual std::string GetType() const { return objectID; }
 	virtual size_t GetHash() const { return hasdID; }
 	sf::Vector2i GetBrdPos() const { return brdPos; }

@@ -6,7 +6,7 @@
 #include <queue>
 
 #include "GameObject.hpp"
-#include "Enemy.hpp"
+#include "ObjEnemy.hpp"
 
 class Map {
 public:

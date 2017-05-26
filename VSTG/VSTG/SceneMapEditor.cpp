@@ -1,6 +1,6 @@
 #include "SceneMapEditor.h"
 #include "Essential.hpp"
-#include "Enemy.hpp"
+#include "ObjEnemy.hpp"
 
 #include "nfd.h"
 
@@ -338,17 +338,17 @@ void SceneMapEditor::DrawLine(sf::RenderTarget & gfx, const float y)
 	gfx.draw(line, 2, sf::LineStrip);
 }
 
-float SceneMapEditor::time2dim(const float & time)
+float SceneMapEditor::time2dim(const float & time) const
 {
 	return -(time * timeScale) + Essential::ScreenHeight;
 }
 
-float SceneMapEditor::dim2time(const float & dim)
+float SceneMapEditor::dim2time(const float & dim) const
 {
 	return -(dim - Essential::ScreenHeight) / timeScale;
 }
 
-bool SceneMapEditor::inPaintboard(const sf::Vector2f & pos)
+bool SceneMapEditor::inPaintboard(const sf::Vector2f & pos) const
 {
 	sf::Vector2f topLeft = Essential::vec2i2f(Essential::GameCanvas.left, Essential::GameCanvas.top);
 	sf::Vector2f botRight = topLeft + Essential::vec2i2f(Essential::GameCanvas.width, Essential::GameCanvas.height);

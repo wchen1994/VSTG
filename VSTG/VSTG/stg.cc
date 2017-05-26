@@ -11,8 +11,8 @@ A touhou like game
 
 #include "Essential.hpp"
 #include "Scene.hpp"
-#include "Game.hpp"
-#include "StartMenu.hpp"
+#include "SceneGame.hpp"
+#include "SceneStartMenu.hpp"
 #include "SceneMapEditor.h"
 
 #ifdef _DEBUG
@@ -36,12 +36,10 @@ int main(){
 
 	Essential::GameState gameState = Essential::MENU;
 	Essential::textFont.loadFromFile("Resources/Fonts/msyh.ttf");
-	// The drawing of font in StartMenu has been disabled
-	// because it lead to assertion error while failed loading
-	lScenes.push_back(std::make_unique<StartMenu>(StartMenu(Essential::wnd)));
+	
+	lScenes.push_back(std::make_unique<SceneStartMenu>(SceneStartMenu(Essential::wnd)));
 
 	while(!lScenes.empty()){
-		Essential::resManager.killLonePtr();
 		gameState = (lScenes.back())->Run();
 		switch (gameState){
 			case Essential::POP:
@@ -51,17 +49,15 @@ int main(){
 				break;
 			case Essential::GAME:
 				Essential::isGameOver = false;
-				lScenes.push_back(std::make_unique<Game>(Game(Essential::wnd)));
+				lScenes.push_back(std::make_unique<SceneGame>(SceneGame(Essential::wnd)));
 				break;
 			case Essential::EDITOR:
 				lScenes.push_back(std::make_unique<SceneMapEditor>(SceneMapEditor()));
 			default:
 				break;
 		}
+		Essential::assetManager.killLonePtr();
 	}
-
-//	Game mGame(Essential::wnd);
-//	mGame.Run();
 
 	return 0;
 }

@@ -1,10 +1,10 @@
-#include "Player.hpp"
-#include "Bullet.hpp"
-#include "Enemy.hpp"
+#include "ObjPlayer.hpp"
+#include "ObjBullet.hpp"
+#include "ObjEnemy.hpp"
 #include "Essential.hpp"
-#include "Game.hpp"
+#include "SceneGame.hpp"
 
-Player::Player() :
+ObjPlayer::ObjPlayer() :
 	GameObject()
 {
 	up = down = left = right = false;
@@ -28,7 +28,40 @@ Player::Player() :
 	hasdID = hashGen(objectID);
 }
 
-void Player::Update(const float& dt){
+void ObjPlayer::Update(const float dt){
+	// Handle Input
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+		up = true;
+	}
+	else {
+		up = false;
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+		down = true;
+	}
+	else {
+		down = false;
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+		left = true;
+	}
+	else {
+		left = false;
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+		right = true;
+	}
+	else {
+		right = false;
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z)) {
+		fire = true;
+	}
+	else {
+		fire = false;
+	}
+
+
 	velocity = { 0.0f,0.0f };
 	if (up)
 		velocity.y -= 1.0f;
@@ -40,7 +73,7 @@ void Player::Update(const float& dt){
 		velocity.x += 1.0f;
 }
 
-void Player::FixedUpdate(const float & dt)
+void ObjPlayer::FixedUpdate(const float dt)
 {
 	// Player Movement
 	const float sqlen = velocity.x*velocity.x + velocity.y*velocity.y;
@@ -69,63 +102,16 @@ void Player::FixedUpdate(const float & dt)
 		cooldown -= dt;
 	}
 	else if (fire) {
-		const std::shared_ptr<Bullet> pBullet = std::make_shared<Bullet>(Bullet(position.x, position.y));
-		Game::layerDefault.insert(pBullet);
-		Game::layerBullet.insert(pBullet); // Something went wrong
+		const std::shared_ptr<ObjBullet> pBullet = std::make_shared<ObjBullet>(ObjBullet(position.x, position.y));
+		SceneGame::layerDefault.insert(pBullet);
+		SceneGame::layerBullet.insert(pBullet); // Something went wrong
 		cooldown = cooldownDuration;
 	}
 }
 
-void Player::OnKeyPressed(sf::Event::KeyEvent key){
-	sf::Keyboard::Key keycode = key.code;
-	switch (keycode){
-		case sf::Keyboard::Up:
-			up = true;
-			break;
-		case sf::Keyboard::Down:
-			down = true;
-			break;
-		case sf::Keyboard::Left:
-			left = true;
-			break;
-		case sf::Keyboard::Right:
-			right = true;
-			break;
-		case sf::Keyboard::Z:
-			fire = true;
-			break;
-		default:
-			break;
-	}
-}
-
-void Player::OnKeyReleased(sf::Event::KeyEvent key){
-	sf::Keyboard::Key keycode = key.code;
-	switch (keycode){
-		case sf::Keyboard::Up:
-			up = false;
-			break;
-		case sf::Keyboard::Down:
-			down = false;
-			break;
-		case sf::Keyboard::Left:
-			left = false;
-			break;
-		case sf::Keyboard::Right:
-			right = false;
-			break;
-		case sf::Keyboard::Z:
-			fire = false;
-			break;
-		default:
-			break;
-	}
-
-}
-
-void Player::OnCollisionEnter(std::shared_ptr<GameObject> other){
-	if (other->GetHash() == Enemy::hasdID){
-		Game::layerDelete.insert(shared_from_this());
+void ObjPlayer::OnCollisionEnter(std::shared_ptr<GameObject> pOther){
+	if (pOther->GetHash() == ObjEnemy::hasdID){
+		SceneGame::layerDelete.insert(shared_from_this());
 		Essential::isGameOver = true;
 	}
 }

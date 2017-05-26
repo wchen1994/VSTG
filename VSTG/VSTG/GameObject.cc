@@ -26,19 +26,13 @@ void GameObject::Draw(sf::RenderTarget& gfx){
 	}
 }
 
-void GameObject::Update(const float& dt){
+void GameObject::Update(const float dt){
 }
 
-void GameObject::FixedUpdate(const float & dt)
+void GameObject::FixedUpdate(const float dt)
 {
 }
 
-void GameObject::OnKeyPressed(sf::Event::KeyEvent key){
-}
-
-void GameObject::OnKeyReleased(sf::Event::KeyEvent key){
-}
-
-void GameObject::OnCollisionEnter(std::shared_ptr<GameObject> other){
+void GameObject::OnCollisionEnter(std::shared_ptr<GameObject> pOther){
 }
 

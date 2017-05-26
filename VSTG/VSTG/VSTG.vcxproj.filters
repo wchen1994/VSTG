@@ -18,19 +18,10 @@
     <ClCompile Include="Board.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Bullet.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Enemy.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Essential.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="FrameTimer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Game.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GameObject.cc">
@@ -39,13 +30,7 @@
     <ClCompile Include="Moveable.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Scene.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="StartMenu.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="stg.cc">
@@ -66,18 +51,27 @@
     <ClCompile Include="ObjMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ResManager.cpp">
+    <ClCompile Include="AssetManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneStartMenu.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneGame.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjBullet.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjEnemy.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjPlayer.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Board.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Bullet.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Enemy.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Essential.hpp">
@@ -86,22 +80,13 @@
     <ClInclude Include="FrameTimer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Game.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="GameObject.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Recorder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Scene.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="StartMenu.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SceneMapEditor.h">
@@ -116,10 +101,25 @@
     <ClInclude Include="Button.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ResManager.h">
+    <ClInclude Include="ObjMenu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ObjMenu.h">
+    <ClInclude Include="AssetManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneStartMenu.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneGame.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjBullet.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjPlayer.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjEnemy.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

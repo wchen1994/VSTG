@@ -123,41 +123,41 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Board.cc" />
-    <ClCompile Include="Bullet.cc" />
+    <ClCompile Include="ObjBullet.cc" />
     <ClCompile Include="Button.cpp" />
-    <ClCompile Include="Enemy.cc" />
+    <ClCompile Include="ObjEnemy.cc" />
     <ClCompile Include="Essential.cc" />
     <ClCompile Include="FrameTimer.cpp" />
-    <ClCompile Include="Game.cc" />
+    <ClCompile Include="SceneGame.cc" />
     <ClCompile Include="GameObject.cc" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Moveable.cc" />
     <ClCompile Include="ObjMenu.cpp" />
-    <ClCompile Include="Player.cc" />
-    <ClCompile Include="ResManager.cpp" />
+    <ClCompile Include="ObjPlayer.cc" />
+    <ClCompile Include="AssetManager.cpp" />
     <ClCompile Include="Scene.cc" />
     <ClCompile Include="SceneMapEditor.cpp" />
-    <ClCompile Include="StartMenu.cc" />
+    <ClCompile Include="SceneStartMenu.cc" />
     <ClCompile Include="stg.cc" />
     <ClCompile Include="TextManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Board.hpp" />
-    <ClInclude Include="Bullet.hpp" />
-    <ClInclude Include="Enemy.hpp" />
+    <ClInclude Include="ObjBullet.hpp" />
+    <ClInclude Include="ObjEnemy.hpp" />
     <ClInclude Include="Essential.hpp" />
     <ClInclude Include="FrameTimer.h" />
-    <ClInclude Include="Game.hpp" />
+    <ClInclude Include="SceneGame.hpp" />
     <ClInclude Include="GameObject.hpp" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="ObjMenu.h" />
-    <ClInclude Include="Player.hpp" />
+    <ClInclude Include="ObjPlayer.hpp" />
     <ClInclude Include="Recorder.h" />
-    <ClInclude Include="ResManager.h" />
+    <ClInclude Include="AssetManager.h" />
     <ClInclude Include="Scene.hpp" />
     <ClInclude Include="SceneMapEditor.h" />
-    <ClInclude Include="StartMenu.hpp" />
+    <ClInclude Include="SceneStartMenu.hpp" />
     <ClInclude Include="TextManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

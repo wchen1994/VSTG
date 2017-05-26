@@ -8,9 +8,9 @@ bool Essential::isExit = false;
 Essential::GameState Essential::gameState = GAME;
 sf::RenderWindow Essential::wnd(sf::VideoMode(Essential::ScreenWidth, Essential::ScreenHeight), "Game", sf::Style::Close);
 TextManager Essential::textManager("Resources/texts/zh_ch.csv");
+AssetManager Essential::assetManager;
 sf::Font Essential::textFont;
 float Essential::textScale = 1.0;
-ResManager Essential::resManager;
 sf::IntRect Essential::GameCanvas(25, 25, 500, 550);
 float Essential::windowScale = 1.0f;
 

@@ -5,7 +5,7 @@
 
 #include "GameObject.hpp"
 
-class Player : public GameObject{
+class ObjPlayer : public GameObject{
 private:
 	std::shared_ptr<sf::CircleShape> pSprite;
 	sf::Vector2f velocity;
@@ -17,10 +17,8 @@ private:
 	float cooldown;
 	static constexpr float cooldownDuration = 0.05f;
 public:
-	Player();
-	void Update(const float& dt);
-	void FixedUpdate(const float& dt);
-	void OnKeyPressed(sf::Event::KeyEvent key);
-	void OnKeyReleased(sf::Event::KeyEvent key);
-	void OnCollisionEnter(std::shared_ptr<GameObject> other);
+	ObjPlayer();
+	void Update(const float dt);
+	void FixedUpdate(const float dt);
+	void OnCollisionEnter(std::shared_ptr<GameObject> pOther);
 };

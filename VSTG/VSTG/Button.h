@@ -1,14 +1,14 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <memory>
 
 class Button {
 public:
 	enum ButtonState { Idle, Push, Focus, Count };
 public:
-	Button() { state = ButtonState::Idle; }
-	Button(sf::Texture texture,sf::String);
-	void setTexture(sf::Texture tex) { texture = tex; }
+	Button();
+	void setTexture(sf::String tex) {textureName = tex;}
 	void setLable(sf::String s) { lable = s; }
 	void setSprites(const sf::Vector2i &ipos, const sf::Vector2i &ppos, const sf::Vector2i &fpos, const sf::Vector2i &size);
 	void setSprites(const sf::Vector2i pos[], const sf::Vector2i & size);
@@ -23,7 +23,8 @@ private:
 	sf::Vector2f position;
 	sf::Vector2i size;
 	sf::Sprite sprites[3];
-	sf::Texture texture;
+	sf::String textureName;
 	sf::Text text;
 	sf::String lable;
+	std::shared_ptr<sf::Texture> pTex;
 };

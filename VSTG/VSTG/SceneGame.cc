@@ -2,19 +2,20 @@
 #include <iomanip>
 
 #include "Essential.hpp"
-#include "Game.hpp"
+#include "SceneGame.hpp"
 #include "Board.hpp" 
-#include "Player.hpp" 
-#include "Enemy.hpp"
+#include "ObjPlayer.hpp" 
+#include "ObjEnemy.hpp"
 
 
-std::set<std::shared_ptr<GameObject>> Game::layerDefault;
-std::set<std::shared_ptr<GameObject>> Game::layerBullet;
-std::set<std::shared_ptr<GameObject>> Game::layerPlayer;
-std::set<std::shared_ptr<GameObject>> Game::layerDelete;
-Board Game::brd(Essential::ScreenWidth, Essential::ScreenHeight, 50, 50);
+std::set<std::shared_ptr<GameObject>> SceneGame::layerDefault;
+std::set<std::shared_ptr<GameObject>> SceneGame::layerBullet;
+std::set<std::shared_ptr<GameObject>> SceneGame::layerPlayer;
+std::set<std::shared_ptr<GameObject>> SceneGame::layerDelete;
+Board SceneGame::brd(Essential::ScreenWidth, Essential::ScreenHeight, 50, 50);
 
-Game::Game(sf::RenderWindow& wnd) :
+
+SceneGame::SceneGame(sf::RenderWindow& wnd) :
 	Scene(),
 	wnd(wnd),
 	map("Maps/Lv1.tmap"),
@@ -26,7 +27,8 @@ Game::Game(sf::RenderWindow& wnd) :
 	background.setFillColor(sf::Color(100, 100, 100));
 }
 
-Game::~Game(){
+
+SceneGame::~SceneGame(){
 	layerDefault.clear();
 	layerBullet.clear();
 	layerPlayer.clear();
@@ -34,9 +36,9 @@ Game::~Game(){
 	brd.clear();
 }
 
-Essential::GameState Game::Run(){ 
+Essential::GameState SceneGame::Run(){ 
 	// Create Player
-	const std::shared_ptr<Player> pPlayer = std::make_shared<Player>(Player());
+	const std::shared_ptr<ObjPlayer> pPlayer = std::make_shared<ObjPlayer>(ObjPlayer());
 	layerDefault.insert(pPlayer);
 	layerPlayer.insert(pPlayer);
 
@@ -45,19 +47,8 @@ Essential::GameState Game::Run(){
 		while (wnd.pollEvent(event)) {
 			switch (event.type) {
 			case sf::Event::KeyPressed:
-				if (event.key.code == sf::Keyboard::Escape) {
+				if (event.key.code == sf::Keyboard::Escape)
 					isMenuTriger = !isMenuTriger;
-				}
-				for (auto it = layerDefault.begin();
-					it != layerDefault.end(); it++) {
-					(*it)->OnKeyPressed(event.key);
-				}
-				break;
-			case sf::Event::KeyReleased:
-				for (auto it = layerDefault.begin();
-					it != layerDefault.end(); it++) {
-					(*it)->OnKeyReleased(event.key);
-				}
 				break;
 			case sf::Event::LostFocus:
 				isFocused = false;
@@ -99,7 +90,7 @@ Essential::GameState Game::Run(){
 	return Essential::POP;
 }
 
-void Game::Update() {
+void SceneGame::Update() {
 
 
 	//Update
@@ -191,7 +182,7 @@ void Game::Update() {
 	layerDelete.clear();
 }
 
-void Game::DrawScene()
+void SceneGame::DrawScene()
 {
 	//Drawing
 	wnd.clear();

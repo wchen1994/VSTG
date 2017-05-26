@@ -1,5 +1,5 @@
 #include "Map.h"
-#include "Game.hpp"
+#include "SceneGame.hpp"
 
 #include <regex>
 
@@ -25,8 +25,8 @@ void Map::Update(const float dt)
 			objQueue.pop();
 			vec.y = float(Essential::GameCanvas.left);
 			pObject->setPosition(vec);
-			Game::layerDefault.insert(pObject);
-			Game::brd.AddObject(pObject);
+			SceneGame::layerDefault.insert(pObject);
+			SceneGame::brd.AddObject(pObject);
 		}
 	}
 }
@@ -44,7 +44,7 @@ void Map::LoadFile(const std::string filepath)
 			if (std::regex_search(s.begin(), s.end(), match, rgx)) {
 				sf::Vector2f vec = { std::stof(match[1]), std::stof(match[2]) };
 				vec.x += float(Essential::GameCanvas.left);
-				objQueue.push(std::make_shared<Enemy>(Enemy(vec.x, vec.y)));
+				objQueue.push(std::make_shared<ObjEnemy>(ObjEnemy(vec.x, vec.y)));
 			}
 		}
 		file.close();

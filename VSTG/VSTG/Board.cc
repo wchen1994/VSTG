@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <assert.h>
 
-Board::Tile::Tile(int & width_in, int & height_in)
+Board::Tile::Tile(int width_in, int height_in)
 {
 	width = width_in;
 	height = height_in;
@@ -29,7 +29,7 @@ void Board::Tile::clear()
 }
 
 
-Board::Board(const int & boardWidth_in, const int & boardHeight_in, const int & tileWidth_in, const int & tileHeight_in)
+Board::Board(const int boardWidth_in, const int boardHeight_in, const int tileWidth_in, const int tileHeight_in)
 {
 	boardWidth = boardWidth_in;
 	boardHeight = boardHeight_in;
