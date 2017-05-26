@@ -35,7 +35,9 @@ ObjEnemy::ObjEnemy(float x, float y, float vx, float vy) :
 }
 
 void ObjEnemy::Update(const float dt){
-	if (position.x < -radius || position.x > 800 + radius || position.y > 600) {
+	if (position.x < Essential::GameCanvas.left-radius || 
+		position.x > Essential::GameCanvas.left + Essential::GameCanvas.width + radius || 
+		position.y > Essential::GameCanvas.top + Essential::GameCanvas.height + radius) {
 		SceneGame::layerDelete.insert(shared_from_this());
 	}
 }

@@ -12,7 +12,7 @@ std::set<std::shared_ptr<GameObject>> SceneGame::layerDefault;
 std::set<std::shared_ptr<GameObject>> SceneGame::layerBullet;
 std::set<std::shared_ptr<GameObject>> SceneGame::layerPlayer;
 std::set<std::shared_ptr<GameObject>> SceneGame::layerDelete;
-Board SceneGame::brd(Essential::ScreenWidth, Essential::ScreenHeight, 50, 50);
+Board SceneGame::brd(Essential::ScreenWidth, Essential::ScreenHeight, tileWidth, tileHeight);
 
 
 SceneGame::SceneGame(sf::RenderWindow& wnd) :
@@ -41,6 +41,9 @@ Essential::GameState SceneGame::Run(){
 	const std::shared_ptr<ObjPlayer> pPlayer = std::make_shared<ObjPlayer>(ObjPlayer());
 	layerDefault.insert(pPlayer);
 	layerPlayer.insert(pPlayer);
+
+	// Zero the clock Loading resources takes time
+	ft.Mark();
 
 	while (wnd.isOpen()) {
 		//Event Handle

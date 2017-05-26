@@ -43,6 +43,8 @@ public:
 	static std::set<std::shared_ptr<GameObject>> layerPlayer;
 	static std::set<std::shared_ptr<GameObject>> layerDelete;
 	static Board brd;
-	static constexpr int tileWidth = 50;
-	static constexpr int tileHeight = 50;
+
+	// Changing the tile size require to rebuild the soluction
+	static constexpr int tileWidth = 20;
+	static constexpr int tileHeight = 20;
 };
