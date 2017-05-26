@@ -137,16 +137,6 @@ void SceneGame::Update() {
 		}
 	}
 
-#ifdef _DEBUG_BOARD
-	vHLPos.clear();
-	for (auto it = layerBullet.begin(); it != layerBullet.end(); it++) {
-		const Essential::setVecInt& sPos = brd.GetPotentialPos(*it);
-		for (auto pos : sPos) {
-			vHLPos.insert(pos);
-		}
-	}
-#endif
-
 #ifdef _DEBUG_LOG
 
 	//Log
@@ -190,9 +180,7 @@ void SceneGame::DrawScene()
 	wnd.draw(background);
 
 #ifdef _DEBUG_BOARD
-	for (auto it = vHLPos.begin(); it != vHLPos.end(); it++) {
-		brd.HighlightTile(wnd, *it);
-	}
+	brd.Highlight(wnd);
 	brd.View(wnd);
 #endif
 

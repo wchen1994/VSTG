@@ -25,7 +25,7 @@ ObjPlayer::ObjPlayer() :
 	// Setup ID
 	strcpy_s(objectID, "Player0");
 	std::hash<std::string> hashGen;
-	hasdID = hashGen(objectID);
+	hashID = hashGen(objectID);
 }
 
 void ObjPlayer::Update(const float dt){
@@ -110,7 +110,7 @@ void ObjPlayer::FixedUpdate(const float dt)
 }
 
 void ObjPlayer::OnCollisionEnter(std::shared_ptr<GameObject> pOther){
-	if (pOther->GetHash() == ObjEnemy::hasdID){
+	if (pOther->GetHash() == ObjEnemy::hashID){
 		SceneGame::layerDelete.insert(shared_from_this());
 		Essential::isGameOver = true;
 	}

@@ -15,7 +15,7 @@ protected:
 	float colliderSize;
 	sf::Vector2i brdPos;
 	static char objectID[128];
-	static size_t hasdID;
+	static size_t hashID;
 public:
 	GameObject();
 	sf::Vector2<float> getPosition() const { return position; }
@@ -27,6 +27,6 @@ public:
 	virtual void FixedUpdate(const float dt);
 	virtual void OnCollisionEnter(std::shared_ptr<GameObject> pOther);
 	virtual std::string GetType() const { return objectID; }
-	virtual size_t GetHash() const { return hasdID; }
+	virtual size_t GetHash() const { return hashID; }
 	sf::Vector2i GetBrdPos() const { return brdPos; }
 };

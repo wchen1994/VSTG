@@ -8,17 +8,19 @@
 
 class Board{
 public:
-	class Tile {
-	public:
+	struct Tile {
+//	public:
 		Tile(int width_in, int height_in);
 		~Tile() { clear(); }
 		std::set<std::shared_ptr<GameObject>>& GetLayer();
 		void RemoveObject(std::shared_ptr<GameObject> pObject);
 		void AddObject(std::shared_ptr<GameObject> pObject);
 		void clear();
-	private:
+//	private:
 		int width;
 		int height;
+		bool isColiChecked;
+		int objCount;
 		std::set<std::shared_ptr<GameObject>> layerObject;
 	};
 
@@ -49,9 +51,12 @@ public:
 	void AddObject(const std::shared_ptr<GameObject> pObject);
 	void AddObject(const sf::Vector2i& brdPos, const std::shared_ptr<GameObject> pObject);
 	void View(sf::RenderTarget& gfx);
+	void Highlight(sf::RenderTarget &gfx);
 	void HighlightTile(sf::RenderTarget &gfx, sf::Vector2i pos);
 	std::vector<size_t> GetCount();
 	void clear();
+	void ProcessCollision();
+	void ProcColiLayer(std::set<std::shared_ptr<GameObject>> layer1, std::set<std::shared_ptr<GameObject>> layer2);
 private:
 	int tileWidth;
 	int tileHeight;

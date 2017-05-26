@@ -1,7 +1,7 @@
 #include"GameObject.hpp"
 
 char GameObject::objectID[128];
-size_t GameObject::hasdID;
+size_t GameObject::hashID;
 
 GameObject::GameObject() :
 	position(0,0),
@@ -14,7 +14,7 @@ GameObject::GameObject() :
 	for (auto& c : objectID) {
 		c = '\0';
 	}
-	hasdID = 0;
+	hashID = 0;
 }
 
 GameObject::~GameObject(){

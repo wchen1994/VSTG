@@ -45,9 +45,4 @@ public:
 	static Board brd;
 	static constexpr int tileWidth = 50;
 	static constexpr int tileHeight = 50;
-
-#ifdef _DEBUG_BOARD
-private:
-	Essential::setVecInt vHLPos;
-#endif
 };

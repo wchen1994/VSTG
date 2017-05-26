@@ -31,7 +31,7 @@ ObjEnemy::ObjEnemy(float x, float y, float vx, float vy) :
 	// Setup ID
 	strcpy_s(objectID, "Enemy0");
 	std::hash<std::string> hashGen;
-	hasdID = hashGen(objectID);
+	hashID = hashGen(objectID);
 }
 
 void ObjEnemy::Update(const float dt){
@@ -55,11 +55,11 @@ void ObjEnemy::FixedUpdate(const float dt)
 
 void ObjEnemy::OnCollisionEnter(std::shared_ptr<GameObject> pOther){
 	size_t hash = pOther->GetHash();
-	if (hash == ObjBullet::hasdID){
+	if (hash == ObjBullet::hashID){
 		SceneGame::layerDelete.insert(shared_from_this());
 		SceneGame::layerDelete.insert(pOther);
 	}
-	else if (hash == ObjPlayer::hasdID) {
+	else if (hash == ObjPlayer::hashID) {
 		SceneGame::layerDelete.insert(pOther);
 		Essential::isGameOver = true;
 	}

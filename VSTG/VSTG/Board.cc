@@ -1,8 +1,9 @@
 #include "Board.hpp"
+#include "ObjEnemy.hpp"
 #include <stdlib.h>
 #include <assert.h>
 
-Board::Tile::Tile(int width_in, int height_in)
+Board::Tile::Tile(int width_in, int height_in) : isColiChecked(false), objCount(0)
 {
 	width = width_in;
 	height = height_in;
@@ -61,7 +62,11 @@ std::set<std::shared_ptr<Board::Tile>>& Board::GetPotentialTile(const int id_x, 
 	sTile.clear();
 	for (int y = std::max(0, id_y - 1); y <= std::min(nRow-1, id_y + 1); y++) {
 		for (int x = std::max(0, id_x - 1); x <= std::min(nCol-1, id_x + 1); x++) {
-			sTile.insert(tiles[y*nCol + x]);
+			auto& tile = tiles[y*nCol + x];
+			if (!tile->isColiChecked && tile->layerObject.size() > 0) {
+				sTile.insert(tiles[y*nCol + x]);
+				sHLPos.insert(sf::Vector2i(x, y));
+			}
 		}
 	}
 	return sTile;
@@ -114,6 +119,14 @@ void Board::View(sf::RenderTarget & gfx)
 	}
 }
 
+void Board::Highlight(sf::RenderTarget & gfx)
+{
+	for (auto it = sHLPos.begin(); it != sHLPos.end(); it++) {
+		HighlightTile(gfx, *it);
+	}
+	sHLPos.clear();
+}
+
 void Board::HighlightTile(sf::RenderTarget & gfx, sf::Vector2i pos)
 {
 	sf::RectangleShape rect;
@@ -128,7 +141,7 @@ std::vector<size_t> Board::GetCount()
 	std::vector<size_t> counts;
 	counts.resize(nCol*nRow + 1);
 	for (int i = 0; i <= nCol*nRow; i++) {
-		counts[i] = tiles[i]->GetLayer().size();
+		counts[i] = tiles[i]->layerObject.size();
 	}
 	return counts;
 }
@@ -137,6 +150,40 @@ void Board::clear()
 {
 	for (int i = 0; i <= nCol*nRow; i++) {
 		tiles[i]->clear();
+	}
+}
+
+void Board::ProcessCollision()
+{
+	for (int i = 0; i < nRow*nCol;i++) {
+		auto& tile = tiles[i];
+		if (!tile->isColiChecked) {
+			auto& potentialTiles = GetPotentialTile(i / nCol, i % nCol);
+			for (auto& potentialTile : potentialTiles) {
+				auto& layer1 = tile->layerObject;
+				auto& layer2 = potentialTile->layerObject;
+			}
+			tile->isColiChecked = true;
+		}
+	}
+}
+
+void Board::ProcColiLayer(std::set<std::shared_ptr<GameObject>> layer1, std::set<std::shared_ptr<GameObject>> layer2)
+{
+	if (layer1 != layer2) {
+		for (auto& pObj1 : layer1) {
+			for (auto& pObj2 : layer2) {
+				pObj1->OnCollisionEnter(pObj2);
+			}
+		}
+	}
+	else {
+		for (auto it1 = layer1.begin(); it1 != layer1.end(); it1++) {
+			for (auto it2 = it1; it2 != --layer2.end();) {
+				it2++;
+				(*it2)->OnCollisionEnter(*it1);
+			}
+		}
 	}
 }
 
