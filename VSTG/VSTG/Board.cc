@@ -187,4 +187,16 @@ void Board::ProcColiLayer(std::set<std::shared_ptr<GameObject>> layer1, std::set
 	}
 }
 
+sf::Vector2i Board::UpdateObjectPos(std::shared_ptr<GameObject> pObj)
+{
+	auto& position = pObj->getPosition();
+	auto& brdPos = pObj->GetBrdPos();
+	const sf::Vector2i newBrdPos(int(position.x / tileWidth), int(position.y / tileHeight));
+	if (brdPos.x != newBrdPos.x || brdPos.y != newBrdPos.y) {
+		RemoveObject(brdPos, pObj);
+		AddObject(newBrdPos, pObj);
+	}
+	return newBrdPos;
+}
+
 

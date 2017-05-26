@@ -45,12 +45,8 @@ void ObjEnemy::Update(const float dt){
 void ObjEnemy::FixedUpdate(const float dt)
 {
 	position += velocity * dt;
-	const sf::Vector2i newBrdPos(int(position.x / SceneGame::tileWidth), int(position.y / SceneGame::tileHeight));
-	if (brdPos.x != newBrdPos.x || brdPos.y != newBrdPos.y) {
-		SceneGame::brd.RemoveObject(brdPos, shared_from_this());
-		SceneGame::brd.AddObject(newBrdPos, shared_from_this());
-	}
-	brdPos = newBrdPos;
+
+	brdPos = SceneGame::brd.UpdateObjectPos(shared_from_this());
 
 	pSprite->setPosition(position);
 }

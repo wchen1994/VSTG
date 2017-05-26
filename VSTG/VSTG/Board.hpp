@@ -57,6 +57,8 @@ public:
 	void clear();
 	void ProcessCollision();
 	void ProcColiLayer(std::set<std::shared_ptr<GameObject>> layer1, std::set<std::shared_ptr<GameObject>> layer2);
+
+	sf::Vector2i UpdateObjectPos(std::shared_ptr<GameObject> pObj);
 private:
 	int tileWidth;
 	int tileHeight;
