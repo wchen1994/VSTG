@@ -14,7 +14,7 @@ ObjBullet::ObjBullet(float x, float y) :
 	pSprite->setRadius(radius);
 	pSprite->setPosition(x, y);
 	pSprite->setOrigin(radius, radius);
-	drawing = pSprite;
+	drawCollider = pSprite;
 
 	// Setup ID
 	strcpy_s(objectID, "Bullet0");

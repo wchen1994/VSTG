@@ -20,7 +20,7 @@ ObjPlayer::ObjPlayer() :
 	pSprite->setRadius(radius);
 	pSprite->setOrigin(originX, originY);
 	pSprite->setPosition(position);
-	drawing = pSprite;
+	drawCollider = pSprite;
 
 	// Setup ID
 	strcpy_s(objectID, "Player0");

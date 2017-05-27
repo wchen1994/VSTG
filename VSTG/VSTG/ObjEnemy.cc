@@ -26,7 +26,7 @@ ObjEnemy::ObjEnemy(float x, float y, float vx, float vy) :
 	pSprite->setRadius(radius);
 	pSprite->setPosition(position);
 	pSprite->setOrigin(radius, radius);
-	drawing = pSprite;
+	drawCollider = pSprite;
 
 	// Setup ID
 	strcpy_s(objectID, "Enemy0");

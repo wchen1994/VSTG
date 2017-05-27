@@ -6,10 +6,11 @@ size_t GameObject::hashID;
 GameObject::GameObject() :
 	position(0,0),
 	brdPos(0,0),
+	drawCollider(nullptr),
+	drawSprite(nullptr),
 	enable_shared_from_this()
 {
 	colliderSize = 0;
-	drawing = NULL;
 	// Setup ID
 	for (auto& c : objectID) {
 		c = '\0';
@@ -21,9 +22,17 @@ GameObject::~GameObject(){
 };
 
 void GameObject::Draw(sf::RenderTarget& gfx){
-	if (drawing){
-		gfx.draw(*drawing);
+	if (drawSprite) {
+		gfx.draw(*drawSprite);
 	}
+	else if (drawCollider){
+		gfx.draw(*drawCollider);
+	} 
+#ifdef _DEBUG_COLLIDER
+	if (drawCollider) {
+		gfx.draw(*drawCollider);
+	}
+#endif
 }
 
 void GameObject::Update(const float dt){
