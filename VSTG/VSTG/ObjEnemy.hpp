@@ -5,7 +5,8 @@
 
 class ObjEnemy : public GameObject{
 private:
-	std::shared_ptr<sf::CircleShape> pSprite;
+	std::shared_ptr<sf::CircleShape> pCollider;
+	std::shared_ptr<sf::Texture> pTexture;
 	sf::Vector2<float> velocity;
 	static constexpr float speed = 120.0f;
 	static constexpr float radius=10.0f;

@@ -22,11 +22,18 @@ ObjEnemy::ObjEnemy(float x, float y, float vx, float vy) :
 	velocity.x = vx * speed / len;
 	velocity.y = vy * speed / len;
 	colliderSize = radius;
-	pSprite = std::make_shared<sf::CircleShape>(sf::CircleShape());
-	pSprite->setRadius(radius);
-	pSprite->setPosition(position);
-	pSprite->setOrigin(radius, radius);
-	drawCollider = pSprite;
+	pCollider = std::make_shared<sf::CircleShape>(sf::CircleShape());
+	pCollider->setRadius(radius);
+	pCollider->setPosition(position);
+	pCollider->setOrigin(radius, radius);
+	drawCollider = pCollider;
+
+	pTexture = Essential::assetManager.GetTexture("Resources/Textures/rock.png");
+	drawSprite = std::make_shared<sf::Sprite>(sf::Sprite());
+	drawSprite->setTexture(*pTexture);
+	drawSprite->setOrigin(200.0f, 200.0f);
+	drawSprite->setScale(sf::Vector2f(0.1f, 0.1f));
+	drawSprite->setPosition(position);
 
 	// Setup ID
 	strcpy_s(objectID, "Enemy0");
@@ -48,7 +55,8 @@ void ObjEnemy::FixedUpdate(const float dt)
 
 	brdPos = SceneGame::brd.UpdateObjectPos(shared_from_this());
 
-	pSprite->setPosition(position);
+	pCollider->setPosition(position);
+	drawSprite->setPosition(position);
 }
 
 void ObjEnemy::OnCollisionEnter(std::shared_ptr<GameObject> pOther){

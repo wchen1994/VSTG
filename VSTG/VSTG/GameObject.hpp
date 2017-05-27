@@ -7,11 +7,13 @@
 #include <string>
 #include <memory>
 
+//#define _DEBUG_COLLIDER
+
 class GameObject : public std::enable_shared_from_this<GameObject>
 {
 protected:
 	sf::Vector2<float> position;
-	std::shared_ptr<sf::Drawable> drawCollider;
+	std::shared_ptr<sf::Shape> drawCollider;
 	std::shared_ptr<sf::Sprite> drawSprite;
 	float colliderSize;
 	sf::Vector2i brdPos;
