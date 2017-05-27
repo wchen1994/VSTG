@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <set>
+#include <random>
 
 #include "TextManager.h"
 #include "AssetManager.h"
@@ -28,6 +29,8 @@ public:
 	static bool inGamecanvas(const sf::Vector2f & pos);
 	static float windowScale;
 	static AssetManager assetManager;
+	static std::random_device rd;
+	static std::mt19937 rng;
 
 public:
 	template<class T>

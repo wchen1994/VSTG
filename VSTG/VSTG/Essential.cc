@@ -13,6 +13,8 @@ sf::Font Essential::textFont;
 float Essential::textScale = 1.0;
 sf::IntRect Essential::GameCanvas(25, 25, 500, 550);
 float Essential::windowScale = 1.0f;
+std::random_device Essential::rd;
+std::mt19937 Essential::rng(rd());
 
 void Essential::defHandleMsg(const sf::Event &event){
 	switch(event.type){

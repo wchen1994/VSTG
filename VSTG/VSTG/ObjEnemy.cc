@@ -35,6 +35,11 @@ ObjEnemy::ObjEnemy(float x, float y, float vx, float vy) :
 	drawSprite->setScale(sf::Vector2f(0.1f, 0.1f));
 	drawSprite->setPosition(position);
 
+	std::uniform_real_distribution<float> aDist(0, 180);
+	std::uniform_real_distribution<float> wDist(-100, 100);
+	rotation = aDist(Essential::rng);
+	rotSpeed = wDist(Essential::rng);
+	
 	// Setup ID
 	strcpy_s(objectID, "Enemy0");
 	std::hash<std::string> hashGen;
@@ -52,11 +57,13 @@ void ObjEnemy::Update(const float dt){
 void ObjEnemy::FixedUpdate(const float dt)
 {
 	position += velocity * dt;
+	rotation += rotSpeed * dt;
 
 	brdPos = SceneGame::brd.UpdateObjectPos(shared_from_this());
 
 	pCollider->setPosition(position);
 	drawSprite->setPosition(position);
+	drawSprite->setRotation(rotation);
 }
 
 void ObjEnemy::OnCollisionEnter(std::shared_ptr<GameObject> pOther){

@@ -2,12 +2,15 @@
 
 #include "GameObject.hpp"
 #include <string>
+#include <random>
 
 class ObjEnemy : public GameObject{
 private:
 	std::shared_ptr<sf::CircleShape> pCollider;
 	std::shared_ptr<sf::Texture> pTexture;
 	sf::Vector2<float> velocity;
+	float rotSpeed;
+	float rotation;
 	static constexpr float speed = 120.0f;
 	static constexpr float radius=10.0f;
 public:
