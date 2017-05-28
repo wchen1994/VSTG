@@ -19,4 +19,21 @@ public:
 	void Update(const float dt);
 	void FixedUpdate(const float dt);
 	void OnCollisionEnter(std::shared_ptr<GameObject> pOther);
+public:
+	float GetRotation() const { return rotation; }
+	void SetRotation(const float angle) { rotation = angle; }
+	
+	float GetRotationSpeed() const { return rotSpeed; }
+	void SetRotationSpeed(const float speed) { rotSpeed = speed; }
+	
+	sf::Vector2f GetVelocity() const { return velocity; }
+	void SetVelocity(const sf::Vector2f vel) { velocity = vel; }
+	
+	std::shared_ptr<sf::Texture> GetTexturePtr() const { return pTexture; }
+	void SetTexturePtr(const std::shared_ptr<sf::Texture> pTex) { pTexture = pTex; }
+
+	float GetColliderSize() const { return colliderSize; }
+	void SetColliderSize(const float s) { colliderSize = s; pCollider->setRadius(s); pCollider->setOrigin(s, s); }
+
+	sf::Sprite& GetSprite() { return *drawSprite; }
 };

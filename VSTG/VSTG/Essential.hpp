@@ -32,6 +32,10 @@ public:
 	static std::random_device rd;
 	static std::mt19937 rng;
 
+	static std::uniform_real_distribution<float> angleDist;
+	static std::uniform_real_distribution<float> xDist;
+	static std::uniform_real_distribution<float> yDist;
+	static std::uniform_real_distribution<float> normalizedDist;
 public:
 	template<class T>
 	struct vec2Compare {

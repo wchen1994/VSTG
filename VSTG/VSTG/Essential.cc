@@ -15,6 +15,10 @@ sf::IntRect Essential::GameCanvas(25, 25, 500, 550);
 float Essential::windowScale = 1.0f;
 std::random_device Essential::rd;
 std::mt19937 Essential::rng(rd());
+std::uniform_real_distribution<float> Essential::angleDist(0.0f, 180.0f);
+std::uniform_real_distribution<float> Essential::xDist(0.0f, float(GameCanvas.width));
+std::uniform_real_distribution<float> Essential::yDist(0.0f, float(GameCanvas.height));
+std::uniform_real_distribution<float> Essential::normalizedDist(0.0f, 1.0f);
 
 void Essential::defHandleMsg(const sf::Event &event){
 	switch(event.type){

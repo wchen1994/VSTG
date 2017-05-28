@@ -128,6 +128,7 @@
     <ClCompile Include="ObjEnemy.cc" />
     <ClCompile Include="Essential.cc" />
     <ClCompile Include="FrameTimer.cpp" />
+    <ClCompile Include="ObjCreator.cpp" />
     <ClCompile Include="SceneGame.cc" />
     <ClCompile Include="GameObject.cc" />
     <ClCompile Include="Map.cpp" />
@@ -147,6 +148,7 @@
     <ClInclude Include="ObjEnemy.hpp" />
     <ClInclude Include="Essential.hpp" />
     <ClInclude Include="FrameTimer.h" />
+    <ClInclude Include="ObjCreator.h" />
     <ClInclude Include="SceneGame.hpp" />
     <ClInclude Include="GameObject.hpp" />
     <ClInclude Include="Button.h" />

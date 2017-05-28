@@ -16,34 +16,33 @@ ObjEnemy::ObjEnemy(float x, float y, float vx, float vy) :
 	position.y = y;
 	brdPos.x = int(x / SceneGame::tileWidth);
 	brdPos.y = int(y / SceneGame::tileHeight);
-	if (vy <= 0)
-		vy = 1;
+
 	const float len = sqrt(vx*vx + vy*vy);
 	velocity.x = vx * speed / len;
 	velocity.y = vy * speed / len;
-	colliderSize = radius;
+//	colliderSize = radius;
 	pCollider = std::make_shared<sf::CircleShape>(sf::CircleShape());
-	pCollider->setRadius(radius);
-	pCollider->setPosition(position);
-	pCollider->setOrigin(radius, radius);
+//	pCollider->setRadius(radius);
+//	pCollider->setPosition(position);
+//	pCollider->setOrigin(radius, radius);
 	drawCollider = pCollider;
 
-	pTexture = Essential::assetManager.GetTexture("Resources/Textures/rock.png");
+//	pTexture = Essential::assetManager.GetTexture("Resources/Textures/rock.png");
 	drawSprite = std::make_shared<sf::Sprite>(sf::Sprite());
-	drawSprite->setTexture(*pTexture);
-	drawSprite->setOrigin(200.0f, 200.0f);
-	drawSprite->setScale(sf::Vector2f(0.1f, 0.1f));
-	drawSprite->setPosition(position);
+//	drawSprite->setTexture(*pTexture);
+//	drawSprite->setOrigin(200.0f, 200.0f);
+//	drawSprite->setScale(sf::Vector2f(0.1f, 0.1f));
+//	drawSprite->setPosition(position);
 
-	std::uniform_real_distribution<float> aDist(0, 180);
-	std::uniform_real_distribution<float> wDist(-100, 100);
-	rotation = aDist(Essential::rng);
-	rotSpeed = wDist(Essential::rng);
+//	std::uniform_real_distribution<float> aDist(0, 180);
+//	std::uniform_real_distribution<float> wDist(-100, 100);
+//	rotation = aDist(Essential::rng);
+//	rotSpeed = wDist(Essential::rng);
 	
 	// Setup ID
-	strcpy_s(objectID, "Enemy0");
+	strcpy_s(classID, "Enemy");
 	std::hash<std::string> hashGen;
-	hashID = hashGen(objectID);
+	hashCID = hashGen("Enemy");
 }
 
 void ObjEnemy::Update(const float dt){
@@ -67,12 +66,12 @@ void ObjEnemy::FixedUpdate(const float dt)
 }
 
 void ObjEnemy::OnCollisionEnter(std::shared_ptr<GameObject> pOther){
-	size_t hash = pOther->GetHash();
-	if (hash == ObjBullet::hashID){
+	size_t hash = pOther->GetCID();
+	if (hash == ObjBullet::hashCID){
 		SceneGame::layerDelete.insert(shared_from_this());
 		SceneGame::layerDelete.insert(pOther);
 	}
-	else if (hash == ObjPlayer::hashID) {
+	else if (hash == ObjPlayer::hashCID) {
 		SceneGame::layerDelete.insert(pOther);
 		Essential::isGameOver = true;
 	}

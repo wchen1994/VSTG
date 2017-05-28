@@ -23,9 +23,9 @@ ObjPlayer::ObjPlayer() :
 	drawCollider = pSprite;
 
 	// Setup ID
-	strcpy_s(objectID, "Player0");
+	strcpy_s(classID, "Player");
 	std::hash<std::string> hashGen;
-	hashID = hashGen(objectID);
+	hashCID = hashGen(objectID);
 }
 
 void ObjPlayer::Update(const float dt){
@@ -110,7 +110,7 @@ void ObjPlayer::FixedUpdate(const float dt)
 }
 
 void ObjPlayer::OnCollisionEnter(std::shared_ptr<GameObject> pOther){
-	if (pOther->GetHash() == ObjEnemy::hashID){
+	if (pOther->GetCID() == ObjEnemy::hashCID){
 		SceneGame::layerDelete.insert(shared_from_this());
 		Essential::isGameOver = true;
 	}

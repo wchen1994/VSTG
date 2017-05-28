@@ -9,7 +9,7 @@
 
 SceneMapEditor::SceneMapEditor() : 
 	isExit(false), isDrag(false), isMouseLeft(false), isFocused(true), isMenuTriger(false),
-	objectEraser(eraseSize), objectBrush(brushSize),
+	objectEraser(eraseSize),
 	timeAtBottom(0.0f), timeScale(100.0f),
 	dragObject(NULL),
 	escMenu(sf::IntRect(50, 80, 206, 139), Essential::textManager.getText(4), ObjMenu::MENUFLAG::YES_NO)
@@ -19,8 +19,12 @@ SceneMapEditor::SceneMapEditor() :
 	objectEraser.setFillColor(sf::Color::Transparent);
 	objectEraser.setOutlineThickness(0.0f);
 
-	objectBrush.setOrigin(5.0f, 5.0f);
-	objectBrush.setFillColor(sf::Color(255, 0, 0, 100));
+	pTexBuffer = Essential::assetManager.GetTexture("Resources/Textures/rock.png");
+	objectBrush.setTexture(*pTexBuffer);
+	objectBrush.setOrigin(200.0f, 200.0f);
+	spriteScale = 0.1f;
+	objectBrush.setScale(sf::Vector2f(spriteScale,spriteScale));
+//	objectBrush.setFillColor(sf::Color(255, 0, 0, 100));
 
 	paintboard.setPosition(sf::Vector2f(float(Essential::GameCanvas.left), float(Essential::GameCanvas.top)));
 	paintboard.setSize(sf::Vector2f(float(Essential::GameCanvas.width), float(Essential::GameCanvas.height)));
@@ -96,16 +100,16 @@ void SceneMapEditor::DrawScene()
 		DrawLine(Essential::wnd, Essential::ScreenHeight - Essential::GameCanvas.top - i);
 	}
 	// draw Shape
-	for (auto pShape : sortedpShapes) {
-		sf::Vector2f vec = pShape->getPosition();
+	for (auto pSprite : sortedpSprite) {
+		sf::Vector2f vec = pSprite->getPosition();
 		// Change Position accoridng timeAxis
 		vec.y += timeAtBottom;
 
 		// Draw if in paintboard
 		if (inPaintboard(vec)) {
-			sf::CircleShape shape(*pShape);
-			shape.setPosition(vec);
-			Essential::wnd.draw(shape);
+			sf::Sprite sprite(*pSprite);
+			sprite.setPosition(vec);
+			Essential::wnd.draw(sprite);
 		}
 	}
 
@@ -137,9 +141,9 @@ bool SceneMapEditor::MergeFromFile(const std::string filepath)
 				vec.y = time2dim(std::stof(match[2]));
 				vec += {float(Essential::GameCanvas.left), float(Essential::GameCanvas.top)};
 				// Insert Object
-				sf::CircleShape *pShape = new sf::CircleShape(objectBrush);
-				pShape->setPosition(vec);
-				sortedpShapes.insert(pShape);
+				sf::Sprite *pSprite = new sf::Sprite(objectBrush);
+				pSprite->setPosition(vec);
+				sortedpSprite.insert(pSprite);
 			}
 		}
 		infile.close();
@@ -182,8 +186,8 @@ bool SceneMapEditor::WriteToFile(const std::string filepath)
 		ofstream outfile;
 		outfile.open(filepath, ofstream::out);
 		char str[1024];
-		for (auto shape : sortedpShapes) {
-			sf::Vector2f vec = shape->getPosition();
+		for (auto sprite : sortedpSprite) {
+			sf::Vector2f vec = sprite->getPosition();
 			vec -= Essential::vec2i2f(Essential::GameCanvas.left, Essential::GameCanvas.top);
 			// Pos Transform
 			vec.y = dim2time(vec.y);
@@ -237,20 +241,20 @@ void SceneMapEditor::Update()
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
 			if (!isMouseLeft) {
 				// Find object around for drag
-				for (auto it = sortedpShapes.begin(); it != sortedpShapes.end(); it++) {
+				for (auto it = sortedpSprite.begin(); it != sortedpSprite.end(); it++) {
 					sf::Vector2f pos = mpos;
 					pos.y -= timeAtBottom;
 					const sf::Vector2f spos = (*it)->getPosition();
 					const sf::Vector2f fDist = spos - pos;
 					const float sqlen = fDist.x*fDist.x + fDist.y*fDist.y;
-					const float olen = (*it)->getRadius();
+					const float olen = (*it)->getTextureRect().width * spriteScale * 0.5f; // half the width
 					if (sqlen < olen * olen) {
 						dragObject = *it;
 						break;
 					}
 				}
 				if (dragObject)
-					sortedpShapes.erase(dragObject); // Remove and insert later to ensure sorted set
+					sortedpSprite.erase(dragObject); // Remove and insert later to ensure sorted set
 			}
 			else {
 				if (dragObject) {
@@ -264,7 +268,7 @@ void SceneMapEditor::Update()
 		}
 		else if (isMouseLeft == true) {
 			if (dragObject) {
-				sortedpShapes.insert(dragObject); // Remove and insert back to ensure sorted set
+				sortedpSprite.insert(dragObject); // Remove and insert back to ensure sorted set
 			}
 			else {
 				// Add Object
@@ -273,7 +277,7 @@ void SceneMapEditor::Update()
 					pos.y >= 0 && pos.y < Essential::ScreenHeight) { // Mouse in Screen
 					pos.y -= timeAtBottom;
 					objectBrush.setPosition(pos);
-					sortedpShapes.insert(new sf::CircleShape(objectBrush));
+					sortedpSprite.insert(new sf::Sprite(objectBrush));
 				}
 			}
 			dragObject = NULL;
@@ -285,18 +289,18 @@ void SceneMapEditor::Update()
 			{ // Avoid situation both key are pressed
 				isMouseLeft = false;
 				if (dragObject) {
-					sortedpShapes.insert(dragObject);
+					sortedpSprite.insert(dragObject);
 				}
 				dragObject = NULL;
 			}
-			for (auto it = sortedpShapes.begin(); it != sortedpShapes.end(); it++) {
+			for (auto it = sortedpSprite.begin(); it != sortedpSprite.end(); it++) {
 				sf::Vector2f pos = mpos;
 				pos.y -= timeAtBottom;
 				const sf::Vector2f spos = (*it)->getPosition();
 				const sf::Vector2f fDist = spos - pos;
 				float sqlen = fDist.x*fDist.x + fDist.y*fDist.y;
 				if (sqlen < eraseSize*eraseSize) {
-					lShapeDel.push_back(*it);
+					lSpriteDel.push_back(*it);
 				}
 			}
 		}
@@ -310,15 +314,15 @@ void SceneMapEditor::Update()
 	}
 
 	//Remove Shape
-	for (auto it = lShapeDel.begin(); it != lShapeDel.end(); it++) {
-		sortedpShapes.erase(*it);
+	for (auto it = lSpriteDel.begin(); it != lSpriteDel.end(); it++) {
+		sortedpSprite.erase(*it);
 		delete *it;
 	}
-	lShapeDel.clear();
+	lSpriteDel.clear();
 
 	// Debug Log
 	system("CLS");
-	std::cout << sortedpShapes.size() << std::endl;
+	std::cout << sortedpSprite.size() << std::endl;
 	if (isFocused) {
 		std::cout << "Focused" << std::endl;
 	}

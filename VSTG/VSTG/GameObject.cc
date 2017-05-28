@@ -1,7 +1,7 @@
 #include"GameObject.hpp"
 
-char GameObject::objectID[128];
-size_t GameObject::hashID;
+char GameObject::classID[128];
+size_t GameObject::hashCID;
 
 GameObject::GameObject() :
 	position(0,0),
@@ -12,10 +12,12 @@ GameObject::GameObject() :
 {
 	colliderSize = 0;
 	// Setup ID
-	for (auto& c : objectID) {
-		c = '\0';
+	for (int i = 0; i < 128; i++) {
+		classID[i] = '\0';
+		objectID[i] = '\0';
 	}
-	hashID = 0;
+	hashCID = 0;
+	hashOID = 0;
 }
 
 GameObject::~GameObject(){

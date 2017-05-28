@@ -1,5 +1,6 @@
 #include "Map.h"
 #include "SceneGame.hpp"
+#include "ObjCreator.h"
 
 #include <regex>
 
@@ -44,7 +45,8 @@ void Map::LoadFile(const std::string filepath)
 			if (std::regex_search(s.begin(), s.end(), match, rgx)) {
 				sf::Vector2f vec = { std::stof(match[1]), std::stof(match[2]) };
 				vec.x += float(Essential::GameCanvas.left);
-				objQueue.push(std::make_shared<ObjEnemy>(ObjEnemy(vec.x, vec.y)));
+				objQueue.push(ObjCreator::CreateEnemy(ObjCreator::ROCK_DOWN, sf::Vector2f(vec.x, vec.y)));
+//				objQueue.push(std::make_shared<ObjEnemy>(ObjEnemy(vec.x, vec.y)));
 			}
 		}
 		file.close();

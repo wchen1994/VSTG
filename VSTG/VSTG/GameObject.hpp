@@ -6,8 +6,9 @@
 #include <iostream>
 #include <string>
 #include <memory>
+#include <cstring>
 
-//#define _DEBUG_COLLIDER
+#define _DEBUG_COLLIDER
 
 class GameObject : public std::enable_shared_from_this<GameObject>
 {
@@ -17,8 +18,12 @@ protected:
 	std::shared_ptr<sf::Sprite> drawSprite;
 	float colliderSize;
 	sf::Vector2i brdPos;
-	static char objectID[128];
-	static size_t hashID;
+	static char classID[128];
+	static size_t hashCID;
+	char objectID[128];
+	size_t hashOID;
+private:
+	std::hash<std::string> hashGen;
 public:
 	GameObject();
 	sf::Vector2<float> getPosition() const { return position; }
@@ -29,7 +34,11 @@ public:
 	virtual void Update(const float dt);
 	virtual void FixedUpdate(const float dt);
 	virtual void OnCollisionEnter(std::shared_ptr<GameObject> pOther);
-	virtual std::string GetType() const { return objectID; }
-	virtual size_t GetHash() const { return hashID; }
+public:
+	std::string GetName() const { return objectID; }
+	void SetName(std::string id) { strcpy_s(objectID, id.c_str()); hashOID = hashGen(objectID); }
+	size_t GetCID() const { return hashCID; }
+	size_t GetOID() const { return hashOID; }
 	sf::Vector2i GetBrdPos() const { return brdPos; }
+	sf::Sprite GetSprite() const { return *drawSprite; }
 };

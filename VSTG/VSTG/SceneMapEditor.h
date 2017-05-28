@@ -10,7 +10,7 @@
 #include "ObjMenu.h"
 
 struct YCmp {
-	bool operator()(const sf::Shape *lhs, const sf::Shape *rhs) const {
+	bool operator()(const sf::Sprite *lhs, const sf::Sprite *rhs) const {
 		if (lhs->getPosition().y * 10000 + lhs->getPosition().x > rhs->getPosition().y * 10000 + rhs->getPosition().x) {
 			return true;
 		}
@@ -45,15 +45,17 @@ private:
 	bool isMenuTriger;
 	float timeAtBottom;
 	float timeScale;
+	float spriteScale;
 	static constexpr float scrollSpeed = 30.0f;
 	static constexpr float eraseSize= 20.0f;
-	static constexpr float brushSize = 5.0f;
+//	static constexpr float brushSize = 5.0f;
 	std::vector<Data> vdata;
-	std::set<sf::CircleShape*, YCmp> sortedpShapes;
-	std::list<sf::CircleShape*> lShapeDel;
-	sf::CircleShape objectBrush;
+	std::set<sf::Sprite*, YCmp> sortedpSprite;
+	std::list<sf::Sprite*> lSpriteDel;
+	std::shared_ptr<sf::Texture> pTexBuffer;
+	sf::Sprite objectBrush;
 	sf::CircleShape objectEraser;
-	sf::CircleShape *dragObject;
+	sf::Sprite *dragObject;
 	ObjMenu escMenu;
 	sf::RectangleShape paintboard;
 private:
