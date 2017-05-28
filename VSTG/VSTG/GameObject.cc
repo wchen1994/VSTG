@@ -20,6 +20,7 @@ GameObject::GameObject() :
 	hashOID = 0;
 }
 
+
 GameObject::~GameObject(){
 };
 
@@ -46,4 +47,11 @@ void GameObject::FixedUpdate(const float dt)
 
 void GameObject::OnCollisionEnter(std::shared_ptr<GameObject> pOther){
 }
+
+GameObject * GameObject::CLone() const
+{
+	return nullptr;
+}
+
+
 

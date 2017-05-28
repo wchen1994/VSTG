@@ -19,6 +19,7 @@ public:
 	void Update(const float dt);
 	void FixedUpdate(const float dt);
 	void OnCollisionEnter(std::shared_ptr<GameObject> pOther);
+	virtual ObjEnemy* Clone() const;
 public:
 	float GetRotation() const { return rotation; }
 	void SetRotation(const float angle) { rotation = angle; }
@@ -35,5 +36,5 @@ public:
 	float GetColliderSize() const { return colliderSize; }
 	void SetColliderSize(const float s) { colliderSize = s; pCollider->setRadius(s); pCollider->setOrigin(s, s); }
 
-	sf::Sprite& GetSprite() { return *drawSprite; }
+//	sf::Sprite& GetSprite() { return *drawSprite; }
 };

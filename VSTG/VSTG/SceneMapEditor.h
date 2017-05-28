@@ -8,9 +8,10 @@
 #include "Essential.hpp"
 #include "GameObject.hpp"
 #include "ObjMenu.h"
+#include "ObjEnemy.hpp"
 
 struct YCmp {
-	bool operator()(const sf::Sprite *lhs, const sf::Sprite *rhs) const {
+	bool operator()(const std::shared_ptr<GameObject> lhs, const std::shared_ptr<GameObject> rhs) const {
 		if (lhs->getPosition().y * 10000 + lhs->getPosition().x > rhs->getPosition().y * 10000 + rhs->getPosition().x) {
 			return true;
 		}
@@ -45,17 +46,17 @@ private:
 	bool isMenuTriger;
 	float timeAtBottom;
 	float timeScale;
-	float spriteScale;
+//	float spriteScale;
 	static constexpr float scrollSpeed = 30.0f;
 	static constexpr float eraseSize= 20.0f;
 //	static constexpr float brushSize = 5.0f;
 	std::vector<Data> vdata;
-	std::set<sf::Sprite*, YCmp> sortedpSprite;
-	std::list<sf::Sprite*> lSpriteDel;
+	std::set<std::shared_ptr<GameObject>, YCmp> sortedpObject;
+	std::list<std::shared_ptr<GameObject>> lObjectDel;
 	std::shared_ptr<sf::Texture> pTexBuffer;
-	sf::Sprite objectBrush;
+	std::shared_ptr<GameObject> objectBrush;
 	sf::CircleShape objectEraser;
-	sf::Sprite *dragObject;
+	std::shared_ptr<GameObject> dragObject;
 	ObjMenu escMenu;
 	sf::RectangleShape paintboard;
 private:

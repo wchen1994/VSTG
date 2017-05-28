@@ -8,7 +8,7 @@
 #include <memory>
 #include <cstring>
 
-#define _DEBUG_COLLIDER
+//#define _DEBUG_COLLIDER
 
 class GameObject : public std::enable_shared_from_this<GameObject>
 {
@@ -34,11 +34,15 @@ public:
 	virtual void Update(const float dt);
 	virtual void FixedUpdate(const float dt);
 	virtual void OnCollisionEnter(std::shared_ptr<GameObject> pOther);
+	virtual GameObject* CLone() const;
 public:
 	std::string GetName() const { return objectID; }
 	void SetName(std::string id) { strcpy_s(objectID, id.c_str()); hashOID = hashGen(objectID); }
 	size_t GetCID() const { return hashCID; }
 	size_t GetOID() const { return hashOID; }
 	sf::Vector2i GetBrdPos() const { return brdPos; }
-	sf::Sprite GetSprite() const { return *drawSprite; }
+	sf::Sprite& GetSprite() const { return *drawSprite; }
+
+	float GetColliderSize() const { return colliderSize; }
+	void SetColliderSize(const float s) { colliderSize = s; }
 };

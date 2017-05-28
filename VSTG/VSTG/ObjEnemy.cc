@@ -4,6 +4,7 @@
 #include "SceneGame.hpp"
 #include <cmath>
 
+
 ObjEnemy::ObjEnemy(float x, float y=0) :
 	ObjEnemy(x, y, 0, speed)
 {
@@ -75,4 +76,14 @@ void ObjEnemy::OnCollisionEnter(std::shared_ptr<GameObject> pOther){
 		SceneGame::layerDelete.insert(pOther);
 		Essential::isGameOver = true;
 	}
+}
+
+ObjEnemy* ObjEnemy::Clone() const
+{
+	ObjEnemy *pOther = new ObjEnemy(0.0f, 0.0f);
+	*pOther = *this;
+	*pOther->drawSprite = *this->drawSprite;
+	*pOther->pCollider = *this->pCollider;
+	pOther->drawCollider = pOther->pCollider;
+	return pOther;
 }
