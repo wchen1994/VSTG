@@ -14,7 +14,6 @@ std::shared_ptr<GameObject> ObjCreator::CreateEnemy(std::string ObjName, std::st
 	float radius, sf::Vector2f pos, sf::Vector2f vel, float rot, float rotSpeed)
 {
 	std::shared_ptr<ObjEnemy> pObj = _CreateEnemy(ObjName, radius, pos, vel, rot, rotSpeed);
-	pObj->SetOID(EnemyType::ROCK_DOWN);
 
 	std::shared_ptr<sf::Texture> pTexture = Essential::assetManager.GetTexture(texPath);
 	pObj->SetTexturePtr(pTexture);
@@ -31,7 +30,6 @@ std::shared_ptr<GameObject> ObjCreator::CreateEnemy(std::string ObjName, std::st
 std::shared_ptr<GameObject> ObjCreator::CreateEnemy(std::string ObjName, std::string texPath, float radius, sf::Vector2f pos, sf::Vector2f vel, float rot, float rotSpeed)
 {
 	std::shared_ptr<ObjEnemy> pObj = _CreateEnemy(ObjName, radius, pos, vel, rot, rotSpeed);
-	pObj->SetOID(EnemyType::ROCK_RAND);
 
 	std::shared_ptr<sf::Texture> pTexture = Essential::assetManager.GetTexture(texPath);
 	pObj->SetTexturePtr(pTexture);
@@ -47,18 +45,22 @@ std::shared_ptr<GameObject> ObjCreator::CreateEnemy(std::string ObjName, std::st
 
 std::shared_ptr<GameObject> ObjCreator::CreateEnemy(EnemyType type, sf::Vector2f pos)
 {
+	std::shared_ptr<GameObject> pObject = nullptr;
 	switch (type) {
 	case EnemyType::ROCK_DOWN:
-		return CreateEnemy("Stupid Rock", "Resources/Textures/rock0.png", 20, pos, sf::Vector2f(0.0f, 120.0f), 
+		 pObject = CreateEnemy("Stupid Rock", "Resources/Textures/rock0.png",
+			20, pos, sf::Vector2f(0.0f, 120.0f),
 			Essential::angleDist(Essential::rng), Essential::angleDist(Essential::rng));
+		pObject->SetOID(EnemyType::ROCK_DOWN);
 		break;
 	case EnemyType::ROCK_RAND:
-		return CreateEnemy("Insane Rock", "Resources/Textures/image.png", 20, pos, 
+		pObject = CreateEnemy("Insane Rock", "Resources/Textures/rock1.png", 20, pos,
 			sf::Vector2f(0.5f * (Essential::normalizedDist(Essential::rng) - 0.5f), Essential::normalizedDist(Essential::rng)),
 			Essential::angleDist(Essential::rng), Essential::angleDist(Essential::rng));
+		pObject->SetOID(EnemyType::ROCK_RAND);
 		break;
 	default:
-		return nullptr;
+		pObject = nullptr;
 	}
-	return nullptr;
+	return pObject;
 }

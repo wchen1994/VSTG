@@ -59,6 +59,7 @@ private:
 	std::shared_ptr<GameObject> dragObject;
 	ObjMenu escMenu;
 	sf::RectangleShape paintboard;
+	int typeIdx;
 private:
 	void Update();
 	void DrawLine(sf::RenderTarget & gfx, const float y);

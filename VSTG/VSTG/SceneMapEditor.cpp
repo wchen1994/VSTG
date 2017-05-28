@@ -13,6 +13,7 @@ SceneMapEditor::SceneMapEditor() :
 	objectEraser(eraseSize),
 	timeAtBottom(0.0f), timeScale(100.0f),
 	dragObject(NULL),
+	typeIdx(0),
 	escMenu(sf::IntRect(50, 80, 206, 139), Essential::textManager.getText(4), ObjMenu::MENUFLAG::YES_NO)
 {
 	objectEraser.setOrigin(eraseSize, eraseSize);
@@ -26,7 +27,7 @@ SceneMapEditor::SceneMapEditor() :
 //	spriteScale = 0.1f;
 //	objectBrush.setScale(sf::Vector2f(spriteScale,spriteScale));
 //	objectBrush.setFillColor(sf::Color(255, 0, 0, 100));
-	objectBrush = ObjCreator::CreateEnemy(ObjCreator::ROCK_DOWN, sf::Vector2f(0.0f, 0.0f));
+	objectBrush = ObjCreator::CreateEnemy(ObjCreator::EnemyType(typeIdx), sf::Vector2f(0.0f, 0.0f));
 
 	paintboard.setPosition(sf::Vector2f(float(Essential::GameCanvas.left), float(Essential::GameCanvas.top)));
 	paintboard.setSize(sf::Vector2f(float(Essential::GameCanvas.width), float(Essential::GameCanvas.height)));
@@ -56,6 +57,14 @@ Essential::GameState SceneMapEditor::Run()
 				case sf::Keyboard::Q:
 				case sf::Keyboard::Escape:
 					isMenuTriger = !isMenuTriger;
+					break;
+				case sf::Keyboard::Left:
+					typeIdx = (typeIdx + ObjCreator::COUNT - 1) % ObjCreator::COUNT;
+					objectBrush = ObjCreator::CreateEnemy(ObjCreator::EnemyType(typeIdx), objectBrush->getPosition());
+					break;
+				case sf::Keyboard::Right:
+					typeIdx = (typeIdx + 1) % ObjCreator::COUNT;
+					objectBrush = ObjCreator::CreateEnemy(ObjCreator::EnemyType(typeIdx), objectBrush->getPosition());
 					break;
 				default:
 					break;
@@ -256,7 +265,7 @@ void SceneMapEditor::Update()
 					const sf::Vector2f fDist = spos - pos;
 					const float sqlen = fDist.x*fDist.x + fDist.y*fDist.y;
 
-					const float olen = (*it)->GetColliderSize(); // half the width
+					const float olen = (*it)->GetColliderSize();
 					if (sqlen < olen * olen) {
 						dragObject = *it;
 						break;
@@ -286,7 +295,9 @@ void SceneMapEditor::Update()
 					pos.y >= 0 && pos.y < Essential::ScreenHeight) { // Mouse in Screen
 					pos.y -= timeAtBottom;
 					objectBrush->setPosition(pos);
-					std::shared_ptr<GameObject> pObject = ObjCreator::CreateEnemy(ObjCreator::ROCK_DOWN, objectBrush->getPosition());
+					int tmp = ObjCreator::EnemyType(objectBrush->GetOID());
+					std::shared_ptr<GameObject> pObject =
+						ObjCreator::CreateEnemy(ObjCreator::EnemyType(objectBrush->GetOID()), objectBrush->getPosition());
 					pObject->FixedUpdate(0.0f); // Update Sprite pos
 					sortedpObject.insert(pObject);
 				}
