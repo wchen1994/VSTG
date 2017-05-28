@@ -144,15 +144,12 @@ bool SceneMapEditor::MergeFromFile(const std::string filepath)
 				// Pos Tranform
 				vec.x = std::stof(match[1]);
 				vec.y = time2dim(std::stof(match[2]));
-				/*
 				
-				WARNING:
-				read match[3] to get CID
-				
-				*/
+				const ObjCreator::EnemyType OID = ObjCreator::EnemyType(std::stoul(match[3]));
+
 				vec += {float(Essential::GameCanvas.left), float(Essential::GameCanvas.top)};
 				// Insert Object
-				std::shared_ptr<GameObject> pObject = ObjCreator::CreateEnemy(ObjCreator::ROCK_DOWN, vec);
+				std::shared_ptr<GameObject> pObject = ObjCreator::CreateEnemy(OID, vec);
 				pObject->FixedUpdate(0.0f);
 				sortedpObject.insert(pObject);
 			}

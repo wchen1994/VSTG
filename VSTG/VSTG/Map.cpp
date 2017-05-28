@@ -24,7 +24,7 @@ void Map::Update(const float dt)
 		if (culTime > vec.y) {
 			std::shared_ptr<GameObject> pObject = objQueue.front();
 			objQueue.pop();
-			vec.y = float(Essential::GameCanvas.top) - 100.0f;
+			vec.y = float(Essential::GameCanvas.top) - 10.0f;
 			pObject->setPosition(vec);
 			SceneGame::layerDefault.insert(pObject);
 			SceneGame::brd.AddObject(pObject);
@@ -38,14 +38,16 @@ void Map::LoadFile(const std::string filepath)
 		std::ifstream file;
 		file.open(filepath);
 		std::string line;
-		std::regex rgx("(\\d*\\.\\d*),\\s*(-?\\d*\\.\\d*)");
+		std::regex rgx("(\\d*\\.\\d*),\\s*(-?\\d*\\.\\d*),\\s*(\\d*)");
 		std::smatch match;
 		while (std::getline(file, line)) {
 			const std::string s(line);
 			if (std::regex_search(s.begin(), s.end(), match, rgx)) {
 				sf::Vector2f vec = { std::stof(match[1]), std::stof(match[2]) };
+				ObjCreator::EnemyType OID = ObjCreator::EnemyType(std::stoul(match[3]));
 				vec.x += float(Essential::GameCanvas.left);
-				objQueue.push(ObjCreator::CreateEnemy(ObjCreator::ROCK_DOWN, sf::Vector2f(vec.x, vec.y)));
+				assert(OID < ObjCreator::EnemyType::COUNT);
+				objQueue.push(ObjCreator::CreateEnemy(OID, sf::Vector2f(vec.x, vec.y)));
 //				objQueue.push(std::make_shared<ObjEnemy>(ObjEnemy(vec.x, vec.y)));
 			}
 		}

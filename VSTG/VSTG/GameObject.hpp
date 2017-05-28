@@ -37,9 +37,10 @@ public:
 	virtual GameObject* CLone() const;
 public:
 	std::string GetName() const { return objectID; }
-	void SetName(std::string id) { strcpy_s(objectID, id.c_str()); hashOID = hashGen(objectID); }
+	void SetName(const std::string id) { strcpy_s(objectID, id.c_str()); }
 	size_t GetCID() const { return hashCID; }
 	size_t GetOID() const { return hashOID; }
+	void SetOID(const uint32_t id) { hashOID = id; }
 	sf::Vector2i GetBrdPos() const { return brdPos; }
 	sf::Sprite& GetSprite() const { return *drawSprite; }
 
