@@ -71,6 +71,8 @@ private: // Menu Context
 	static constexpr float previewYPos = 80.0f;
 	std::shared_ptr<GameObject> spritePreview;
 	sf::Text textPreview;
+	sf::Text textPos;
+	sf::Text textTime;
 private:
 	void Update();
 	void DrawLine(sf::RenderTarget & gfx, const float y);

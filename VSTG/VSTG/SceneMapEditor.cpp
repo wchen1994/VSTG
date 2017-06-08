@@ -7,6 +7,7 @@
 
 #include <regex>
 #include <fstream>
+#include <string>
 
 SceneMapEditor::SceneMapEditor() : 
 	isExit(false), isDrag(false), isMouseLeft(false), isFocused(true), isMenuTriger(false),
@@ -53,6 +54,14 @@ SceneMapEditor::SceneMapEditor() :
 	textPreview.setString(spritePreview->GetName());
 	textPreview.setFont(Essential::textFont);
 	textPreview.setPosition(sf::Vector2f(610.0f, 50.0f));
+
+	textPos.setString("xPos: " + std::to_string(0.0f));
+	textPos.setFont(Essential::textFont);
+	textPos.setPosition(sf::Vector2f(530.0f, 130.0f));
+
+	textTime.setString("time: " + std::to_string(0.0f));
+	textTime.setFont(Essential::textFont);
+	textTime.setPosition(sf::Vector2f(530.0f, 170.0f));
 }
 
 Essential::GameState SceneMapEditor::Run()
@@ -122,7 +131,7 @@ Essential::GameState SceneMapEditor::Run()
 			MergeFromFile();
 		}
 		if (butClear.getStatus() == Button::Release) {
-
+			sortedpObject.clear();
 		}
 		if (butExit.getStatus() == Button::Release) {
 			isMenuTriger = !isMenuTriger;
@@ -196,6 +205,8 @@ void SceneMapEditor::DrawScene()
 
 	spritePreview->Draw(Essential::wnd);
 	Essential::wnd.draw(textPreview);
+	Essential::wnd.draw(textPos);
+	Essential::wnd.draw(textTime);
 
 	Essential::wnd.display();
 }
@@ -325,6 +336,12 @@ void SceneMapEditor::Update()
 
 	// if mouse inside the paintboard
 	if (inPaintboard(mpos)) {
+		// Update Menu
+		textPos.setString("xPos: " + std::to_string(mpos.x - Essential::GameCanvas.left));
+		float time = Essential::GameCanvas.top + Essential::GameCanvas.height - mpos.y + timeAtBottom;
+		time /= timeScale;
+		textTime.setString("time: " + std::to_string(time));
+
 		//Handle input
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
 			if (!isMouseLeft) {
