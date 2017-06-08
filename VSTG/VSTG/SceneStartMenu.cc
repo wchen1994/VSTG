@@ -55,13 +55,13 @@ Essential::GameState SceneStartMenu::Run(){
 			butExit.Update();
 
 			// Button Handle
-			if (butStart.getStatus() == Button::ButtonState::Push) {
+			if (butStart.getStatus() == Button::ButtonState::Release) {
 				return Essential::GAME;
 			}
-			if (butEdit.getStatus() == Button::ButtonState::Push) {
+			if (butEdit.getStatus() == Button::ButtonState::Release) {
 				return Essential::EDITOR;
 			}
-			if (butExit.getStatus() == Button::ButtonState::Push) {
+			if (butExit.getStatus() == Button::ButtonState::Release) {
 				return Essential::POP;
 			}
 		}

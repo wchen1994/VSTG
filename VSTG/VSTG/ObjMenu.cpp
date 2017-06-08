@@ -55,16 +55,16 @@ uint32_t ObjMenu::MenuUpdate()
 	switch (flag) {
 	case MENUFLAG::OK:
 		but1.Update();
-		if (but1.getStatus() == Button::ButtonState::Push)
+		if (but1.getStatus() == Button::ButtonState::Release)
 			return 1;
 		break;
 	case MENUFLAG::OK_CANCEL:
 	case MENUFLAG::YES_NO:
 		but1.Update();
 		but2.Update();
-		if (but1.getStatus() == Button::ButtonState::Push)
+		if (but1.getStatus() == Button::ButtonState::Release)
 			return 1;
-		if (but2.getStatus() == Button::ButtonState::Push)
+		if (but2.getStatus() == Button::ButtonState::Release)
 			return 2;
 		break;
 	}
