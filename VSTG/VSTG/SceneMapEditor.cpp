@@ -49,6 +49,10 @@ SceneMapEditor::SceneMapEditor() :
 
 	spritePreview = ObjCreator::CreateEnemy(ObjCreator::EnemyType(typeIdx), sf::Vector2f(previewXPos, previewYPos));
 	spritePreview->FixedUpdate(0.0f);
+
+	textPreview.setString(spritePreview->GetName());
+	textPreview.setFont(Essential::textFont);
+	textPreview.setPosition(sf::Vector2f(610.0f, 50.0f));
 }
 
 Essential::GameState SceneMapEditor::Run()
@@ -191,6 +195,7 @@ void SceneMapEditor::DrawScene()
 	butExit.Draw(Essential::wnd);
 
 	spritePreview->Draw(Essential::wnd);
+	Essential::wnd.draw(textPreview);
 
 	Essential::wnd.display();
 }
@@ -463,6 +468,7 @@ inline void SceneMapEditor::objScrollLeft()
 	objectBrush = ObjCreator::CreateEnemy(ObjCreator::EnemyType(typeIdx), objectBrush->getPosition());
 	spritePreview = ObjCreator::CreateEnemy(ObjCreator::EnemyType(typeIdx), sf::Vector2f(previewXPos, previewYPos));
 	spritePreview->FixedUpdate(0.0f);
+	textPreview.setString(spritePreview->GetName());
 }
 
 inline void SceneMapEditor::objeScrollRight()
@@ -471,6 +477,7 @@ inline void SceneMapEditor::objeScrollRight()
 	objectBrush = ObjCreator::CreateEnemy(ObjCreator::EnemyType(typeIdx), objectBrush->getPosition());
 	spritePreview = ObjCreator::CreateEnemy(ObjCreator::EnemyType(typeIdx), sf::Vector2f(previewXPos, previewYPos));
 	spritePreview->FixedUpdate(0.0f);
+	textPreview.setString(spritePreview->GetName());
 }
 
 

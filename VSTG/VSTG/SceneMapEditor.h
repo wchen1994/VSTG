@@ -70,7 +70,7 @@ private: // Menu Context
 	static constexpr float previewXPos = 580.0f;
 	static constexpr float previewYPos = 80.0f;
 	std::shared_ptr<GameObject> spritePreview;
-//	sf::Text textPreview;
+	sf::Text textPreview;
 private:
 	void Update();
 	void DrawLine(sf::RenderTarget & gfx, const float y);
