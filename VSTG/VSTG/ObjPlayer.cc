@@ -104,14 +104,19 @@ void ObjPlayer::FixedUpdate(const float dt)
 	else if (fire) {
 		const std::shared_ptr<ObjBullet> pBullet = std::make_shared<ObjBullet>(ObjBullet(position.x, position.y));
 		SceneGame::layerDefault.insert(pBullet);
-		SceneGame::layerBullet.insert(pBullet); // Something went wrong
+		SceneGame::layerBullet.insert(pBullet);
 		cooldown = cooldownDuration;
 	}
 }
 
 void ObjPlayer::OnCollisionEnter(std::shared_ptr<GameObject> pOther){
 	if (pOther->GetCID() == ObjEnemy::hashCID){
-		SceneGame::layerDelete.insert(shared_from_this());
-		Essential::isGameOver = true;
+//		SceneGame::layerDelete.insert(shared_from_this());
+//		Essential::isGameOver = true;
+		SceneGame::layerDelete.insert(pOther);
+		hp -= pOther->GetDamage();
+		if (hp < 0) {
+			Essential::isGameOver = true;
+		}
 	}
 }

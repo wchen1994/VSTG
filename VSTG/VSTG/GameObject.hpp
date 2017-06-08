@@ -22,6 +22,9 @@ protected:
 	static size_t hashCID;
 	char objectID[128];
 	size_t hashOID;
+	float damage;
+	float hp;
+	bool isDelete;
 private:
 	std::hash<std::string> hashGen;
 public:
@@ -46,4 +49,10 @@ public:
 
 	float GetColliderSize() const { return colliderSize; }
 	void SetColliderSize(const float s) { colliderSize = s; }
+
+	float GetDamage() const { return damage; }
+	void SetDamage(const float damage) { this->damage = damage; }
+
+	float GetHp() const { return hp; }
+	void SetHp(const float hp) { this->hp = hp; }
 };

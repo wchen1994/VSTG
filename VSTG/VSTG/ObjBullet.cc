@@ -41,7 +41,8 @@ void ObjBullet::FixedUpdate(const float dt)
 
 void ObjBullet::OnCollisionEnter(std::shared_ptr<GameObject> pOther){
 	if (pOther->GetCID() == ObjEnemy::hashCID){
-		SceneGame::layerDelete.insert(shared_from_this());
-		SceneGame::layerDelete.insert(pOther);
+//		SceneGame::layerDelete.insert(shared_from_this());
+//		SceneGame::layerDelete.insert(pOther);
+		pOther->OnCollisionEnter(shared_from_this());
 	}
 }

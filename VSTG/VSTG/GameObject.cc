@@ -8,6 +8,9 @@ GameObject::GameObject() :
 	brdPos(0,0),
 	drawCollider(nullptr),
 	drawSprite(nullptr),
+	hp(100.0f),
+	damage(30.0f),
+	isDelete(false),
 	enable_shared_from_this()
 {
 	colliderSize = 0;

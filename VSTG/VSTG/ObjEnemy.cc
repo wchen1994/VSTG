@@ -47,7 +47,9 @@ ObjEnemy::ObjEnemy(float x, float y, float vx, float vy) :
 }
 
 void ObjEnemy::Update(const float dt){
-	if (position.x < Essential::GameCanvas.left-radius || 
+	if (isDelete) {
+		SceneGame::layerDelete.insert(shared_from_this());
+	} else if (position.x < Essential::GameCanvas.left-radius || 
 		position.x > Essential::GameCanvas.left + Essential::GameCanvas.width + radius || 
 		position.y > Essential::GameCanvas.top + Essential::GameCanvas.height + radius) {
 		SceneGame::layerDelete.insert(shared_from_this());
@@ -56,25 +58,32 @@ void ObjEnemy::Update(const float dt){
 
 void ObjEnemy::FixedUpdate(const float dt)
 {
-	position += velocity * dt;
-	rotation += rotSpeed * dt;
+	if (!isDelete) {
+		position += velocity * dt;
+		rotation += rotSpeed * dt;
 
-	brdPos = SceneGame::brd.UpdateObjectPos(shared_from_this());
+		brdPos = SceneGame::brd.UpdateObjectPos(shared_from_this());
 
-	pCollider->setPosition(position);
-	drawSprite->setPosition(position);
-	drawSprite->setRotation(rotation);
+		pCollider->setPosition(position);
+		drawSprite->setPosition(position);
+		drawSprite->setRotation(rotation);
+	}
 }
 
 void ObjEnemy::OnCollisionEnter(std::shared_ptr<GameObject> pOther){
 	size_t hash = pOther->GetCID();
 	if (hash == ObjBullet::hashCID){
-		SceneGame::layerDelete.insert(shared_from_this());
+//		SceneGame::layerDelete.insert(shared_from_this());
 		SceneGame::layerDelete.insert(pOther);
+		hp -= pOther->GetDamage();
+		if (hp < 0) {
+			isDelete = true;
+		}
 	}
 	else if (hash == ObjPlayer::hashCID) {
-		SceneGame::layerDelete.insert(pOther);
-		Essential::isGameOver = true;
+//		SceneGame::layerDelete.insert(pOther);
+//		Essential::isGameOver = true;
+		pOther->OnCollisionEnter(shared_from_this());
 	}
 }
 
