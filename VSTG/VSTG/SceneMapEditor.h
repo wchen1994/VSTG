@@ -60,6 +60,13 @@ private:
 	ObjMenu escMenu;
 	sf::RectangleShape paintboard;
 	int typeIdx;
+private: // Menu Context
+	Button butPrev;
+	Button butNext;
+	Button butMerge;
+	Button butWrite;
+	Button butClear;
+	Button butExit;
 private:
 	void Update();
 	void DrawLine(sf::RenderTarget & gfx, const float y);

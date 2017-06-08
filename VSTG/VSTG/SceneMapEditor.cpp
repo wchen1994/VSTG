@@ -32,6 +32,20 @@ SceneMapEditor::SceneMapEditor() :
 	paintboard.setPosition(sf::Vector2f(float(Essential::GameCanvas.left), float(Essential::GameCanvas.top)));
 	paintboard.setSize(sf::Vector2f(float(Essential::GameCanvas.width), float(Essential::GameCanvas.height)));
 	paintboard.setFillColor(sf::Color(100,100,100));
+
+	// Menu Context
+	Button::SettingDefaultButton(butPrev, Essential::textManager.getText(9), Button::SMALL);
+	butPrev.setPosition(sf::Vector2f(550.0f, 250.0f));
+	Button::SettingDefaultButton(butNext, Essential::textManager.getText(10), Button::SMALL);
+	butNext.setPosition(sf::Vector2f(680.0f, 250.0f));
+	Button::SettingDefaultButton(butWrite, Essential::textManager.getText(11), Button::SMALL);
+	butWrite.setPosition(sf::Vector2f(550.0f, 300.0f));
+	Button::SettingDefaultButton(butMerge, Essential::textManager.getText(12), Button::SMALL);
+	butMerge.setPosition(sf::Vector2f(680.0f, 300.0f));
+	Button::SettingDefaultButton(butClear, Essential::textManager.getText(13), Button::SMALL);
+	butClear.setPosition(sf::Vector2f(550.0f, 350.0f));
+	Button::SettingDefaultButton(butExit, Essential::textManager.getText(14), Button::SMALL);
+	butExit.setPosition(sf::Vector2f(680.0f, 350.0f));
 }
 
 Essential::GameState SceneMapEditor::Run()
@@ -46,7 +60,7 @@ Essential::GameState SceneMapEditor::Run()
 				timeAtBottom += scrollSpeed * event.mouseWheelScroll.delta;
 				timeAtBottom = timeAtBottom < 0 ? 0.0f : timeAtBottom;
 				break;
-			case sf::Event::KeyPressed:
+			case sf::Event::KeyReleased:
 				switch (event.key.code) {
 				case sf::Keyboard::W:
 					WriteToFile();
@@ -80,6 +94,37 @@ Essential::GameState SceneMapEditor::Run()
 				Essential::defHandleMsg(event);
 			}
 		}
+
+		// Update Button
+		butPrev.Update();
+		butNext.Update();
+		butWrite.Update();
+		butMerge.Update();
+		butClear.Update();
+		butExit.Update();
+
+		// Handle Button
+		if (butPrev.getStatus() == Button::Release) {
+			typeIdx = (typeIdx + ObjCreator::COUNT - 1) % ObjCreator::COUNT;
+			objectBrush = ObjCreator::CreateEnemy(ObjCreator::EnemyType(typeIdx), objectBrush->getPosition());
+		}
+		if (butNext.getStatus() == Button::Release) {
+			typeIdx = (typeIdx + 1) % ObjCreator::COUNT;
+			objectBrush = ObjCreator::CreateEnemy(ObjCreator::EnemyType(typeIdx), objectBrush->getPosition());
+		}
+		if (butWrite.getStatus() == Button::Release) {
+			WriteToFile();
+		}
+		if (butMerge.getStatus() == Button::Release) {
+			MergeFromFile();
+		}
+		if (butClear.getStatus() == Button::Release) {
+
+		}
+		if (butExit.getStatus() == Button::Release) {
+			isMenuTriger = !isMenuTriger;
+		}
+
 		if (isFocused) {
 			if (!isMenuTriger) {
 				Update();
@@ -137,6 +182,14 @@ void SceneMapEditor::DrawScene()
 	// draw menu
 	if (isMenuTriger)
 		escMenu.Draw(Essential::wnd);
+
+	// draw buttons
+	butPrev.Draw(Essential::wnd); 
+	butNext.Draw(Essential::wnd);
+	butWrite.Draw(Essential::wnd);
+	butMerge.Draw(Essential::wnd);
+	butClear.Draw(Essential::wnd);
+	butExit.Draw(Essential::wnd);
 
 	Essential::wnd.display();
 }
