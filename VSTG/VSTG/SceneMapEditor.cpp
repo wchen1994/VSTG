@@ -107,8 +107,8 @@ void SceneMapEditor::DrawScene()
 
 	// draw time line with offset of canvas's top only hold true when canvas is in the middle
 	for (float i = timeScale - int(timeAtBottom) % int(timeScale); 
-		i < Essential::ScreenHeight - 2*Essential::GameCanvas.top; i += timeScale) {
-		DrawLine(Essential::wnd, Essential::ScreenHeight - Essential::GameCanvas.top - i);
+		i < Essential::GameCanvas.height + Essential::GameCanvas.top; i += timeScale) {
+		DrawLine(Essential::wnd, Essential::GameCanvas.height + Essential::GameCanvas.top - i);
 	}
 
 	// draw Objects
@@ -153,13 +153,18 @@ bool SceneMapEditor::MergeFromFile(const std::string filepath)
 		while (std::getline(infile, line)) {
 			const std::string s(line);
 			if (std::regex_search(s.begin(), s.end(), match, rgx)) {
-				// Pos Tranform
-				vec.x = std::stof(match[1]);
-				vec.y = time2dim(std::stof(match[2]));
 				
+				// Get Pos
+				vec.x = std::stof(match[1]);
+				vec.y = std::stof(match[2]);
+				
+				// Pos Tranform
+				vec.y = time2dim(vec.y);
+				vec = offsetToCanvas(vec);
+				
+				// Get ObjectID
 				const ObjCreator::EnemyType OID = ObjCreator::EnemyType(std::stoul(match[3]));
 
-				vec += {float(Essential::GameCanvas.left), float(Essential::GameCanvas.top)};
 				// Insert Object
 				if (OID < ObjCreator::COUNT && OID >= 0) {
 					std::shared_ptr<GameObject> pObject = ObjCreator::CreateEnemy(OID, vec);
@@ -210,9 +215,11 @@ bool SceneMapEditor::WriteToFile(const std::string filepath)
 		char str[1024];
 		for (auto pObject : sortedpObject) {
 			sf::Vector2f vec = pObject->getPosition();
-			vec -= Essential::vec2i2f(Essential::GameCanvas.left, Essential::GameCanvas.top);
+			
 			// Pos Transform
+			vec = offsetOutCanvas(vec);
 			vec.y = dim2time(vec.y);
+			
 			// Write
 			sprintf_s(str, "%f,%f,%zu", vec.x, vec.y, pObject->GetOID());
 			outfile << str << endl;
@@ -369,17 +376,27 @@ void SceneMapEditor::DrawLine(sf::RenderTarget & gfx, const float y)
 	gfx.draw(line, 2, sf::LineStrip);
 }
 
-float SceneMapEditor::time2dim(const float & time) const
+inline float SceneMapEditor::time2dim(const float & time) const
 {
-	return -(time * timeScale) + Essential::ScreenHeight;
+	return -(time * timeScale) + Essential::GameCanvas.height;
 }
 
-float SceneMapEditor::dim2time(const float & dim) const
+inline float SceneMapEditor::dim2time(const float & dim) const
 {
-	return -(dim - Essential::ScreenHeight) / timeScale;
+	return -(dim - Essential::GameCanvas.height) / timeScale;
 }
 
-bool SceneMapEditor::inPaintboard(const sf::Vector2f & pos) const
+inline sf::Vector2f SceneMapEditor::offsetToCanvas(const sf::Vector2f & vec) const
+{
+	return vec + Essential::vec2i2f(Essential::GameCanvas.left, Essential::GameCanvas.top);
+}
+
+inline sf::Vector2f SceneMapEditor::offsetOutCanvas(const sf::Vector2f & vec) const
+{
+	return vec - Essential::vec2i2f(Essential::GameCanvas.left, Essential::GameCanvas.top);
+}
+
+inline bool SceneMapEditor::inPaintboard(const sf::Vector2f & pos) const
 {
 	sf::Vector2f topLeft = Essential::vec2i2f(Essential::GameCanvas.left, Essential::GameCanvas.top);
 	sf::Vector2f botRight = topLeft + Essential::vec2i2f(Essential::GameCanvas.width, Essential::GameCanvas.height);
