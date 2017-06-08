@@ -12,7 +12,7 @@
 #include "Map.h"
 #include "ObjMenu.h"
 
-#define _DEBUG_BOARD
+//#define _DEBUG_BOARD
 #define _DEBUG_LOG
 
 class SceneGame : public Scene{
