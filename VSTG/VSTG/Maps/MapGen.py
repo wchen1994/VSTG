@@ -21,7 +21,7 @@ def gen_sin(filename, gen_type = 0,
     file.close()
 
 def main():
-    gen_sin(gen_type=2, filename='Lv7.tmap', phase = math.pi * 1.0 / 2.0, time=2.0, omega = 0.5)
+    gen_sin(gen_type=0, filename='Lv7.tmap', phase = math.pi * 2.0 / 2.0, time=2.0, omega = 0.5)
 
 if __name__ == '__main__':
     main()

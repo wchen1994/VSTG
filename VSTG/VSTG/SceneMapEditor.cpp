@@ -161,9 +161,11 @@ bool SceneMapEditor::MergeFromFile(const std::string filepath)
 
 				vec += {float(Essential::GameCanvas.left), float(Essential::GameCanvas.top)};
 				// Insert Object
-				std::shared_ptr<GameObject> pObject = ObjCreator::CreateEnemy(OID, vec);
-				pObject->FixedUpdate(0.0f);
-				sortedpObject.insert(pObject);
+				if (OID < ObjCreator::COUNT && OID >= 0) {
+					std::shared_ptr<GameObject> pObject = ObjCreator::CreateEnemy(OID, vec);
+					pObject->FixedUpdate(0.0f);
+					sortedpObject.insert(pObject);
+				}
 			}
 		}
 		infile.close();
