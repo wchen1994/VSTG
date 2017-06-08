@@ -16,7 +16,7 @@ Map::~Map()
 	}
 }
 
-void Map::Update(const float dt)
+bool Map::Update(const float dt)
 {
 	culTime += dt;
 	if (!objQueue.empty()) {
@@ -29,6 +29,10 @@ void Map::Update(const float dt)
 			SceneGame::layerDefault.insert(pObject);
 			SceneGame::brd.AddObject(pObject);
 		}
+		return true;
+	}
+	else {
+		return false;
 	}
 }
 

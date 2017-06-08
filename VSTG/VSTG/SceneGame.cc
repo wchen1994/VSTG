@@ -98,7 +98,18 @@ void SceneGame::Update() {
 
 	//Update
 	dt = ft.Mark();
-	map.Update(dt);
+	bool isEnemy = map.Update(dt);
+	
+	std::vector<size_t>& EnemyCount = brd.GetCount();
+	size_t nEnemy = 0;
+	for (size_t count : EnemyCount) {
+		nEnemy += count;
+	}
+
+	if (!isEnemy && nEnemy == 0) {
+		Essential::isGameOver = true;
+	}
+
 	for (auto it = layerDefault.begin(); it != layerDefault.end(); it++) {
 		(*it)->Update(dt);
 	}
@@ -154,11 +165,6 @@ void SceneGame::Update() {
 		std::cout << "Objects:\t" << layerDefault.size() << std::endl;
 		std::cout << "Bullets:\t" << layerBullet.size() << std::endl;
 		std::cout << "Deletes:\t" << nDeletes << std::endl;
-		std::vector<size_t>& EnemyCount = brd.GetCount();
-		size_t nEnemy = 0;
-		for (size_t count : EnemyCount) {
-			nEnemy += count;
-		}
 		std::cout << "bEnemy:Totoal:\t" << nEnemy << std::endl;
 
 		nDeletes = 0;
