@@ -67,6 +67,10 @@ private: // Menu Context
 	Button butWrite;
 	Button butClear;
 	Button butExit;
+	static constexpr float previewXPos = 580.0f;
+	static constexpr float previewYPos = 80.0f;
+	std::shared_ptr<GameObject> spritePreview;
+//	sf::Text textPreview;
 private:
 	void Update();
 	void DrawLine(sf::RenderTarget & gfx, const float y);
@@ -75,4 +79,6 @@ private:
 	inline sf::Vector2f offsetToCanvas(const sf::Vector2f & vec) const;
 	inline sf::Vector2f offsetOutCanvas(const sf::Vector2f & vec) const;
 	inline bool inPaintboard(const sf::Vector2f& pos) const;
+	inline void objScrollLeft();
+	inline void objeScrollRight();
 };

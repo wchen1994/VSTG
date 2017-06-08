@@ -46,6 +46,9 @@ SceneMapEditor::SceneMapEditor() :
 	butClear.setPosition(sf::Vector2f(550.0f, 350.0f));
 	Button::SettingDefaultButton(butExit, Essential::textManager.getText(14), Button::SMALL);
 	butExit.setPosition(sf::Vector2f(680.0f, 350.0f));
+
+	spritePreview = ObjCreator::CreateEnemy(ObjCreator::EnemyType(typeIdx), sf::Vector2f(previewXPos, previewYPos));
+	spritePreview->FixedUpdate(0.0f);
 }
 
 Essential::GameState SceneMapEditor::Run()
@@ -73,12 +76,10 @@ Essential::GameState SceneMapEditor::Run()
 					isMenuTriger = !isMenuTriger;
 					break;
 				case sf::Keyboard::Left:
-					typeIdx = (typeIdx + ObjCreator::COUNT - 1) % ObjCreator::COUNT;
-					objectBrush = ObjCreator::CreateEnemy(ObjCreator::EnemyType(typeIdx), objectBrush->getPosition());
+					objScrollLeft();
 					break;
 				case sf::Keyboard::Right:
-					typeIdx = (typeIdx + 1) % ObjCreator::COUNT;
-					objectBrush = ObjCreator::CreateEnemy(ObjCreator::EnemyType(typeIdx), objectBrush->getPosition());
+					objeScrollRight();
 					break;
 				default:
 					break;
@@ -105,12 +106,10 @@ Essential::GameState SceneMapEditor::Run()
 
 		// Handle Button
 		if (butPrev.getStatus() == Button::Release) {
-			typeIdx = (typeIdx + ObjCreator::COUNT - 1) % ObjCreator::COUNT;
-			objectBrush = ObjCreator::CreateEnemy(ObjCreator::EnemyType(typeIdx), objectBrush->getPosition());
+			objScrollLeft();
 		}
 		if (butNext.getStatus() == Button::Release) {
-			typeIdx = (typeIdx + 1) % ObjCreator::COUNT;
-			objectBrush = ObjCreator::CreateEnemy(ObjCreator::EnemyType(typeIdx), objectBrush->getPosition());
+			objeScrollRight();
 		}
 		if (butWrite.getStatus() == Button::Release) {
 			WriteToFile();
@@ -190,6 +189,8 @@ void SceneMapEditor::DrawScene()
 	butMerge.Draw(Essential::wnd);
 	butClear.Draw(Essential::wnd);
 	butExit.Draw(Essential::wnd);
+
+	spritePreview->Draw(Essential::wnd);
 
 	Essential::wnd.display();
 }
@@ -454,6 +455,22 @@ inline bool SceneMapEditor::inPaintboard(const sf::Vector2f & pos) const
 	sf::Vector2f topLeft = Essential::vec2i2f(Essential::GameCanvas.left, Essential::GameCanvas.top);
 	sf::Vector2f botRight = topLeft + Essential::vec2i2f(Essential::GameCanvas.width, Essential::GameCanvas.height);
 	return pos.x >= topLeft.x && pos.y >= topLeft.y && pos.x < botRight.x && pos.y < botRight.y;
+}
+
+inline void SceneMapEditor::objScrollLeft()
+{
+	typeIdx = (typeIdx + ObjCreator::COUNT - 1) % ObjCreator::COUNT;
+	objectBrush = ObjCreator::CreateEnemy(ObjCreator::EnemyType(typeIdx), objectBrush->getPosition());
+	spritePreview = ObjCreator::CreateEnemy(ObjCreator::EnemyType(typeIdx), sf::Vector2f(previewXPos, previewYPos));
+	spritePreview->FixedUpdate(0.0f);
+}
+
+inline void SceneMapEditor::objeScrollRight()
+{
+	typeIdx = (typeIdx + 1) % ObjCreator::COUNT;
+	objectBrush = ObjCreator::CreateEnemy(ObjCreator::EnemyType(typeIdx), objectBrush->getPosition());
+	spritePreview = ObjCreator::CreateEnemy(ObjCreator::EnemyType(typeIdx), sf::Vector2f(previewXPos, previewYPos));
+	spritePreview->FixedUpdate(0.0f);
 }
 
 
