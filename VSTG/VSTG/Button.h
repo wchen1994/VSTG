@@ -18,6 +18,9 @@ public:
 	void setState(ButtonState s) { state = s; }
 	bool test = true;
 	ButtonState getStatus() const { return state; }
+public:
+	enum ButtonStyle{SMALL, MEDIUM, COUNT};
+	static void SettingDefaultButton(Button & but, sf::String lable, ButtonStyle style);
 private:
 	ButtonState state;
 	sf::Vector2f position;

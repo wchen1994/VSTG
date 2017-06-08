@@ -6,19 +6,22 @@ SceneStartMenu::SceneStartMenu(sf::RenderWindow& wnd)
 :
 wnd(wnd)
 {
-	butStart.setTexture("Resources/Textures/button01.png");
-	butStart.setLable(Essential::textManager.getText(1));
-	butStart.setSprites(sf::Vector2i(0, 0), sf::Vector2i(0, 110), sf::Vector2i(0, 51), sf::Vector2i(150, 50));
+//	butStart.setTexture("Resources/Textures/button01.png");
+//	butStart.setLable(Essential::textManager.getText(1));
+//	butStart.setSprites(sf::Vector2i(0, 0), sf::Vector2i(0, 110), sf::Vector2i(0, 51), sf::Vector2i(150, 50));
+	Button::SettingDefaultButton(butStart, Essential::textManager.getText(1), Button::MEDIUM);
 	butStart.setPosition(sf::Vector2f(550.0, 340.0));
 
-	butEdit.setTexture("Resources/Textures/button01.png");
-	butEdit.setLable(Essential::textManager.getText(2));
-	butEdit.setSprites(sf::Vector2i(0, 0), sf::Vector2i(0, 110), sf::Vector2i(0, 51), sf::Vector2i(150, 50));
+//	butEdit.setTexture("Resources/Textures/button01.png");
+//	butEdit.setLable(Essential::textManager.getText(2));
+//	butEdit.setSprites(sf::Vector2i(0, 0), sf::Vector2i(0, 110), sf::Vector2i(0, 51), sf::Vector2i(150, 50));
+	Button::SettingDefaultButton(butEdit, Essential::textManager.getText(2), Button::MEDIUM);
 	butEdit.setPosition(sf::Vector2f(550.0, 400.0));
 
-	butExit.setTexture("Resources/Textures/button01.png");
-	butExit.setLable(Essential::textManager.getText(3));
-	butExit.setSprites(sf::Vector2i(0, 0), sf::Vector2i(0, 110), sf::Vector2i(0, 51), sf::Vector2i(150, 50));
+//	butExit.setTexture("Resources/Textures/button01.png");
+//	butExit.setLable(Essential::textManager.getText(3));
+//	butExit.setSprites(sf::Vector2i(0, 0), sf::Vector2i(0, 110), sf::Vector2i(0, 51), sf::Vector2i(150, 50));
+	Button::SettingDefaultButton(butExit, Essential::textManager.getText(3), Button::MEDIUM);
 	butExit.setPosition(sf::Vector2f(550.0, 460.0));
 }
 

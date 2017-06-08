@@ -17,29 +17,34 @@ ObjMenu::ObjMenu(sf::IntRect rect, sf::String title, uint32_t flag)
 
 	switch (flag) {
 	case MENUFLAG::OK:
-		but1.setTexture("Resources/Textures/button01.png");
-		but1.setLable(Essential::textManager.getText(7));
-		but1.setSprites(sf::Vector2i(0, 0), sf::Vector2i(0, 110), sf::Vector2i(0, 51), sf::Vector2i(90, 40));
+//		but1.setTexture("Resources/Textures/button01.png");
+//		but1.setLable(Essential::textManager.getText(7));
+//		but1.setSprites(sf::Vector2i(0, 0), sf::Vector2i(0, 110), sf::Vector2i(0, 51), sf::Vector2i(90, 40));
+		Button::SettingDefaultButton(but1, Essential::textManager.getText(7), Button::SMALL);
 		but1.setPosition(sf::Vector2f(float(rect.left + rect.width / 2), float(rect.top + rect.height / 2)));
 		break;
 	case MENUFLAG::OK_CANCEL:
-		but1.setTexture("Resources/Textures/button01.png");
-		but1.setLable(Essential::textManager.getText(7));
-		but1.setSprites(sf::Vector2i(0, 0), sf::Vector2i(0, 110), sf::Vector2i(0, 51), sf::Vector2i(90, 40));
+//		but1.setTexture("Resources/Textures/button01.png");
+//		but1.setLable(Essential::textManager.getText(7));
+//		but1.setSprites(sf::Vector2i(0, 0), sf::Vector2i(0, 110), sf::Vector2i(0, 51), sf::Vector2i(90, 40));
+		Button::SettingDefaultButton(but1, Essential::textManager.getText(7), Button::SMALL);
 		but1.setPosition(sf::Vector2f(float(rect.left), float(rect.top + rect.height / 2)));
-		but2.setTexture("Resources/Textures/button01.png");
-		but2.setLable(Essential::textManager.getText(8));
-		but2.setSprites(sf::Vector2i(0, 0), sf::Vector2i(0, 110), sf::Vector2i(0, 51), sf::Vector2i(90, 40));
+//		but2.setTexture("Resources/Textures/button01.png");
+//		but2.setLable(Essential::textManager.getText(8));
+//		but2.setSprites(sf::Vector2i(0, 0), sf::Vector2i(0, 110), sf::Vector2i(0, 51), sf::Vector2i(90, 40));
+		Button::SettingDefaultButton(but2, Essential::textManager.getText(8), Button::SMALL);
 		but2.setPosition(sf::Vector2f(float(rect.left + rect.width / 2), float(rect.top + rect.height / 2)));
 		break;
 	case MENUFLAG::YES_NO:
-		but1.setTexture("Resources/Textures/button01.png");
-		but1.setLable(Essential::textManager.getText(5));
-		but1.setSprites(sf::Vector2i(0, 0), sf::Vector2i(0, 110), sf::Vector2i(0, 51), sf::Vector2i(90, 40));
+//		but1.setTexture("Resources/Textures/button01.png");
+//		but1.setLable(Essential::textManager.getText(5));
+//		but1.setSprites(sf::Vector2i(0, 0), sf::Vector2i(0, 110), sf::Vector2i(0, 51), sf::Vector2i(90, 40));
+		Button::SettingDefaultButton(but1, Essential::textManager.getText(5), Button::SMALL);
 		but1.setPosition(sf::Vector2f(float(rect.left), float(rect.top + rect.height / 2)));
-		but2.setTexture("Resources/Textures/button01.png");
-		but2.setLable(Essential::textManager.getText(6));
-		but2.setSprites(sf::Vector2i(0, 0), sf::Vector2i(0, 110), sf::Vector2i(0, 51), sf::Vector2i(90, 40));
+//		but2.setTexture("Resources/Textures/button01.png");
+//		but2.setLable(Essential::textManager.getText(6));
+//		but2.setSprites(sf::Vector2i(0, 0), sf::Vector2i(0, 110), sf::Vector2i(0, 51), sf::Vector2i(90, 40));
+		Button::SettingDefaultButton(but2, Essential::textManager.getText(6), Button::SMALL);
 		but2.setPosition(sf::Vector2f(float(rect.left + rect.width / 2), float(rect.top + rect.height / 2)));
 		break;
 	}

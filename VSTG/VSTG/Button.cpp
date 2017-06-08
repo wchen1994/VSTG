@@ -64,3 +64,23 @@ void Button::Draw(sf::RenderTarget & gfx)
 	gfx.draw(sprites[state]);
 	gfx.draw(text);
 }
+
+void Button::SettingDefaultButton(Button & but, sf::String lable, ButtonStyle style = Button::SMALL)
+{
+	switch (style) {
+	case Button::SMALL:
+		but.setTexture("Resources/Textures/button01.png");
+		but.setLable(lable);
+		but.setSprites(sf::Vector2i(0, 0), sf::Vector2i(0, 110), sf::Vector2i(0, 51), sf::Vector2i(90, 40));
+		break;
+	case Button::MEDIUM:
+		but.setTexture("Resources/Textures/button01.png");
+		but.setLable(lable);
+		but.setSprites(sf::Vector2i(0, 0), sf::Vector2i(0, 110), sf::Vector2i(0, 51), sf::Vector2i(150, 50));
+		break;
+	default:
+		but.setTexture("Resources/Textures/button01.png");
+		but.setLable(lable);
+		but.setSprites(sf::Vector2i(0, 0), sf::Vector2i(0, 110), sf::Vector2i(0, 51), sf::Vector2i(90, 40));
+	}
+}
