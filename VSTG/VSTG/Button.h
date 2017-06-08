@@ -5,7 +5,7 @@
 
 class Button {
 public:
-	enum ButtonState { Idle, Push, Focus, Count };
+	enum ButtonState { Idle, Push, Focus, Release, Count };
 public:
 	Button();
 	void setTexture(sf::String tex) {textureName = tex;}

@@ -51,7 +51,10 @@ void Button::Update()
 			state = ButtonState::Push;
 		}
 		else {
-			state = ButtonState::Focus;
+			if (state == ButtonState::Push)
+				state = ButtonState::Release;
+			else
+				state = ButtonState::Focus;
 		}
 	}
 	else {
@@ -61,7 +64,20 @@ void Button::Update()
 
 void Button::Draw(sf::RenderTarget & gfx)
 {
-	gfx.draw(sprites[state]);
+	switch (state) {
+	case ButtonState::Idle:
+	case ButtonState::Release:
+		gfx.draw(sprites[0]);
+		break;
+	case ButtonState::Push:
+		gfx.draw(sprites[1]);
+		break;
+	case ButtonState::Focus:
+		gfx.draw(sprites[2]);
+		break;
+	default:
+		gfx.draw(sprites[0]);
+	}
 	gfx.draw(text);
 }
 
