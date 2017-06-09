@@ -72,6 +72,9 @@
     <ClCompile Include="ObjCreator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Enemys\ObjEnemyBullet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Board.hpp">
@@ -126,6 +129,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ObjCreator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemys\ObjEnemyBullet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
