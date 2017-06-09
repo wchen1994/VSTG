@@ -6,12 +6,13 @@
 
 
 ObjEnemy::ObjEnemy(float x, float y=0) :
-	ObjEnemy(x, y, 0, speed)
+	ObjEnemy(x, y, 0, 120.0f)
 {
 }
 
 ObjEnemy::ObjEnemy(float x, float y, float vx, float vy) :
-	GameObject()
+	GameObject(),
+	speed(120.0f)
 {
 	position.x = x;
 	position.y = y;

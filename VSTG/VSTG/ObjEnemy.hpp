@@ -11,7 +11,7 @@ private:
 	sf::Vector2<float> velocity;
 	float rotSpeed;
 	float rotation;
-	static constexpr float speed = 120.0f;
+	float speed;
 	static constexpr float radius=10.0f;
 public:
 	ObjEnemy(float x, float y);
@@ -36,5 +36,10 @@ public:
 	float GetColliderSize() const { return colliderSize; }
 	void SetColliderSize(const float s) { colliderSize = s; pCollider->setRadius(s); pCollider->setOrigin(s, s); }
 
-//	sf::Sprite& GetSprite() { return *drawSprite; }
+	float GetSpeed() const { return speed; }
+	void SetSpeed(const float s) { 
+		velocity.x *= s / speed;
+		velocity.y *= s / speed; 
+		speed = s;
+	}
 };
