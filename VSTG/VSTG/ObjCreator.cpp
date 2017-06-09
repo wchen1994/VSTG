@@ -85,14 +85,24 @@ std::shared_ptr<GameObject> ObjCreator::CreateEnemy(EnemyType type, sf::Vector2f
 		pObject->SetOID(EnemyType::ROCK_RAND);
 		break;
 	case EnemyType::BROUND:
-		pObject = _CreateEnemy("Bullet Round", 8.0f, pos, vel, 0.0f, ObjEnemyBullet::ROUND);
+		pObject = _CreateEnemy("Bullet Round", 12.0f, pos, vel, 0.0f, ObjEnemyBullet::ROUND);
 		ProcessEnemy(pObject, "Resources/Textures/Bullet00.png");
 		pObject->SetOID(EnemyType::BROUND);
+		pObject->SetDamage(40.0f);
 		break;
 	case EnemyType::BPOINTING:
-		pObject = _CreateEnemy("Bullet Round", 8.0f, pos, vel, rot, ObjEnemyBullet::POINTING);
+		if (vel.y != 0.0f)
+			rot = 180 - atan(vel.x / vel.y) * 180 / std::_Pi;
+		else if (vel.x > 0){
+			rot = 90.0f;
+		}
+		else {
+			rot = 270.0f;
+		}
+		pObject = _CreateEnemy("Bullet Round", 12.0f, pos, vel, rot, ObjEnemyBullet::POINTING);
 		ProcessEnemy(pObject, "Resources/Textures/Bullet01.png");
 		pObject->SetOID(EnemyType::BPOINTING);
+		pObject->SetDamage(60.0f);
 		break;
 	default:
 		pObject = nullptr;
