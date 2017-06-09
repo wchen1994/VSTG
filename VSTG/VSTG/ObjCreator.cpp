@@ -14,8 +14,9 @@ std::shared_ptr<ObjEnemy> ObjCreator::_CreateEnemy(std::string ObjName, float ra
 std::shared_ptr<ObjEnemy> ObjCreator::_CreateEnemy(std::string ObjName, float radius, sf::Vector2f pos, sf::Vector2f vel, float rot, ObjEnemyBullet::EBulletType type)
 {
 	std::shared_ptr<ObjEnemy> pObj = std::make_shared<ObjEnemyBullet>(ObjEnemyBullet(pos.x, pos.y, vel.x, vel.y,
-		ObjEnemyBullet::ROUND));
+		type));
 	pObj->SetRotation(rot);
+	pObj->SetRotationSpeed(0.0f);
 	pObj->SetColliderSize(0.8f * radius);
 	pObj->SetName(ObjName);
 	return pObj;
@@ -84,12 +85,12 @@ std::shared_ptr<GameObject> ObjCreator::CreateEnemy(EnemyType type, sf::Vector2f
 		pObject->SetOID(EnemyType::ROCK_RAND);
 		break;
 	case EnemyType::BROUND:
-		pObject = _CreateEnemy("Bullet Round", 5.0f, pos, vel, 0.0f, ObjEnemyBullet::ROUND);
+		pObject = _CreateEnemy("Bullet Round", 8.0f, pos, vel, 0.0f, ObjEnemyBullet::ROUND);
 		ProcessEnemy(pObject, "Resources/Textures/Bullet00.png");
 		pObject->SetOID(EnemyType::BROUND);
 		break;
 	case EnemyType::BPOINTING:
-		pObject = _CreateEnemy("Bullet Round", 5.0f, pos, vel, rot, ObjEnemyBullet::POINTING);
+		pObject = _CreateEnemy("Bullet Round", 8.0f, pos, vel, rot, ObjEnemyBullet::POINTING);
 		ProcessEnemy(pObject, "Resources/Textures/Bullet01.png");
 		pObject->SetOID(EnemyType::BPOINTING);
 		break;

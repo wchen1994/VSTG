@@ -16,10 +16,7 @@ ObjBullet::ObjBullet(float x, float y) :
 	pSprite->setOrigin(radius, radius);
 	drawCollider = pSprite;
 
-	// Setup ID
-	strcpy_s(classID, "Bullet");
-	std::hash<std::string> hashGen;
-	hashCID = hashGen(classID);
+	type = GameObject::BULLET;
 }
 
 void ObjBullet::Update(const float dt)
@@ -40,9 +37,7 @@ void ObjBullet::FixedUpdate(const float dt)
 }
 
 void ObjBullet::OnCollisionEnter(std::shared_ptr<GameObject> pOther){
-	if (pOther->GetCID() == ObjEnemy::hashCID){
-//		SceneGame::layerDelete.insert(shared_from_this());
-//		SceneGame::layerDelete.insert(pOther);
+	if (pOther->GetType() == GameObject::ENEMY){
 		pOther->OnCollisionEnter(shared_from_this());
 	}
 }

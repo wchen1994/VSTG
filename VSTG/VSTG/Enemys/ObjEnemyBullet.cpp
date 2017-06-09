@@ -1,9 +1,10 @@
 #include "ObjEnemyBullet.h"
 
-ObjEnemyBullet::ObjEnemyBullet(float x, float y, float vx, float vy, EBulletType type) :
+ObjEnemyBullet::ObjEnemyBullet(float x, float y, float vx, float vy, EBulletType bType) :
 	ObjEnemy(x, y, vx, vy)
 {
-	switch (type) {
+	type = GameObject::ENEMYNOTDEAD;
+	switch (bType) {
 	case ROUND:
 		SetSpeed(100.0f);
 		break;
@@ -16,7 +17,7 @@ ObjEnemyBullet::ObjEnemyBullet(float x, float y, float vx, float vy, EBulletType
 
 void ObjEnemyBullet::OnCollisionEnter(std::shared_ptr<GameObject> pOther)
 {
-	if (pOther->GetCID() == ObjPlayer::hashCID) {
+	if (pOther->GetType() == GameObject::PLAYER) {
 		pOther->OnCollisionEnter(shared_from_this());
 	}
 }

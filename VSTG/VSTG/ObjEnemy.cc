@@ -41,10 +41,7 @@ ObjEnemy::ObjEnemy(float x, float y, float vx, float vy) :
 //	rotation = aDist(Essential::rng);
 //	rotSpeed = wDist(Essential::rng);
 	
-	// Setup ID
-	strcpy_s(classID, "Enemy");
-	std::hash<std::string> hashGen;
-	hashCID = hashGen("Enemy");
+	type = GameObject::ENEMY;
 }
 
 void ObjEnemy::Update(const float dt){
@@ -72,18 +69,15 @@ void ObjEnemy::FixedUpdate(const float dt)
 }
 
 void ObjEnemy::OnCollisionEnter(std::shared_ptr<GameObject> pOther){
-	size_t hash = pOther->GetCID();
-	if (hash == ObjBullet::hashCID){
-//		SceneGame::layerDelete.insert(shared_from_this());
+	GameObjectType type = pOther->GetType();
+	if (type == GameObject::BULLET){
 		SceneGame::layerDelete.insert(pOther);
 		hp -= pOther->GetDamage();
 		if (hp < 0) {
 			isDelete = true;
 		}
 	}
-	else if (hash == ObjPlayer::hashCID) {
-//		SceneGame::layerDelete.insert(pOther);
-//		Essential::isGameOver = true;
+	else if (type == GameObject::PLAYER) {
 		pOther->OnCollisionEnter(shared_from_this());
 	}
 }

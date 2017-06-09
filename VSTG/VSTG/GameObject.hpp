@@ -12,19 +12,20 @@
 
 class GameObject : public std::enable_shared_from_this<GameObject>
 {
+public:
+	enum GameObjectType{UNKONW, PLAYER, BULLET, ENEMY, ENEMYNOTDEAD, COUNT};
 protected:
 	sf::Vector2<float> position;
 	std::shared_ptr<sf::Shape> drawCollider;
 	std::shared_ptr<sf::Sprite> drawSprite;
 	float colliderSize;
 	sf::Vector2i brdPos;
-	static char classID[128];
-	static size_t hashCID;
 	char objectID[128];
 	size_t hashOID;
 	float damage;
 	float hp;
 	bool isDelete;
+	GameObjectType type;
 private:
 	std::hash<std::string> hashGen;
 public:
@@ -41,7 +42,6 @@ public:
 public:
 	std::string GetName() const { return objectID; }
 	void SetName(const std::string id) { strcpy_s(objectID, id.c_str()); }
-	size_t GetCID() const { return hashCID; }
 	size_t GetOID() const { return hashOID; }
 	void SetOID(const uint32_t id) { hashOID = id; }
 	sf::Vector2i GetBrdPos() const { return brdPos; }
@@ -55,4 +55,7 @@ public:
 
 	float GetHp() const { return hp; }
 	void SetHp(const float hp) { this->hp = hp; }
+
+	GameObjectType GetType() const { return type; }
+	void SetType(const GameObjectType type) { this->type = type; }
 };

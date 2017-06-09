@@ -1,8 +1,5 @@
 #include"GameObject.hpp"
 
-char GameObject::classID[128];
-size_t GameObject::hashCID;
-
 GameObject::GameObject() :
 	position(0,0),
 	brdPos(0,0),
@@ -11,15 +8,14 @@ GameObject::GameObject() :
 	hp(100.0f),
 	damage(30.0f),
 	isDelete(false),
+	type(UNKONW),
 	enable_shared_from_this()
 {
 	colliderSize = 0;
 	// Setup ID
 	for (int i = 0; i < 128; i++) {
-		classID[i] = '\0';
 		objectID[i] = '\0';
 	}
-	hashCID = 0;
 	hashOID = 0;
 }
 
