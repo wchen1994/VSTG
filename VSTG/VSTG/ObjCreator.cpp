@@ -17,7 +17,7 @@ void ObjCreator::AssignTexture(std::shared_ptr<ObjCharacter> pObject, std::strin
 	sprite.setOrigin(texSize.x / 2.0f, texSize.y / 2.0f);
 	float scale = 2 * pObject->GetColliderSize() / ((texSize.x + texSize.y) / 2.0f);
 	sprite.setScale(sf::Vector2f(scale, scale));
-
+	pObject->SetTexturePtr(pTexture);
 }
 
 void ObjCreator::AssignTexture(std::shared_ptr<ObjCharacter> pObject, std::string texPath, sf::IntRect texRect)

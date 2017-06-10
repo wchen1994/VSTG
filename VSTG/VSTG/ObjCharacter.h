@@ -13,6 +13,7 @@ public:
 protected:
 	std::shared_ptr<sf::Shape> drawCollider;
 	std::shared_ptr<sf::Sprite> drawSprite;
+	std::shared_ptr<sf::Texture> pTexture;
 	float colliderSize;
 	sf::Vector2i brdPos;
 	float damage;
@@ -25,6 +26,9 @@ public:
 	sf::Vector2i GetBrdPos() const { return brdPos; }
 	sf::Sprite& GetSprite() const { return *drawSprite; }
 
+	std::shared_ptr<sf::Texture> GetTexturePtr() const { return pTexture; }
+	void SetTexturePtr(const std::shared_ptr<sf::Texture> pTex) { pTexture = pTex; }
+
 	float GetDamage() const { return damage; }
 	void SetDamage(const float damage) { this->damage = damage; }
 
@@ -36,7 +40,6 @@ public:
 
 	float GetRotationSpeed() const { return rotSpeed; }
 	void SetRotationSpeed(const float speed) { rotSpeed = speed; }
-
 
 	float GetColliderSize() const { return colliderSize; }
 	void SetColliderSize(const float s) { colliderSize = s; }
