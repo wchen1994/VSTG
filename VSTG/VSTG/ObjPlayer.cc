@@ -5,21 +5,27 @@
 #include "SceneGame.hpp"
 
 ObjPlayer::ObjPlayer() :
-	ObjCharacter()
+	ObjPlayer(sf::Vector2f(0.0f, 0.0f))
+{
+}
+
+ObjPlayer::ObjPlayer(sf::Vector2f pos) :
+	ObjCharacter(pos, sf::Vector2f(0.0f,0.0f), 0.0f, 0.0f)
 {
 	up = down = left = right = false;
 	fire = false;
-	position.x = float(Essential::GameCanvas.left + Essential::GameCanvas.width/2);
-	position.y = float(Essential::GameCanvas.top + Essential::GameCanvas.height * 4/5);
-	velocity = sf::Vector2f(0.0f, 0.0f);
+//	position.x = float(Essential::GameCanvas.left + Essential::GameCanvas.width / 2);
+//	position.y = float(Essential::GameCanvas.top + Essential::GameCanvas.height * 4 / 5);
+//	velocity = sf::Vector2f(0.0f, 0.0f);
 	moveSpeed = 180.0f;
 	cooldown = 0;
-	colliderSize = 5.0f;
+//	colliderSize = 5.0f;
 	pSprite = std::make_shared<sf::CircleShape>(sf::CircleShape());
 	pSprite->setRadius(colliderSize);
 	pSprite->setOrigin(colliderSize, colliderSize);
 	pSprite->setPosition(position);
 	drawCollider = pSprite;
+	drawSprite = std::make_shared<sf::Sprite>(sf::Sprite());
 
 	type = GameObject::PLAYER;
 }

@@ -179,7 +179,7 @@ void SceneMapEditor::DrawScene()
 //			sf::Sprite sprite(pObject->GetSprite());
 //			sprite.setPosition(vec);
 //			Essential::wnd.draw(sprite);
-			sf::Sprite sprite(pObject->GetSprite());
+			sf::Sprite sprite(*pObject->GetSprite());
 			sprite.setPosition(vec);
 			Essential::wnd.draw(sprite);
 //			pObject->Draw(Essential::wnd);

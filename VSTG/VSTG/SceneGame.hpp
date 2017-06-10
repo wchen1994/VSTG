@@ -11,6 +11,7 @@
 #include "Board.hpp"
 #include "Map.h"
 #include "ObjMenu.h"
+#include "ObjCreator.h"
 
 //#define _DEBUG_BOARD
 #define _DEBUG_LOG

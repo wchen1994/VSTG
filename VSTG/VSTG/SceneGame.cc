@@ -38,7 +38,11 @@ SceneGame::~SceneGame(){
 
 Essential::GameState SceneGame::Run(){ 
 	// Create Player
-	const std::shared_ptr<ObjPlayer> pPlayer = std::make_shared<ObjPlayer>(ObjPlayer());
+//	const std::shared_ptr<ObjPlayer> pPlayer = std::make_shared<ObjPlayer>(ObjPlayer());
+	sf::Vector2f playerPos;
+	playerPos.x = float(Essential::GameCanvas.left + Essential::GameCanvas.width / 2);
+	playerPos.y = float(Essential::GameCanvas.top + Essential::GameCanvas.height * 4 / 5);
+	const std::shared_ptr<ObjPlayer> pPlayer = ObjCreator::CreatePlayer(ObjCreator::PlayerType::HULUWA, playerPos);
 	layerDefault.insert(pPlayer);
 	layerPlayer.insert(pPlayer);
 
