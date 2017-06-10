@@ -9,17 +9,17 @@ Board::Tile::Tile(int width_in, int height_in) : isColiChecked(false), objCount(
 	height = height_in;
 }
 
-std::set<std::shared_ptr<GameObject>>& Board::Tile::GetLayer()
+std::set<std::shared_ptr<ObjCharacter>>& Board::Tile::GetLayer()
 {
 	return layerObject;
 }
 
-void Board::Tile::RemoveObject(std::shared_ptr<GameObject> pObject)
+void Board::Tile::RemoveObject(std::shared_ptr<ObjCharacter> pObject)
 {
 	layerObject.erase(pObject);
 }
 
-void Board::Tile::AddObject(std::shared_ptr<GameObject> pObject)
+void Board::Tile::AddObject(std::shared_ptr<ObjCharacter> pObject)
 {
 	layerObject.insert(pObject);
 }
@@ -72,13 +72,13 @@ std::set<std::shared_ptr<Board::Tile>>& Board::GetPotentialTile(const int id_x, 
 	return sTile;
 }
 
-void Board::RemoveObject(const std::shared_ptr<GameObject> pObject)
+void Board::RemoveObject(const std::shared_ptr<ObjCharacter> pObject)
 {
 	sf::Vector2i& brdPos = pObject->GetBrdPos();
 	RemoveObject(brdPos, pObject);
 }
 
-void Board::RemoveObject(const sf::Vector2i& brdPos, const std::shared_ptr<GameObject> pObject)
+void Board::RemoveObject(const sf::Vector2i& brdPos, const std::shared_ptr<ObjCharacter> pObject)
 {
 	if (brdPos.x < 0 || brdPos.x >= nCol || brdPos.y < 0 || brdPos.y >= nRow) {
 		tiles[nCol * nRow]->RemoveObject(pObject);
@@ -88,13 +88,13 @@ void Board::RemoveObject(const sf::Vector2i& brdPos, const std::shared_ptr<GameO
 	}
 }
 
-void Board::AddObject(const std::shared_ptr<GameObject> pObject)
+void Board::AddObject(const std::shared_ptr<ObjCharacter> pObject)
 {
 	sf::Vector2i& pos = pObject->GetBrdPos();
 	AddObject(pos, pObject);
 }
 
-void Board::AddObject(const sf::Vector2i& brdPos, const std::shared_ptr<GameObject> pObject)
+void Board::AddObject(const sf::Vector2i& brdPos, const std::shared_ptr<ObjCharacter> pObject)
 {
 	if (brdPos.x < 0 || brdPos.x >= nCol || brdPos.y < 0 || brdPos.y >= nRow) {
 		tiles[nCol * nRow]->AddObject(pObject);
@@ -168,7 +168,7 @@ void Board::ProcessCollision()
 	}
 }
 
-void Board::ProcColiLayer(std::set<std::shared_ptr<GameObject>> layer1, std::set<std::shared_ptr<GameObject>> layer2)
+void Board::ProcColiLayer(std::set<std::shared_ptr<ObjCharacter>> layer1, std::set<std::shared_ptr<ObjCharacter>> layer2)
 {
 	if (layer1 != layer2) {
 		for (auto& pObj1 : layer1) {
@@ -187,7 +187,7 @@ void Board::ProcColiLayer(std::set<std::shared_ptr<GameObject>> layer1, std::set
 	}
 }
 
-sf::Vector2i Board::UpdateObjectPos(std::shared_ptr<GameObject> pObj)
+sf::Vector2i Board::UpdateObjectPos(std::shared_ptr<ObjCharacter> pObj)
 {
 	auto& position = pObj->getPosition();
 	auto& brdPos = pObj->GetBrdPos();
@@ -198,5 +198,6 @@ sf::Vector2i Board::UpdateObjectPos(std::shared_ptr<GameObject> pObj)
 	}
 	return newBrdPos;
 }
+
 
 

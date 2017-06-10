@@ -8,10 +8,10 @@
 #include "ObjEnemy.hpp"
 
 
-std::set<std::shared_ptr<GameObject>> SceneGame::layerDefault;
-std::set<std::shared_ptr<GameObject>> SceneGame::layerBullet;
-std::set<std::shared_ptr<GameObject>> SceneGame::layerPlayer;
-std::set<std::shared_ptr<GameObject>> SceneGame::layerDelete;
+std::set<std::shared_ptr<ObjCharacter>> SceneGame::layerDefault;
+std::set<std::shared_ptr<ObjCharacter>> SceneGame::layerBullet;
+std::set<std::shared_ptr<ObjCharacter>> SceneGame::layerPlayer;
+std::set<std::shared_ptr<ObjCharacter>> SceneGame::layerDelete;
 Board SceneGame::brd(Essential::ScreenWidth, Essential::ScreenHeight, tileWidth, tileHeight);
 
 
@@ -127,10 +127,10 @@ void SceneGame::Update() {
 		for (auto it = layerBullet.begin(); it != layerBullet.end(); it++) {
 			const std::set<std::shared_ptr<Board::Tile>>& sTile = brd.GetPotentialTile(*it);
 			for (auto it_tile = sTile.begin(); it_tile != sTile.end(); it_tile++) {
-				const std::set<std::shared_ptr<GameObject>>& sObject = (*it_tile)->GetLayer();
+				const std::set<std::shared_ptr<ObjCharacter>>& sObject = (*it_tile)->GetLayer();
 				for (auto it2 = sObject.begin(); it2 != sObject.end(); it2++) {
 					sf::Vector2<float> diffPos = (*it)->getPosition() - (*it2)->getPosition();
-					float len = (*it)->getSize() + (*it2)->getSize();
+					float len = (*it)->GetColliderSize() + (*it2)->GetColliderSize();
 					if (diffPos.x*diffPos.x + diffPos.y*diffPos.y <= len*len)
 						(*it)->OnCollisionEnter(*it2);
 				}
@@ -140,10 +140,10 @@ void SceneGame::Update() {
 		for (auto it = layerPlayer.begin(); it != layerPlayer.end(); it++) {
 			std::set<std::shared_ptr<Board::Tile>> sTile = brd.GetPotentialTile(*it);
 			for (auto it_tile = sTile.begin(); it_tile != sTile.end(); it_tile++) {
-				const std::set<std::shared_ptr<GameObject>> sObject = (*it_tile)->GetLayer();
+				const std::set<std::shared_ptr<ObjCharacter>> sObject = (*it_tile)->GetLayer();
 				for (auto it2 = sObject.begin(); it2 != sObject.end(); it2++) {
 					sf::Vector2<float> diffPos = (*it)->getPosition() - (*it2)->getPosition();
-					float len = (*it)->getSize() + (*it2)->getSize();
+					float len = (*it)->GetColliderSize() + (*it2)->GetColliderSize();
 					if (diffPos.x*diffPos.x + diffPos.y*diffPos.y <= len*len)
 						(*it)->OnCollisionEnter(*it2);
 				}

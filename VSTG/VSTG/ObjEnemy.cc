@@ -4,53 +4,23 @@
 #include "SceneGame.hpp"
 #include <cmath>
 
-
-ObjEnemy::ObjEnemy(float x, float y=0) :
-	ObjEnemy(x, y, 0, 120.0f)
+ObjEnemy::ObjEnemy(sf::Vector2f pos, sf::Vector2f vel, float rot, float rotSpeed) :
+	ObjCharacter(pos, vel, rot, rotSpeed)
 {
-}
-
-ObjEnemy::ObjEnemy(float x, float y, float vx, float vy) :
-	GameObject(),
-	speed(120.0f)
-{
-	position.x = x;
-	position.y = y;
-	brdPos.x = int(x / SceneGame::tileWidth);
-	brdPos.y = int(y / SceneGame::tileHeight);
-
-	const float len = sqrt(vx*vx + vy*vy);
-	velocity.x = vx * speed / len;
-	velocity.y = vy * speed / len;
-//	colliderSize = radius;
 	pCollider = std::make_shared<sf::CircleShape>(sf::CircleShape());
-//	pCollider->setRadius(radius);
-//	pCollider->setPosition(position);
-//	pCollider->setOrigin(radius, radius);
 	drawCollider = pCollider;
-
-//	pTexture = Essential::assetManager.GetTexture("Resources/Textures/rock.png");
 	drawSprite = std::make_shared<sf::Sprite>(sf::Sprite());
-//	drawSprite->setTexture(*pTexture);
-//	drawSprite->setOrigin(200.0f, 200.0f);
-//	drawSprite->setScale(sf::Vector2f(0.1f, 0.1f));
-//	drawSprite->setPosition(position);
 
-//	std::uniform_real_distribution<float> aDist(0, 180);
-//	std::uniform_real_distribution<float> wDist(-100, 100);
-//	rotation = aDist(Essential::rng);
-//	rotSpeed = wDist(Essential::rng);
-	
 	type = GameObject::ENEMY;
 }
 
 void ObjEnemy::Update(const float dt){
 	if (isDelete) {
-		SceneGame::layerDelete.insert(shared_from_this());
+		SceneGame::layerDelete.insert(shared_from_derived<ObjEnemy>());
 	} else if (position.x < Essential::GameCanvas.left-radius || 
 		position.x > Essential::GameCanvas.left + Essential::GameCanvas.width + radius || 
 		position.y > Essential::GameCanvas.top + Essential::GameCanvas.height + radius) {
-		SceneGame::layerDelete.insert(shared_from_this());
+		SceneGame::layerDelete.insert(shared_from_derived<ObjEnemy>());
 	}
 }
 
@@ -60,7 +30,8 @@ void ObjEnemy::FixedUpdate(const float dt)
 		position += velocity * dt;
 		rotation += rotSpeed * dt;
 
-		brdPos = SceneGame::brd.UpdateObjectPos(shared_from_this());
+//		brdPos = SceneGame::brd.UpdateObjectPos(shared_from_derived<ObjEnemy>());
+		SceneGame::brd.UpdateObjectPos(shared_from_derived<ObjEnemy>());
 
 		pCollider->setPosition(position);
 		drawSprite->setPosition(position);
@@ -68,7 +39,7 @@ void ObjEnemy::FixedUpdate(const float dt)
 	}
 }
 
-void ObjEnemy::OnCollisionEnter(std::shared_ptr<GameObject> pOther){
+void ObjEnemy::OnCollisionEnter(std::shared_ptr<ObjCharacter> pOther){
 	GameObjectType type = pOther->GetType();
 	if (type == GameObject::BULLET){
 		SceneGame::layerDelete.insert(pOther);
@@ -78,16 +49,7 @@ void ObjEnemy::OnCollisionEnter(std::shared_ptr<GameObject> pOther){
 		}
 	}
 	else if (type == GameObject::PLAYER) {
-		pOther->OnCollisionEnter(shared_from_this());
+		pOther->OnCollisionEnter(shared_from_derived<ObjEnemy>());
 	}
 }
 
-ObjEnemy* ObjEnemy::Clone() const
-{
-	ObjEnemy *pOther = new ObjEnemy(0.0f, 0.0f);
-	*pOther = *this;
-	*pOther->drawSprite = *this->drawSprite;
-	*pOther->pCollider = *this->pCollider;
-	pOther->drawCollider = pOther->pCollider;
-	return pOther;
-}

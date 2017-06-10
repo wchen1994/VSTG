@@ -72,7 +72,10 @@
     <ClCompile Include="ObjCreator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Enemys\ObjEnemyBullet.cpp">
+    <ClCompile Include="ObjCharacter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjEnemyBullet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -131,7 +134,10 @@
     <ClInclude Include="ObjCreator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Enemys\ObjEnemyBullet.h">
+    <ClInclude Include="ObjCharacter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjEnemyBullet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

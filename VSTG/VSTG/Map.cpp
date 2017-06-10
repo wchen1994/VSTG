@@ -22,7 +22,7 @@ bool Map::Update(const float dt)
 	if (!objQueue.empty()) {
 		sf::Vector2f vec = objQueue.front()->getPosition();
 		if (culTime > vec.y) {
-			std::shared_ptr<GameObject> pObject = objQueue.front();
+			std::shared_ptr<ObjCharacter> pObject = objQueue.front();
 			objQueue.pop();
 			vec.y = float(Essential::GameCanvas.top) - 10.0f;
 			pObject->setPosition(vec);

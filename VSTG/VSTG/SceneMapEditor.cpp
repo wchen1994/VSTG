@@ -237,7 +237,7 @@ bool SceneMapEditor::MergeFromFile(const std::string filepath)
 
 				// Insert Object
 				if (OID < ObjCreator::COUNT && OID >= 0) {
-					std::shared_ptr<GameObject> pObject = ObjCreator::CreateEnemy(OID, vec);
+					std::shared_ptr<ObjCharacter> pObject = ObjCreator::CreateEnemy(OID, vec);
 					pObject->FixedUpdate(0.0f);
 					sortedpObject.insert(pObject);
 				}
@@ -384,7 +384,7 @@ void SceneMapEditor::Update()
 					pos.y -= timeAtBottom;
 					objectBrush->setPosition(pos);
 					int tmp = ObjCreator::EnemyType(objectBrush->GetOID());
-					std::shared_ptr<GameObject> pObject =
+					std::shared_ptr<ObjEnemy> pObject =
 						ObjCreator::CreateEnemy(ObjCreator::EnemyType(objectBrush->GetOID()), objectBrush->getPosition());
 					pObject->FixedUpdate(0.0f); // Update Sprite pos
 					sortedpObject.insert(pObject);

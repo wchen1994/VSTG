@@ -5,7 +5,7 @@
 #include "SceneGame.hpp"
 
 ObjPlayer::ObjPlayer() :
-	GameObject()
+	ObjCharacter()
 {
 	up = down = left = right = false;
 	fire = false; radius = 5;
@@ -100,14 +100,14 @@ void ObjPlayer::FixedUpdate(const float dt)
 		cooldown -= dt;
 	}
 	else if (fire) {
-		const std::shared_ptr<ObjBullet> pBullet = std::make_shared<ObjBullet>(ObjBullet(position.x, position.y));
+		const std::shared_ptr<ObjBullet> pBullet = std::make_shared<ObjBullet>(ObjBullet(position));
 		SceneGame::layerDefault.insert(pBullet);
 		SceneGame::layerBullet.insert(pBullet);
 		cooldown = cooldownDuration;
 	}
 }
 
-void ObjPlayer::OnCollisionEnter(std::shared_ptr<GameObject> pOther){
+void ObjPlayer::OnCollisionEnter(std::shared_ptr<ObjCharacter> pOther){
 	GameObjectType type = pOther->GetType();
 	if ( type == GameObject::ENEMY || type == GameObject::ENEMYNOTDEAD){
 		SceneGame::layerDelete.insert(pOther);

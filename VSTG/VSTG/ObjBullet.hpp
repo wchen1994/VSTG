@@ -1,16 +1,17 @@
 #pragma once
 
-#include "GameObject.hpp"
+#include "ObjCharacter.h"
 #include <string>
 
-class ObjBullet : public GameObject{
+class ObjBullet : public ObjCharacter{
 private:
 	std::shared_ptr<sf::CircleShape> pSprite;
 	sf::Vector2<float> velocity;
-	float radius;
+	float rotation;
 public:
-	ObjBullet(float x, float y);
+//	ObjBullet(float x, float y);
+	ObjBullet(sf::Vector2f pos, sf::Vector2f vel = sf::Vector2f(0.0f, 0.0f));
 	void Update(const float dt);
 	void FixedUpdate(const float dt);
-	void OnCollisionEnter(std::shared_ptr<GameObject> pOther);
+	void OnCollisionEnter(std::shared_ptr<ObjCharacter> pOther);
 };

@@ -3,9 +3,9 @@
 #include <SFML/Graphics.hpp>
 #include <cmath>
 
-#include "GameObject.hpp"
+#include "ObjCharacter.h"
 
-class ObjPlayer : public GameObject{
+class ObjPlayer : public ObjCharacter{
 private:
 	std::shared_ptr<sf::CircleShape> pSprite;
 	sf::Vector2f velocity;
@@ -20,5 +20,5 @@ public:
 	ObjPlayer();
 	void Update(const float dt);
 	void FixedUpdate(const float dt);
-	void OnCollisionEnter(std::shared_ptr<GameObject> pOther);
+	void OnCollisionEnter(std::shared_ptr<ObjCharacter> pOther);
 };

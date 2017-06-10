@@ -51,12 +51,12 @@ private:
 	static constexpr float eraseSize= 20.0f;
 //	static constexpr float brushSize = 5.0f;
 	std::vector<Data> vdata;
-	std::set<std::shared_ptr<GameObject>, YCmp> sortedpObject;
-	std::list<std::shared_ptr<GameObject>> lObjectDel;
+	std::set<std::shared_ptr<ObjCharacter>, YCmp> sortedpObject;
+	std::list<std::shared_ptr<ObjCharacter>> lObjectDel;
 	std::shared_ptr<sf::Texture> pTexBuffer;
-	std::shared_ptr<GameObject> objectBrush;
+	std::shared_ptr<ObjCharacter> objectBrush;
 	sf::CircleShape objectEraser;
-	std::shared_ptr<GameObject> dragObject;
+	std::shared_ptr<ObjCharacter> dragObject;
 	ObjMenu escMenu;
 	sf::RectangleShape paintboard;
 	int typeIdx;

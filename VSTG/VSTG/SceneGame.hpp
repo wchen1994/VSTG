@@ -38,10 +38,10 @@ public:
 	void Update();
 	void DrawScene();
 public:
-	static std::set<std::shared_ptr<GameObject>> layerDefault;
-	static std::set<std::shared_ptr<GameObject>> layerBullet;
-	static std::set<std::shared_ptr<GameObject>> layerPlayer;
-	static std::set<std::shared_ptr<GameObject>> layerDelete;
+	static std::set<std::shared_ptr<ObjCharacter>> layerDefault;
+	static std::set<std::shared_ptr<ObjCharacter>> layerBullet;
+	static std::set<std::shared_ptr<ObjCharacter>> layerPlayer;
+	static std::set<std::shared_ptr<ObjCharacter>> layerDelete;
 	static Board brd;
 
 	// Changing the tile size require to rebuild the soluction

@@ -123,13 +123,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Board.cc" />
-    <ClCompile Include="Enemys\ObjEnemyBullet.cpp" />
     <ClCompile Include="ObjBullet.cc" />
     <ClCompile Include="Button.cpp" />
+    <ClCompile Include="ObjCharacter.cpp" />
     <ClCompile Include="ObjEnemy.cc" />
     <ClCompile Include="Essential.cc" />
     <ClCompile Include="FrameTimer.cpp" />
     <ClCompile Include="ObjCreator.cpp" />
+    <ClCompile Include="ObjEnemyBullet.cpp" />
     <ClCompile Include="SceneGame.cc" />
     <ClCompile Include="GameObject.cc" />
     <ClCompile Include="Map.cpp" />
@@ -145,12 +146,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Board.hpp" />
-    <ClInclude Include="Enemys\ObjEnemyBullet.h" />
     <ClInclude Include="ObjBullet.hpp" />
+    <ClInclude Include="ObjCharacter.h" />
     <ClInclude Include="ObjEnemy.hpp" />
     <ClInclude Include="Essential.hpp" />
     <ClInclude Include="FrameTimer.h" />
     <ClInclude Include="ObjCreator.h" />
+    <ClInclude Include="ObjEnemyBullet.h" />
     <ClInclude Include="SceneGame.hpp" />
     <ClInclude Include="GameObject.hpp" />
     <ClInclude Include="Button.h" />

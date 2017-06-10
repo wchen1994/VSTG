@@ -2,18 +2,13 @@
 #include "ObjEnemy.hpp"
 #include "SceneGame.hpp"
 
-ObjBullet::ObjBullet(float x, float y) :
-	GameObject()
+ObjBullet::ObjBullet(sf::Vector2f pos, sf::Vector2f vel) :
+	ObjCharacter(pos, vel, 0.0f, 0.0f)
 {
-	position.x = x;
-	position.y = y;
-	velocity.x = 0;
-	velocity.y = -300;
-	colliderSize = radius = 3;
 	pSprite = std::make_shared<sf::CircleShape>(sf::CircleShape());
-	pSprite->setRadius(radius);
-	pSprite->setPosition(x, y);
-	pSprite->setOrigin(radius, radius);
+	pSprite->setRadius(colliderSize);
+	pSprite->setPosition(pos);
+	pSprite->setOrigin(colliderSize, colliderSize);
 	drawCollider = pSprite;
 
 	type = GameObject::BULLET;
@@ -22,11 +17,8 @@ ObjBullet::ObjBullet(float x, float y) :
 void ObjBullet::Update(const float dt)
 {
 	if (!Essential::inGamecanvas(position)) {
-		SceneGame::layerDelete.insert(shared_from_this());
+		SceneGame::layerDelete.insert(shared_from_derived<ObjBullet>());
 	}
-//	if (position.y < 0) {
-//		SceneGame::layerDelete.insert(shared_from_this());
-//	}
 }
 
 void ObjBullet::FixedUpdate(const float dt)
@@ -36,8 +28,8 @@ void ObjBullet::FixedUpdate(const float dt)
 	pSprite->setPosition(position);
 }
 
-void ObjBullet::OnCollisionEnter(std::shared_ptr<GameObject> pOther){
+void ObjBullet::OnCollisionEnter(std::shared_ptr<ObjCharacter> pOther){
 	if (pOther->GetType() == GameObject::ENEMY){
-		pOther->OnCollisionEnter(shared_from_this());
+		pOther->OnCollisionEnter(shared_from_derived<ObjBullet>());
 	}
 }
