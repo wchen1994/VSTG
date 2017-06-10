@@ -2,7 +2,7 @@
 
 #include "GameObject.hpp"
 #include "Essential.hpp"
-#define _DEBUG_COLLIDER
+//#define _DEBUG_COLLIDER
 
 class ObjCharacter : public GameObject {
 public:
@@ -25,7 +25,9 @@ protected:
 	float speed;
 public:
 	sf::Vector2i GetBrdPos() const { return brdPos; }
+
 	std::shared_ptr<sf::Sprite> GetSprite() { return drawSprite; }
+	void SetSprite(const std::shared_ptr<sf::Sprite> pSprite) { drawSprite = pSprite; }
 
 	std::shared_ptr<sf::Texture> GetTexturePtr() const { return pTexture; }
 	void SetTexturePtr(const std::shared_ptr<sf::Texture> pTex) { pTexture = pTex; }

@@ -9,7 +9,6 @@ ObjEnemy::ObjEnemy(sf::Vector2f pos, sf::Vector2f vel, float rot, float rotSpeed
 {
 	pCollider = std::make_shared<sf::CircleShape>(sf::CircleShape());
 	drawCollider = pCollider;
-	drawSprite = std::make_shared<sf::Sprite>(sf::Sprite());
 
 	type = GameObject::ENEMY;
 }

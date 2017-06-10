@@ -1,34 +1,57 @@
 #include "ObjCreator.h"
 
-std::shared_ptr<ObjEnemy> ObjCreator::_CreateEnemy(std::string ObjName, float radius, sf::Vector2f pos, sf::Vector2f vel, float rot, float rotSpeed)
-{
-	std::shared_ptr<ObjEnemy> pObj = std::make_shared<ObjEnemy>(ObjEnemy(pos, vel, rot, rotSpeed));
-	pObj->SetColliderSize(0.8f * radius);
-	pObj->SetName(ObjName);
-	return pObj;
-}
-
 void ObjCreator::AssignTexture(std::shared_ptr<ObjCharacter> pObject, std::string texPath)
 {
 	std::shared_ptr<sf::Texture> pTexture = Essential::assetManager.GetTexture(texPath);
 	std::shared_ptr<sf::Sprite> sprite = pObject->GetSprite();
-	sf::Vector2u texSize = pTexture->getSize();
-	sprite->setTexture(*pTexture);
-	sprite->setOrigin(texSize.x / 2.0f, texSize.y / 2.0f);
-	float scale = 2 * pObject->GetColliderSize() / ((texSize.x + texSize.y) / 2.0f);
-	sprite->setScale(sf::Vector2f(scale, scale));
-	pObject->SetTexturePtr(pTexture);
+	if (!sprite) {
+		sprite = std::make_shared<sf::Sprite>(sf::Sprite());
+		sf::Vector2u texSize = pTexture->getSize();
+		sprite->setTexture(*pTexture);
+		sprite->setOrigin(texSize.x / 2.0f, texSize.y / 2.0f);
+		float scale = 2 * pObject->GetColliderSize() / ((texSize.x + texSize.y) / 2.0f);
+		sprite->setScale(sf::Vector2f(scale, scale));
+		pObject->SetTexturePtr(pTexture);
+		pObject->SetSprite(sprite);
+	}
+	else {
+		sf::Vector2u texSize = pTexture->getSize();
+		sprite->setTexture(*pTexture);
+		sprite->setOrigin(texSize.x / 2.0f, texSize.y / 2.0f);
+		float scale = 2 * pObject->GetColliderSize() / ((texSize.x + texSize.y) / 2.0f);
+		sprite->setScale(sf::Vector2f(scale, scale));
+		pObject->SetTexturePtr(pTexture);
+	}
 }
 
 void ObjCreator::AssignTexture(std::shared_ptr<ObjCharacter> pObject, std::string texPath, sf::IntRect texRect)
 {
 	std::shared_ptr<sf::Texture> pTexture = Essential::assetManager.GetTexture(texPath);
 	std::shared_ptr<sf::Sprite> sprite = pObject->GetSprite();
-	sprite->setTexture(*pTexture);
-	sprite->setTextureRect(texRect);
-	sprite->setOrigin(texRect.width / 2.0f, texRect.height / 2.0f);
-	float scale = 2 * pObject->GetColliderSize() / ((texRect.width + texRect.height) / 2.0f);
-	sprite->setScale(sf::Vector2f(scale, scale));
+	if (!sprite) {
+		sprite = std::make_shared<sf::Sprite>(sf::Sprite());
+		sprite->setTexture(*pTexture);
+		sprite->setTextureRect(texRect);
+		sprite->setOrigin(texRect.width / 2.0f, texRect.height / 2.0f);
+		float scale = 2 * pObject->GetColliderSize() / ((texRect.width + texRect.height) / 2.0f);
+		sprite->setScale(sf::Vector2f(scale, scale));
+		pObject->SetSprite(sprite);
+	}
+	else {
+		sprite->setTexture(*pTexture);
+		sprite->setTextureRect(texRect);
+		sprite->setOrigin(texRect.width / 2.0f, texRect.height / 2.0f);
+		float scale = 2 * pObject->GetColliderSize() / ((texRect.width + texRect.height) / 2.0f);
+		sprite->setScale(sf::Vector2f(scale, scale));
+	}
+}
+
+std::shared_ptr<ObjEnemy> ObjCreator::_CreateEnemy(std::string ObjName, float radius, sf::Vector2f pos, sf::Vector2f vel, float rot, float rotSpeed)
+{
+	std::shared_ptr<ObjEnemy> pObj = std::make_shared<ObjEnemy>(ObjEnemy(pos, vel, rot, rotSpeed));
+	pObj->SetColliderSize(0.8f * radius);
+	pObj->SetName(ObjName);
+	return pObj;
 }
 
 std::shared_ptr<ObjEnemy> ObjCreator::CreateEnemy(EnemyType type, sf::Vector2f pos, sf::Vector2f vel, float rot)
@@ -47,6 +70,22 @@ std::shared_ptr<ObjEnemy> ObjCreator::CreateEnemy(EnemyType type, sf::Vector2f p
 			Essential::angleDist(Essential::rng), Essential::angleDist(Essential::rng));
 		AssignTexture(pObject, "Resources/Textures/rock1.png");
 		pObject->SetOID(EnemyType::ROCK_RAND);
+		break;
+	case EnemyType::DUCK_RED:
+		pObject = _CreateEnemy("Duck Red t 1", 20.0f, pos,
+			sf::Vector2f(0.0f, 30.0f),
+			0.0f, 0.0f);
+		AssignTexture(pObject, "Resources/Textures/Enemy02.png");
+		pObject->SetHp(800.0f);
+		pObject->SetOID(EnemyType::DUCK_RED);
+		break;
+	case EnemyType::DUCK_BLUE:
+		pObject = _CreateEnemy("Duck Blue t 1", 20.0f, pos,
+			sf::Vector2f(60.0f * (Essential::normalizedDist(Essential::rng) - 0.5f), 30.0f),
+			0.0f, 0.0f);
+		AssignTexture(pObject, "Resources/Textures/Enemy03.png");
+		pObject->SetHp(500.0f);
+		pObject->SetOID(EnemyType::DUCK_BLUE);
 		break;
 	default:
 		pObject = nullptr;
@@ -109,6 +148,36 @@ std::shared_ptr<ObjPlayer> ObjCreator::CreatePlayer(PlayerType type, sf::Vector2
 		AssignTexture(pObject, "Resources/Textures/Player00.png");
 		pObject->SetColliderSize(5.0f);
 		pObject->SetOID(PlayerType::HULUWA);
+		break;
+	default:
+		pObject = nullptr;
+	}
+	return pObject;
+}
+
+std::shared_ptr<ObjBullet> ObjCreator::_CreateBullet(std::string Objname, float radius, sf::Vector2f pos, float speed, float rot)
+{
+	sf::Vector2f vel = { float(sin(rot * std::_Pi / 180.0f)), float(-cos(rot * std::_Pi / 180.0f)) };
+	vel *= speed;
+	std::shared_ptr<ObjBullet> pObject = std::make_shared<ObjBullet>(ObjBullet(pos, vel));
+	pObject->SetColliderSize(radius);
+	return pObject;
+}
+
+std::shared_ptr<ObjBullet> ObjCreator::CreateBullet(BulletType type, sf::Vector2f pos, float rot)
+{
+	std::shared_ptr<ObjBullet> pObject = nullptr;
+	switch (type) {
+	case BulletType::BLUE:
+		pObject = _CreateBullet("Bullet Blue", 6.0f, pos, 500.0f, rot);
+		AssignTexture(pObject, "Resources/Textures/BulletPlayer.png", sf::IntRect(150, 0, 100, 400));
+		pObject->SetRotation(rot);
+		pObject->SetOID(BulletType::BLUE);
+		break;
+	case BulletType::GREEN:
+		pObject = _CreateBullet("Bullet Blue", 6.0f, pos, 500.0f, rot);
+		AssignTexture(pObject, "Resources/Textures/BulletPlayer02.png", sf::IntRect(150, 0, 100, 400));
+		pObject->SetRotation(rot);
 		break;
 	default:
 		pObject = nullptr;

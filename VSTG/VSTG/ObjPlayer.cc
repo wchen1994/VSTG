@@ -3,6 +3,7 @@
 #include "ObjEnemy.hpp"
 #include "Essential.hpp"
 #include "SceneGame.hpp"
+#include "ObjCreator.h"
 
 ObjPlayer::ObjPlayer() :
 	ObjPlayer(sf::Vector2f(0.0f, 0.0f))
@@ -14,18 +15,13 @@ ObjPlayer::ObjPlayer(sf::Vector2f pos) :
 {
 	up = down = left = right = false;
 	fire = false;
-//	position.x = float(Essential::GameCanvas.left + Essential::GameCanvas.width / 2);
-//	position.y = float(Essential::GameCanvas.top + Essential::GameCanvas.height * 4 / 5);
-//	velocity = sf::Vector2f(0.0f, 0.0f);
 	moveSpeed = 180.0f;
 	cooldown = 0;
-//	colliderSize = 5.0f;
 	pSprite = std::make_shared<sf::CircleShape>(sf::CircleShape());
 	pSprite->setRadius(colliderSize);
 	pSprite->setOrigin(colliderSize, colliderSize);
 	pSprite->setPosition(position);
 	drawCollider = pSprite;
-	drawSprite = std::make_shared<sf::Sprite>(sf::Sprite());
 
 	type = GameObject::PLAYER;
 }
@@ -85,9 +81,16 @@ void ObjPlayer::Update(const float dt){
 		cooldown -= dt;
 	}
 	else if (fire) {
-		const std::shared_ptr<ObjBullet> pBullet = std::make_shared<ObjBullet>(ObjBullet(position));
-		SceneGame::layerDefault.insert(pBullet);
-		SceneGame::layerBullet.insert(pBullet);
+//		const std::shared_ptr<ObjBullet> pBullet = std::make_shared<ObjBullet>(ObjBullet(position));
+		const std::shared_ptr<ObjBullet> pBullet1 = ObjCreator::CreateBullet(ObjCreator::BulletType::BLUE, position, 0.0f);
+		SceneGame::layerDefault.insert(pBullet1);
+		SceneGame::layerBullet.insert(pBullet1);
+		const std::shared_ptr<ObjBullet> pBullet2 = ObjCreator::CreateBullet(ObjCreator::BulletType::GREEN, position, 30.0f);
+		SceneGame::layerDefault.insert(pBullet2);
+		SceneGame::layerBullet.insert(pBullet2);
+		const std::shared_ptr<ObjBullet> pBullet3 = ObjCreator::CreateBullet(ObjCreator::BulletType::GREEN, position, -30.0f);
+		SceneGame::layerDefault.insert(pBullet3);
+		SceneGame::layerBullet.insert(pBullet3);
 		cooldown = cooldownDuration;
 	}
 }

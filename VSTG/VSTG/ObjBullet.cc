@@ -11,6 +11,7 @@ ObjBullet::ObjBullet(sf::Vector2f pos, sf::Vector2f vel) :
 	pSprite->setPosition(pos);
 	pSprite->setOrigin(colliderSize, colliderSize);
 	drawCollider = pSprite;
+	drawSprite = std::make_shared<sf::Sprite>(sf::Sprite());
 
 	type = GameObject::BULLET;
 }
