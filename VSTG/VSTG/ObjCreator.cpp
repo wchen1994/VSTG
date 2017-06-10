@@ -43,7 +43,7 @@ std::shared_ptr<ObjEnemy> ObjCreator::CreateEnemy(EnemyType type, sf::Vector2f p
 		break;
 	case EnemyType::ROCK_RAND:
 		pObject = _CreateEnemy("Insane Rock", 20.0f, pos, 
-			sf::Vector2f(120.0f * (Essential::normalizedDist(Essential::rng) - 60.0f), 120.0f * Essential::normalizedDist(Essential::rng)),
+			sf::Vector2f(60.0f * (Essential::normalizedDist(Essential::rng) - 0.5f), 60.0f + 60.0f * Essential::normalizedDist(Essential::rng)),
 			Essential::angleDist(Essential::rng), Essential::angleDist(Essential::rng));
 		AssignTexture(pObject, "Resources/Textures/rock1.png");
 		pObject->SetOID(EnemyType::ROCK_RAND);
