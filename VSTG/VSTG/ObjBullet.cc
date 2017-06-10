@@ -6,6 +6,7 @@ ObjBullet::ObjBullet(sf::Vector2f pos, sf::Vector2f vel) :
 	ObjCharacter(pos, vel, 0.0f, 0.0f)
 {
 	pSprite = std::make_shared<sf::CircleShape>(sf::CircleShape());
+	colliderSize = 3.0f;
 	pSprite->setRadius(colliderSize);
 	pSprite->setPosition(pos);
 	pSprite->setOrigin(colliderSize, colliderSize);
@@ -19,13 +20,6 @@ void ObjBullet::Update(const float dt)
 	if (!Essential::inGamecanvas(position)) {
 		SceneGame::layerDelete.insert(shared_from_derived<ObjBullet>());
 	}
-}
-
-void ObjBullet::FixedUpdate(const float dt)
-{
-	position += velocity * dt;
-
-	pSprite->setPosition(position);
 }
 
 void ObjBullet::OnCollisionEnter(std::shared_ptr<ObjCharacter> pOther){

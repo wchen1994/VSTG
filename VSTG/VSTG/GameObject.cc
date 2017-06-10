@@ -32,6 +32,10 @@ void GameObject::FixedUpdate(const float dt)
 {
 }
 
+void GameObject::LateUpdate()
+{
+}
+
 GameObject * GameObject::CLone() const
 {
 	return nullptr;

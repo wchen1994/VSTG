@@ -52,7 +52,6 @@ void Map::LoadFile(const std::string filepath)
 				vec.x += float(Essential::GameCanvas.left);
 				assert(OID < ObjCreator::EnemyType::COUNT);
 				objQueue.push(ObjCreator::CreateEnemy(OID, sf::Vector2f(vec.x, vec.y)));
-//				objQueue.push(std::make_shared<ObjEnemy>(ObjEnemy(vec.x, vec.y)));
 			}
 		}
 		file.close();

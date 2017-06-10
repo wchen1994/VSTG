@@ -24,21 +24,6 @@ void ObjEnemy::Update(const float dt){
 	}
 }
 
-void ObjEnemy::FixedUpdate(const float dt)
-{
-	if (!isDelete) {
-		position += velocity * dt;
-		rotation += rotSpeed * dt;
-
-//		brdPos = SceneGame::brd.UpdateObjectPos(shared_from_derived<ObjEnemy>());
-		SceneGame::brd.UpdateObjectPos(shared_from_derived<ObjEnemy>());
-
-		pCollider->setPosition(position);
-		drawSprite->setPosition(position);
-		drawSprite->setRotation(rotation);
-	}
-}
-
 void ObjEnemy::OnCollisionEnter(std::shared_ptr<ObjCharacter> pOther){
 	GameObjectType type = pOther->GetType();
 	if (type == GameObject::BULLET){

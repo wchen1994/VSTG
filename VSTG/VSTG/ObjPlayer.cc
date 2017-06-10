@@ -8,21 +8,19 @@ ObjPlayer::ObjPlayer() :
 	ObjCharacter()
 {
 	up = down = left = right = false;
-	fire = false; radius = 5;
+	fire = false;
 	position.x = float(Essential::GameCanvas.left + Essential::GameCanvas.width/2);
 	position.y = float(Essential::GameCanvas.top + Essential::GameCanvas.height * 4/5);
-	velocity.x = 0;
-	velocity.y = 0;
-	speed = 180;
+	velocity = sf::Vector2f(0.0f, 0.0f);
+	moveSpeed = 180.0f;
 	cooldown = 0;
-	originX = originY = radius;
+	colliderSize = 5.0f;
 	pSprite = std::make_shared<sf::CircleShape>(sf::CircleShape());
-	pSprite->setRadius(radius);
-	pSprite->setOrigin(originX, originY);
+	pSprite->setRadius(colliderSize);
+	pSprite->setOrigin(colliderSize, colliderSize);
 	pSprite->setPosition(position);
 	drawCollider = pSprite;
 
-	// Setup ID
 	type = GameObject::PLAYER;
 }
 
@@ -59,7 +57,6 @@ void ObjPlayer::Update(const float dt){
 		fire = false;
 	}
 
-
 	velocity = { 0.0f,0.0f };
 	if (up)
 		velocity.y -= 1.0f;
@@ -69,31 +66,13 @@ void ObjPlayer::Update(const float dt){
 		velocity.x -= 1.0f;
 	if (right)
 		velocity.x += 1.0f;
-}
 
-void ObjPlayer::FixedUpdate(const float dt)
-{
 	// Player Movement
 	const float sqlen = velocity.x*velocity.x + velocity.y*velocity.y;
-	static float boundary[] = { 
-		float(Essential::GameCanvas.left),
-		float(Essential::GameCanvas.left + Essential::GameCanvas.width - 1),
-		float(Essential::GameCanvas.top),
-		float(Essential::GameCanvas.top + Essential::GameCanvas.height - 1),
-	};
 	if (sqlen != 0) {
 		const float len = sqrt(sqlen);
-		position += velocity / len * speed * dt;
-		if (position.x < boundary[0])
-			position.x = boundary[0];
-		if (position.x > boundary[1])
-			position.x = boundary[1];
-		if (position.y < boundary[2])
-			position.y = boundary[2];
-		if (position.y > boundary[3])
-			position.y = boundary[3];
+		velocity *= moveSpeed / len;
 	}
-	pSprite->setPosition(position);
 
 	// Player Fire
 	if (cooldown > 0) {
@@ -105,6 +84,29 @@ void ObjPlayer::FixedUpdate(const float dt)
 		SceneGame::layerBullet.insert(pBullet);
 		cooldown = cooldownDuration;
 	}
+}
+
+void ObjPlayer::LateUpdate()
+{
+	static float boundary[] = {
+		float(Essential::GameCanvas.left),
+		float(Essential::GameCanvas.left + Essential::GameCanvas.width - 1),
+		float(Essential::GameCanvas.top),
+		float(Essential::GameCanvas.top + Essential::GameCanvas.height - 1),
+	};
+
+	if (position.x < boundary[0])
+		position.x = boundary[0];
+	if (position.x > boundary[1])
+		position.x = boundary[1];
+	if (position.y < boundary[2])
+		position.y = boundary[2];
+	if (position.y > boundary[3])
+		position.y = boundary[3];
+
+	drawCollider->setPosition(position);
+	if (drawSprite)
+		drawSprite->setPosition(position);
 }
 
 void ObjPlayer::OnCollisionEnter(std::shared_ptr<ObjCharacter> pOther){

@@ -36,14 +36,14 @@ std::shared_ptr<ObjEnemy> ObjCreator::CreateEnemy(EnemyType type, sf::Vector2f p
 	std::shared_ptr<ObjEnemy> pObject = nullptr;
 	switch (type) {
 	case EnemyType::ROCK_DOWN:
-		 pObject = _CreateEnemy("Stupid Rock", 20.0f, pos, vel, 
+		 pObject = _CreateEnemy("Stupid Rock", 20.0f, pos, sf::Vector2f(0.0f, 120.0f), 
 			 Essential::angleDist(Essential::rng), Essential::angleDist(Essential::rng));
 		 AssignTexture(pObject, "Resources/Textures/rock0.png");
 		pObject->SetOID(EnemyType::ROCK_DOWN);
 		break;
 	case EnemyType::ROCK_RAND:
 		pObject = _CreateEnemy("Insane Rock", 20.0f, pos, 
-			sf::Vector2f(0.5f * (Essential::normalizedDist(Essential::rng) - 0.5f), Essential::normalizedDist(Essential::rng)),
+			sf::Vector2f(120.0f * (Essential::normalizedDist(Essential::rng) - 60.0f), 120.0f * Essential::normalizedDist(Essential::rng)),
 			Essential::angleDist(Essential::rng), Essential::angleDist(Essential::rng));
 		AssignTexture(pObject, "Resources/Textures/rock1.png");
 		pObject->SetOID(EnemyType::ROCK_RAND);
@@ -75,7 +75,7 @@ std::shared_ptr<ObjEnemyBullet> ObjCreator::CreateEnemyBullet(EnemyType type, sf
 		break;
 	case EnemyBulletType::BPOINTING:
 		if (vel.y != 0.0f)
-			rot = 180 - atan(vel.x / vel.y) * 180 / std::_Pi;
+			rot = (float)180 - atan(vel.x / vel.y) * 180 / std::_Pi;
 		else if (vel.x > 0) {
 			rot = 90.0f;
 		}

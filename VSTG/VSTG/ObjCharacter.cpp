@@ -1,4 +1,5 @@
 #include "ObjCharacter.h"
+#include "SceneGame.hpp"
 
 ObjCharacter::ObjCharacter():
 	ObjCharacter(sf::Vector2f(0.0f,0.0f), sf::Vector2f(0.0f,0.0f), 0.0f, 0.0f)
@@ -18,6 +19,23 @@ ObjCharacter::ObjCharacter(sf::Vector2f pos, sf::Vector2f vel, float rot, float 
 	rotSpeed(rotSpeed)
 {
 	speed = std::sqrt(vel.x * vel.x + vel.y * vel.y);
+}
+
+void ObjCharacter::FixedUpdate(const float dt)
+{
+	if (!isDelete) {
+		position += velocity * dt;
+		rotation += rotSpeed * dt;
+
+		brdPos = SceneGame::brd.UpdateObjectPos(shared_from_derived<ObjCharacter>());
+
+		if (drawSprite) {
+			drawSprite->setPosition(position);
+			drawSprite->setRotation(rotation);
+		}
+		drawCollider->setPosition(position);
+		drawCollider->setRotation(rotation);
+	}
 }
 
 void ObjCharacter::Draw(sf::RenderTarget& gfx) {

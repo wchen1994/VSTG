@@ -35,6 +35,7 @@ public:
 	virtual void Draw(sf::RenderTarget& gfx);
 	virtual void Update(const float dt);
 	virtual void FixedUpdate(const float dt);
+	virtual void LateUpdate();
 	virtual GameObject* CLone() const;
 public:
 	sf::Vector2<float> getPosition() const { return position; }

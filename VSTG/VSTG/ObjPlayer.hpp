@@ -8,10 +8,7 @@
 class ObjPlayer : public ObjCharacter{
 private:
 	std::shared_ptr<sf::CircleShape> pSprite;
-	sf::Vector2f velocity;
-	float originX, originY;
-	float radius;
-	float speed;
+	float moveSpeed;
 	bool up, down, left, right;
 	bool fire;
 	float cooldown;
@@ -19,6 +16,6 @@ private:
 public:
 	ObjPlayer();
 	void Update(const float dt);
-	void FixedUpdate(const float dt);
+	void LateUpdate();
 	void OnCollisionEnter(std::shared_ptr<ObjCharacter> pOther);
 };

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "GameObject.hpp"
+#include "Essential.hpp"
 
 class ObjCharacter : public GameObject {
 public:
@@ -8,6 +9,7 @@ public:
 	ObjCharacter(sf::Vector2f pos, sf::Vector2f vel, float rot, float rotSpeed);
 	void ObjCharacter::Draw(sf::RenderTarget& gfx);
 	virtual void OnCollisionEnter(std::shared_ptr<ObjCharacter> pOther);
+	virtual void FixedUpdate(const float dt);
 protected:
 	std::shared_ptr<sf::Shape> drawCollider;
 	std::shared_ptr<sf::Sprite> drawSprite;

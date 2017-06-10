@@ -151,6 +151,11 @@ void SceneGame::Update() {
 		}
 	}
 
+	// LateUpdate
+	for (auto it = layerDefault.begin(); it != layerDefault.end(); it++) {
+		(*it)->LateUpdate();
+	}
+
 #ifdef _DEBUG_LOG
 
 	//Log
