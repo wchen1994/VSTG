@@ -43,6 +43,7 @@ public:
 	static std::set<std::shared_ptr<ObjCharacter>> layerBullet;
 	static std::set<std::shared_ptr<ObjCharacter>> layerPlayer;
 	static std::set<std::shared_ptr<ObjCharacter>> layerEnemy;	
+	static std::set<std::shared_ptr<ObjCharacter>> layerEnemyBullet;
 	static std::set<std::shared_ptr<ObjCharacter>> layerDelete;
 	static Board brd;
 
