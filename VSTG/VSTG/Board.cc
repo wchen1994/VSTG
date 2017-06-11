@@ -195,6 +195,7 @@ sf::Vector2i Board::UpdateObjectPos(std::shared_ptr<ObjCharacter> pObj)
 	if (brdPos.x != newBrdPos.x || brdPos.y != newBrdPos.y) {
 		RemoveObject(brdPos, pObj);
 		AddObject(newBrdPos, pObj);
+		pObj->SetBrdPos(newBrdPos);
 	}
 	return newBrdPos;
 }

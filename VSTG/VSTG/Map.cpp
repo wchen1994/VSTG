@@ -22,12 +22,12 @@ bool Map::Update(const float dt)
 	if (!objQueue.empty()) {
 		sf::Vector2f vec = objQueue.front()->getPosition();
 		if (culTime > vec.y) {
-			std::shared_ptr<ObjCharacter> pObject = objQueue.front();
+			std::shared_ptr<ObjEnemy> pObject = objQueue.front();
 			objQueue.pop();
 			vec.y = float(Essential::GameCanvas.top) - 10.0f;
 			pObject->setPosition(vec);
 			SceneGame::layerDefault.insert(pObject);
-			SceneGame::brd.AddObject(pObject);
+			SceneGame::layerEnemy.insert(pObject);
 		}
 		return true;
 	}

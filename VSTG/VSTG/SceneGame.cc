@@ -11,6 +11,7 @@
 std::set<std::shared_ptr<ObjCharacter>> SceneGame::layerDefault;
 std::set<std::shared_ptr<ObjCharacter>> SceneGame::layerBullet;
 std::set<std::shared_ptr<ObjCharacter>> SceneGame::layerPlayer;
+std::set<std::shared_ptr<ObjCharacter>> SceneGame::layerEnemy;
 std::set<std::shared_ptr<ObjCharacter>> SceneGame::layerDelete;
 Board SceneGame::brd(Essential::ScreenWidth, Essential::ScreenHeight, tileWidth, tileHeight);
 
@@ -127,6 +128,10 @@ void SceneGame::Update() {
 		}
 		culDt -= fixedUpdateDuration;
 
+		for (auto it = layerEnemy.begin(); it != layerEnemy.end(); it++) {
+			brd.UpdateObjectPos(*it);
+		}
+
 		//Bullet collision
 		for (auto it = layerBullet.begin(); it != layerBullet.end(); it++) {
 			const std::set<std::shared_ptr<Board::Tile>>& sTile = brd.GetPotentialTile(*it);
@@ -185,6 +190,7 @@ void SceneGame::Update() {
 		layerDefault.erase(*it);
 		layerPlayer.erase(*it);
 		layerBullet.erase(*it);
+		layerEnemy.erase(*it);
 		brd.RemoveObject(*it);
 	}
 	layerDelete.clear();

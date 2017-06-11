@@ -18,5 +18,5 @@ public:
 	float getCulTime() const { return culTime; }
 private:
 	float culTime;
-	std::queue<std::shared_ptr<ObjCharacter>> objQueue;
+	std::queue<std::shared_ptr<ObjEnemy>> objQueue;
 };

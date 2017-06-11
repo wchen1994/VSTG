@@ -25,6 +25,7 @@ protected:
 	float speed;
 public:
 	sf::Vector2i GetBrdPos() const { return brdPos; }
+	void SetBrdPos(const sf::Vector2i brdPos) { this->brdPos = brdPos; }
 
 	std::shared_ptr<sf::Sprite> GetSprite() { return drawSprite; }
 	void SetSprite(const std::shared_ptr<sf::Sprite> pSprite) { drawSprite = pSprite; }

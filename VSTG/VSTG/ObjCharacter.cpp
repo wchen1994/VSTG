@@ -27,7 +27,7 @@ void ObjCharacter::FixedUpdate(const float dt)
 		position += velocity * dt;
 		rotation += rotSpeed * dt;
 
-		brdPos = SceneGame::brd.UpdateObjectPos(shared_from_derived<ObjCharacter>());
+//		brdPos = SceneGame::brd.UpdateObjectPos(shared_from_derived<ObjCharacter>());
 
 		if (drawSprite) {
 			drawSprite->setPosition(position);
