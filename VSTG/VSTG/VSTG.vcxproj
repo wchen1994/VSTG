@@ -123,6 +123,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Board.cc" />
+    <ClCompile Include="Enemys\EnemyDuck.cpp" />
     <ClCompile Include="ObjBullet.cc" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="ObjCharacter.cpp" />
@@ -146,6 +147,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Board.hpp" />
+    <ClInclude Include="Enemys\EnemyDuck.h" />
     <ClInclude Include="ObjBullet.hpp" />
     <ClInclude Include="ObjCharacter.h" />
     <ClInclude Include="ObjEnemy.hpp" />

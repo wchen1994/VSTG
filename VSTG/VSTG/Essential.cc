@@ -44,6 +44,12 @@ sf::Vector2f Essential::vec2i2f(int & x, int & y) { return sf::Vector2f(float(x)
 sf::Vector2i Essential::vec2f2i(const sf::Vector2f& vec) { return sf::Vector2i(int(vec.x), int(vec.y)); }
 sf::Vector2i Essential::vec2f2i(float & x, float & y) { return sf::Vector2i(int(x), int(y)); }
 
+sf::Vector2f Essential::normalize(const sf::Vector2f & vec)
+{
+	float sqlen = vec.x * vec.x + vec.y * vec.y;
+	return sf::Vector2f(vec.x / sqrt(sqlen), vec.y / sqrt(sqlen));
+}
+
 bool Essential::inGamecanvas(const sf::Vector2f & pos)
 {
 	sf::Vector2f topLeft = Essential::vec2i2f(Essential::GameCanvas.left, Essential::GameCanvas.top);

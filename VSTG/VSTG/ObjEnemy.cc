@@ -16,9 +16,9 @@ ObjEnemy::ObjEnemy(sf::Vector2f pos, sf::Vector2f vel, float rot, float rotSpeed
 void ObjEnemy::Update(const float dt){
 	if (isDelete) {
 		SceneGame::layerDelete.insert(shared_from_derived<ObjEnemy>());
-	} else if (position.x < Essential::GameCanvas.left-radius || 
-		position.x > Essential::GameCanvas.left + Essential::GameCanvas.width + radius || 
-		position.y > Essential::GameCanvas.top + Essential::GameCanvas.height + radius) {
+	} else if (position.x < Essential::GameCanvas.left-colliderSize || 
+		position.x > Essential::GameCanvas.left + Essential::GameCanvas.width + colliderSize || 
+		position.y > Essential::GameCanvas.top + Essential::GameCanvas.height + colliderSize) {
 		SceneGame::layerDelete.insert(shared_from_derived<ObjEnemy>());
 	}
 }

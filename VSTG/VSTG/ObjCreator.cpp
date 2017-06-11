@@ -54,6 +54,14 @@ std::shared_ptr<ObjEnemy> ObjCreator::_CreateEnemy(std::string ObjName, float ra
 	return pObj;
 }
 
+std::shared_ptr<ObjEnemy> ObjCreator::_CreateEnemy2(std::string ObjName, float radius, sf::Vector2f pos, sf::Vector2f vel, ObjEnemyBullet::EBulletType type)
+{
+	std::shared_ptr<EnemyDuck> pObj = std::make_shared<EnemyDuck>(EnemyDuck(pos, vel, type));
+	pObj->SetColliderSize(0.8f * radius);
+	pObj->SetName(ObjName);
+	return pObj;
+}
+
 std::shared_ptr<ObjEnemy> ObjCreator::CreateEnemy(EnemyType type, sf::Vector2f pos, sf::Vector2f vel, float rot)
 {
 	std::shared_ptr<ObjEnemy> pObject = nullptr;
@@ -72,17 +80,15 @@ std::shared_ptr<ObjEnemy> ObjCreator::CreateEnemy(EnemyType type, sf::Vector2f p
 		pObject->SetOID(EnemyType::ROCK_RAND);
 		break;
 	case EnemyType::DUCK_RED:
-		pObject = _CreateEnemy("Duck Red t 1", 20.0f, pos,
-			sf::Vector2f(0.0f, 30.0f),
-			0.0f, 0.0f);
+		pObject = _CreateEnemy2("Duck Red t 1", 30.0f, pos,
+			sf::Vector2f(0.0f, 30.0f), ObjEnemyBullet::EBulletType::ROUND);
 		AssignTexture(pObject, "Resources/Textures/Enemy02.png");
 		pObject->SetHp(800.0f);
 		pObject->SetOID(EnemyType::DUCK_RED);
 		break;
 	case EnemyType::DUCK_BLUE:
-		pObject = _CreateEnemy("Duck Blue t 1", 20.0f, pos,
-			sf::Vector2f(60.0f * (Essential::normalizedDist(Essential::rng) - 0.5f), 30.0f),
-			0.0f, 0.0f);
+		pObject = _CreateEnemy2("Duck Blue t 1", 30.0f, pos,
+			sf::Vector2f(60.0f * (Essential::normalizedDist(Essential::rng) - 0.5f), 30.0f), ObjEnemyBullet::POINTING);
 		AssignTexture(pObject, "Resources/Textures/Enemy03.png");
 		pObject->SetHp(500.0f);
 		pObject->SetOID(EnemyType::DUCK_BLUE);
@@ -102,9 +108,10 @@ std::shared_ptr<ObjEnemyBullet> ObjCreator::_CreateEnemyBullet(std::string ObjNa
 	return pObj;
 }
 
-std::shared_ptr<ObjEnemyBullet> ObjCreator::CreateEnemyBullet(EnemyType type, sf::Vector2f pos, sf::Vector2f vel, float rot)
+std::shared_ptr<ObjEnemyBullet> ObjCreator::CreateEnemyBullet(EnemyBulletType type, sf::Vector2f pos, sf::Vector2f vel)
 {
 	std::shared_ptr<ObjEnemyBullet> pObject = nullptr;
+	float rot = 0.0f;
 	switch (type) {
 	case EnemyBulletType::BROUND:
 		pObject = _CreateEnemyBullet("Bullet Round", 12.0f, pos, vel, 0.0f, ObjEnemyBullet::ROUND);
@@ -121,6 +128,30 @@ std::shared_ptr<ObjEnemyBullet> ObjCreator::CreateEnemyBullet(EnemyType type, sf
 		else {
 			rot = 270.0f;
 		}
+		pObject = _CreateEnemyBullet("Bullet Round", 12.0f, pos, vel, rot, ObjEnemyBullet::POINTING);
+		AssignTexture(pObject, "Resources/Textures/Bullet01.png");
+		pObject->SetOID(EnemyBulletType::BPOINTING);
+		pObject->SetDamage(60.0f);
+		break;
+	default:
+		pObject = nullptr;
+	}
+	return pObject;
+}
+
+std::shared_ptr<ObjEnemyBullet> ObjCreator::CreateEnemyBullet(EnemyBulletType type, sf::Vector2f pos, float speed, float rot)
+{
+	std::shared_ptr<ObjEnemyBullet> pObject = nullptr;
+	sf::Vector2f vel = { float(sin(rot * std::_Pi / 180.0f)), float(-cos(rot * std::_Pi / 180.0f)) };
+	vel *= speed;
+	switch (type) {
+	case EnemyBulletType::BROUND:
+		pObject = _CreateEnemyBullet("Bullet Round", 12.0f, pos, vel, 0.0f, ObjEnemyBullet::ROUND);
+		AssignTexture(pObject, "Resources/Textures/Bullet00.png");
+		pObject->SetOID(EnemyBulletType::BROUND);
+		pObject->SetDamage(40.0f);
+		break;
+	case EnemyBulletType::BPOINTING:
 		pObject = _CreateEnemyBullet("Bullet Round", 12.0f, pos, vel, rot, ObjEnemyBullet::POINTING);
 		AssignTexture(pObject, "Resources/Textures/Bullet01.png");
 		pObject->SetOID(EnemyBulletType::BPOINTING);
