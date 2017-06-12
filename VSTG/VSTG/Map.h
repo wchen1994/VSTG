@@ -14,7 +14,8 @@ public:
 	Map(const std::string &filepath);
 	~Map();
 	bool Update(const float dt);
-	void LoadFile(const std::string filepath);
+	bool LoadFile(const std::string filepath);
+	void LoadFile(std::ifstream& inFile);
 	float getCulTime() const { return culTime; }
 private:
 	float culTime;

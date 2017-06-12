@@ -10,7 +10,7 @@
 
 class Essential {
 public:
-	static bool isGameOver;
+//	static bool isGameOver;
 	static bool isExit;
 	enum GameState { MENU, GAME, EDITOR, POP };
 	static GameState gameState;

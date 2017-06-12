@@ -124,7 +124,7 @@ void ObjPlayer::OnCollisionEnter(std::shared_ptr<ObjCharacter> pOther){
 		SceneGame::layerDelete.insert(pOther);
 		hp -= pOther->GetDamage();
 		if (hp < 0) {
-			Essential::isGameOver = true;
+			SceneGame::layerDelete.insert(shared_from_derived<ObjPlayer>());
 		}
 	}
 }

@@ -3,9 +3,9 @@
 #include <cstdlib>
 
 
-bool Essential::isGameOver = false;
+//bool Essential::isGameOver = false;
 bool Essential::isExit = false;
-Essential::GameState Essential::gameState = GAME;
+//Essential::GameState Essential::gameState = GAME;
 sf::RenderWindow Essential::wnd(sf::VideoMode(Essential::ScreenWidth, Essential::ScreenHeight), "Game", sf::Style::Default);
 TextManager Essential::textManager("Resources/texts/zh_ch.csv");
 AssetManager Essential::assetManager;

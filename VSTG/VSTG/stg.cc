@@ -43,12 +43,9 @@ int main(){
 		gameState = (lScenes.back())->Run();
 		switch (gameState){
 			case Essential::POP:
-				//pScene = lScenes.back();
-				//delete pScene;
 				lScenes.pop_back();
 				break;
 			case Essential::GAME:
-				Essential::isGameOver = false;
 				lScenes.push_back(std::make_unique<SceneGame>(SceneGame(Essential::wnd)));
 				break;
 			case Essential::EDITOR:

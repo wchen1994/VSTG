@@ -29,17 +29,22 @@ private:
 	bool isFocused;
 	bool isMenuTriger;
 	bool isGamePause;
+	bool isGameFail;
+	bool isGameSucceed;
 	Map map;
+	int levelCount;
+	std::string levelFileName;
 	ObjMenu escMenu;
 	sf::RectangleShape background; 
 	std::shared_ptr<ObjPlayer> pPlayer;
 
-	// Text
+	// UI
 	sf::Text playerHP;
 public:
 	SceneGame(sf::RenderWindow& wnd);
 	~SceneGame();
 	Essential::GameState Run();
+	void Reset();
 	void Update();
 	void DrawScene();
 public:
@@ -54,4 +59,5 @@ public:
 	// Changing the tile size require to rebuild the soluction
 	static constexpr int tileWidth = 20;
 	static constexpr int tileHeight = 20;
+
 };

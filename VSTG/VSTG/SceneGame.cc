@@ -20,8 +20,9 @@ Board SceneGame::brd(Essential::ScreenWidth, Essential::ScreenHeight, tileWidth,
 SceneGame::SceneGame(sf::RenderWindow& wnd) :
 	Scene(),
 	wnd(wnd),
-	map("Maps/Lv1.tmap"),
-	isFocused(true), isMenuTriger(false),
+	map(),
+	isFocused(true), isMenuTriger(false), isGameFail(false), isGameSucceed(false),
+	levelFileName("Maps/Lv1.tmap"), levelCount(1),
 	escMenu(sf::IntRect(50, 80, 206, 139), Essential::textManager.getText(4), ObjMenu::MENUFLAG::YES_NO)
 {
 	background.setPosition(Essential::vec2i2f(Essential::GameCanvas.left, Essential::GameCanvas.top));
@@ -42,18 +43,10 @@ SceneGame::~SceneGame(){
 	brd.clear();
 }
 
-Essential::GameState SceneGame::Run(){ 
-	// Create Player
-//	const std::shared_ptr<ObjPlayer> pPlayer = std::make_shared<ObjPlayer>(ObjPlayer());
-	sf::Vector2f playerPos;
-	playerPos.x = float(Essential::GameCanvas.left + Essential::GameCanvas.width / 2);
-	playerPos.y = float(Essential::GameCanvas.top + Essential::GameCanvas.height * 4 / 5);
-	pPlayer = ObjCreator::CreatePlayer(ObjCreator::PlayerType::HULUWA, playerPos);
-	layerDefault.insert(pPlayer);
-	layerPlayer.insert(pPlayer);
-
-	// Zero the clock Loading resources takes time
-	ft.Mark();
+Essential::GameState SceneGame::Run(){
+	pPlayer = ObjCreator::CreatePlayer(ObjCreator::PlayerType::HULUWA, sf::Vector2f(0.0f, 0.0f));
+	
+	Reset();
 
 	while (wnd.isOpen()) {
 		//Event Handle
@@ -82,7 +75,7 @@ Essential::GameState SceneGame::Run(){
 				const int rc = escMenu.MenuUpdate();
 				switch (rc) {
 				case 1:
-					Essential::isGameOver = true;
+					isGameFail = true;
 					break;
 				case 2:
 					isMenuTriger = !isMenuTriger;
@@ -96,14 +89,55 @@ Essential::GameState SceneGame::Run(){
 			ft.Mark();
 		}
 		DrawScene();
-		if (Essential::isGameOver) {
+		if (isGameFail) {
 			return Essential::POP;
+		}
+		if (isGameSucceed) {
+			levelCount++;
+			levelFileName = "Maps/Lv" + std::to_string(levelCount) + ".tmap";
+			Reset();
 		}
 	}
 	return Essential::POP;
 }
 
+void SceneGame::Reset()
+{
+	// Draw Loading Menu
+	sf::Text loadingText("Loading ...", Essential::textFont);
+	loadingText.setPosition(300.0f, 280.0f);
+	Essential::wnd.clear();
+	Essential::wnd.draw(loadingText);
+	Essential::wnd.display();
+
+	layerDefault.clear();
+	layerPlayer.clear();
+	layerBullet.clear();
+	layerEnemy.clear();
+	layerEnemyBullet.clear();
+	brd.clear();
+
+	// Create Player
+	sf::Vector2f playerPos;
+	playerPos.x = float(Essential::GameCanvas.left + Essential::GameCanvas.width / 2);
+	playerPos.y = float(Essential::GameCanvas.top + Essential::GameCanvas.height * 4 / 5);
+	pPlayer->setPosition(playerPos);
+	layerDefault.insert(pPlayer);
+	layerPlayer.insert(pPlayer);
+
+	// Load Map
+	if (!map.LoadFile(levelFileName))
+		isGameFail = true;
+
+	isGameSucceed = false;
+	ft.Mark();
+}
+
 void SceneGame::Update() {
+	// Check for GameOver
+	if (layerPlayer.size() == 0)
+		isGameFail = true;
+
 	// Update text
 	playerHP.setString("HP: " + std::to_string(int(pPlayer->GetHp())) + "/100");
 
@@ -118,7 +152,7 @@ void SceneGame::Update() {
 	}
 
 	if (!isEnemy && nEnemy == 0) {
-		Essential::isGameOver = true;
+		isGameSucceed = true;
 	}
 
 	for (auto it = layerDefault.begin(); it != layerDefault.end(); it++) {

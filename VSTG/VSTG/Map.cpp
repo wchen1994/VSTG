@@ -36,27 +36,37 @@ bool Map::Update(const float dt)
 	}
 }
 
-void Map::LoadFile(const std::string filepath)
+bool Map::LoadFile(const std::string filepath)
 {
+	std::ifstream file;
 	try {
-		std::ifstream file;
-		file.open(filepath);
-		std::string line;
-		std::regex rgx("(\\d*\\.\\d*),\\s*(-?\\d*\\.\\d*),\\s*(\\d*)");
-		std::smatch match;
-		while (std::getline(file, line)) {
-			const std::string s(line);
-			if (std::regex_search(s.begin(), s.end(), match, rgx)) {
-				sf::Vector2f vec = { std::stof(match[1]), std::stof(match[2]) };
-				ObjCreator::EnemyType OID = ObjCreator::EnemyType(std::stoul(match[3]));
-				vec.x += float(Essential::GameCanvas.left);
-				assert(OID < ObjCreator::EnemyType::COUNT);
-				objQueue.push(ObjCreator::CreateEnemy(OID, sf::Vector2f(vec.x, vec.y)));
-			}
-		}
-		file.close();
+		file.open(filepath, std::ifstream::in);
+		if (!file.good())
+			throw std::ferror;
+		LoadFile(file);
 	}
 	catch (...) {
-		assert(false);
+		file.close();
+		return false;
 	}
+	file.close();
+	return true;
+}
+
+void Map::LoadFile(std::ifstream & inFile)
+{
+	std::string line;
+	std::regex rgx("(\\d*\\.\\d*),\\s*(-?\\d*\\.\\d*),\\s*(\\d*)");
+	std::smatch match;
+	while (std::getline(inFile, line)) {
+		const std::string s(line);
+		if (std::regex_search(s.begin(), s.end(), match, rgx)) {
+			sf::Vector2f vec = { std::stof(match[1]), std::stof(match[2]) };
+			ObjCreator::EnemyType OID = ObjCreator::EnemyType(std::stoul(match[3]));
+			vec.x += float(Essential::GameCanvas.left);
+			assert(OID < ObjCreator::EnemyType::COUNT);
+			objQueue.push(ObjCreator::CreateEnemy(OID, sf::Vector2f(vec.x, vec.y)));
+		}
+	}
+	culTime = 0;
 }
