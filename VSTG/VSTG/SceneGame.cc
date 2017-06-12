@@ -27,6 +27,10 @@ SceneGame::SceneGame(sf::RenderWindow& wnd) :
 	background.setPosition(Essential::vec2i2f(Essential::GameCanvas.left, Essential::GameCanvas.top));
 	background.setSize(Essential::vec2i2f(Essential::GameCanvas.width, Essential::GameCanvas.height));
 	background.setFillColor(sf::Color(100, 100, 100));
+
+	playerHP.setFont(Essential::textFont);
+	playerHP.setPosition(sf::Vector2f(600.0f, 80.0f));
+	playerHP.setString("HP: 100/100");
 }
 
 
@@ -44,7 +48,7 @@ Essential::GameState SceneGame::Run(){
 	sf::Vector2f playerPos;
 	playerPos.x = float(Essential::GameCanvas.left + Essential::GameCanvas.width / 2);
 	playerPos.y = float(Essential::GameCanvas.top + Essential::GameCanvas.height * 4 / 5);
-	const std::shared_ptr<ObjPlayer> pPlayer = ObjCreator::CreatePlayer(ObjCreator::PlayerType::HULUWA, playerPos);
+	pPlayer = ObjCreator::CreatePlayer(ObjCreator::PlayerType::HULUWA, playerPos);
 	layerDefault.insert(pPlayer);
 	layerPlayer.insert(pPlayer);
 
@@ -100,7 +104,8 @@ Essential::GameState SceneGame::Run(){
 }
 
 void SceneGame::Update() {
-
+	// Update text
+	playerHP.setString("HP: " + std::to_string(int(pPlayer->GetHp())) + "/100");
 
 	//Update
 	dt = ft.Mark();
@@ -207,6 +212,7 @@ void SceneGame::DrawScene()
 	wnd.clear();
 	
 	wnd.draw(background);
+	wnd.draw(playerHP);
 
 #ifdef _DEBUG_BOARD
 	brd.Highlight(wnd);

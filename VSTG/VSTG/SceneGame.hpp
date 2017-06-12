@@ -31,7 +31,11 @@ private:
 	bool isGamePause;
 	Map map;
 	ObjMenu escMenu;
-	sf::RectangleShape background;
+	sf::RectangleShape background; 
+	std::shared_ptr<ObjPlayer> pPlayer;
+
+	// Text
+	sf::Text playerHP;
 public:
 	SceneGame(sf::RenderWindow& wnd);
 	~SceneGame();
