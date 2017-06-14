@@ -7,6 +7,7 @@
 
 #include "TextManager.h"
 #include "AssetManager.h"
+#include "UDPSocket.h"
 
 class Essential {
 public:
@@ -53,6 +54,18 @@ public:
 	};
 
 	typedef std::set<sf::Vector2i, vec2Compare<int>> setVecInt;
+
+	static UDPSocket socket;
+	struct PacketServer {
+		struct _PakcetServer{
+			sf::Vector2f pos;
+			float rot;
+		};
+		std::vector<_PakcetServer> vObjects;
+	};
+	struct PacketClient {
+		sf::Vector2f pos;
+	};
 };
 
 
