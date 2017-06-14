@@ -29,10 +29,10 @@ void EnemyDuck::Update(const float dt)
 				pBullet2 = ObjCreator::CreateEnemyBullet(ObjCreator::EnemyBulletType::BROUND, position, 120.0f, 150.0f);
 				pBullet3 = ObjCreator::CreateEnemyBullet(ObjCreator::EnemyBulletType::BROUND, position, 120.0f, 210.0f);
 				SceneGame::layerDefault.insert(pBullet1);
-				SceneGame::layerEnemyBullet.insert(pBullet1);
 				SceneGame::layerDefault.insert(pBullet2);
-				SceneGame::layerEnemyBullet.insert(pBullet2);
 				SceneGame::layerDefault.insert(pBullet3);
+				SceneGame::layerEnemyBullet.insert(pBullet1);
+				SceneGame::layerEnemyBullet.insert(pBullet2);
 				SceneGame::layerEnemyBullet.insert(pBullet3);
 			}
 			else {

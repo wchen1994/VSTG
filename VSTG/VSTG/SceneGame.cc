@@ -221,8 +221,10 @@ void SceneGame::Update() {
 		std::cout << "FPS:\t\t" << std::setprecision(1) << std::fixed << 1 / dt << std::endl;
 		std::cout << "Objects:\t" << layerDefault.size() << std::endl;
 		std::cout << "Bullets:\t" << layerBullet.size() << std::endl;
+		std::cout << "Enemys:\t" << layerEnemy.size() << std::endl;
+		std::cout << "EnemyBullets:\t" << layerEnemyBullet.size() << std::endl;
 		std::cout << "Deletes:\t" << nDeletes << std::endl;
-		std::cout << "bEnemy:Totoal:\t" << nEnemy << std::endl;
+		std::cout << "Brd:Totoal:\t" << nEnemy << std::endl;
 
 		nDeletes = 0;
 	}
