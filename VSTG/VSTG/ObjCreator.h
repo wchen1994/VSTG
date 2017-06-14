@@ -11,15 +11,15 @@ namespace ObjCreator {
 	void AssignTexture(std::shared_ptr<ObjCharacter> pObject, std::string texPath);
 	void AssignTexture(std::shared_ptr<ObjCharacter> pObject, std::string texPath, sf::IntRect texRect);
 
-	enum EnemyType{ROCK_DOWN, ROCK_RAND, DUCK_RED, DUCK_BLUE, COUNT};
-	std::shared_ptr<ObjEnemy> _CreateEnemy(std::string ObjName, float radius, sf::Vector2f pos, sf::Vector2f vel, float rot, float rotSpeed);
-	std::shared_ptr<ObjEnemy> _CreateEnemy2(std::string ObjName, float radius, sf::Vector2f pos, sf::Vector2f vel, ObjEnemyBullet::EBulletType type);
-	std::shared_ptr<ObjEnemy> CreateEnemy(EnemyType type, sf::Vector2f pos, sf::Vector2f vel = { 0.0f,1.0f }, float rot=0.0f);
-
-	enum EnemyBulletType{ BROUND, BPOINTING};
-	std::shared_ptr<ObjEnemyBullet> _CreateEnemyBullet(std::string ObjName, float radius, sf::Vector2f pos, sf::Vector2f vel, float rot, ObjEnemyBullet::EBulletType type);
+	enum EnemyBulletType { BROUND, BPOINTING };
+	std::shared_ptr<ObjEnemyBullet> _CreateEnemyBullet(std::string ObjName, float radius, sf::Vector2f pos, sf::Vector2f vel, float rot);
 	std::shared_ptr<ObjEnemyBullet> CreateEnemyBullet(EnemyBulletType type, sf::Vector2f pos, sf::Vector2f vel = { 0.0f,1.0f });
 	std::shared_ptr<ObjEnemyBullet> CreateEnemyBullet(EnemyBulletType type, sf::Vector2f pos, float speed, float rot);
+
+	enum EnemyType{ROCK_DOWN, ROCK_RAND, DUCK_RED, DUCK_BLUE, COUNT};
+	std::shared_ptr<ObjEnemy> _CreateEnemy(std::string ObjName, float radius, sf::Vector2f pos, sf::Vector2f vel, float rot, float rotSpeed);
+	std::shared_ptr<ObjEnemy> _CreateEnemy2(std::string ObjName, float radius, sf::Vector2f pos, sf::Vector2f vel, EnemyBulletType bullet);
+	std::shared_ptr<ObjEnemy> CreateEnemy(EnemyType type, sf::Vector2f pos, sf::Vector2f vel = { 0.0f,1.0f }, float rot=0.0f);
 
 	enum PlayerType{HULUWA};
 	std::shared_ptr<ObjPlayer> _CreatePlayer(std::string ObjName, float radius, sf::Vector2f pos);

@@ -2,10 +2,10 @@
 
 #include "../SceneGame.hpp"
 
-EnemyDuck::EnemyDuck(sf::Vector2f pos, sf::Vector2f vel, ObjEnemyBullet::EBulletType type) :
+EnemyDuck::EnemyDuck(sf::Vector2f pos, sf::Vector2f vel, ObjCreator::EnemyBulletType bullet) :
 	ObjEnemy(pos, vel, 0.0f, 0.0f),
 	timer(0.0f),
-	bullet(type)
+	bullet(bullet)
 {
 }
 
@@ -21,7 +21,7 @@ void EnemyDuck::Update(const float dt)
 	}
 	else {
 		if (timer > coolDown) {
-			if (bullet == ObjEnemyBullet::ROUND) {
+			if (bullet == ObjCreator::EnemyBulletType::BROUND) {
 				std::shared_ptr<ObjEnemyBullet> pBullet1;
 				std::shared_ptr<ObjEnemyBullet> pBullet2;
 				std::shared_ptr<ObjEnemyBullet> pBullet3;
