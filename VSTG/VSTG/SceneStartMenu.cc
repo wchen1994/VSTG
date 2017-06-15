@@ -7,7 +7,11 @@ SceneStartMenu::SceneStartMenu(sf::RenderWindow& wnd)
 wnd(wnd), isFocus(true)
 {
 	Button::SettingDefaultButton(butStart, Essential::textManager.getText(1), Button::MEDIUM);
-	butStart.setPosition(sf::Vector2f(550.0, 340.0));
+	butStart.setPosition(sf::Vector2f(550.0, 280.0));
+
+
+	Button::SettingDefaultButton(butOnline, "Start Online", Button::MEDIUM);
+	butOnline.setPosition(sf::Vector2f(550.0, 340.0));
 
 	Button::SettingDefaultButton(butEdit, Essential::textManager.getText(2), Button::MEDIUM);
 	butEdit.setPosition(sf::Vector2f(550.0, 400.0));
@@ -42,12 +46,16 @@ Essential::GameState SceneStartMenu::Run(){
 		if (isFocus) {
 			// Button Update
 			butStart.Update();
+			butOnline.Update();
 			butEdit.Update();
 			butExit.Update();
 
 			// Button Handle
 			if (butStart.getStatus() == Button::ButtonState::Release) {
 				return Essential::GAME;
+			}
+			if (butOnline.getStatus() == Button::ButtonState::Release) {
+				return Essential::LOBBY;
 			}
 			if (butEdit.getStatus() == Button::ButtonState::Release) {
 				return Essential::EDITOR;
@@ -59,6 +67,7 @@ Essential::GameState SceneStartMenu::Run(){
 
 		wnd.clear(sf::Color(100,255,255));
 		butStart.Draw(wnd);
+		butOnline.Draw(wnd);
 		butEdit.Draw(wnd);
 		butExit.Draw(wnd);
 		wnd.display();

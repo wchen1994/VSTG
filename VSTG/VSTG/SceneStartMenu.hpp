@@ -10,6 +10,7 @@ private:
 	sf::RenderWindow& wnd;
 	std::shared_ptr<sf::Texture> butTexture;
 	Button butStart;
+	Button butOnline;
 	Button butEdit;
 	Button butExit;
 	bool isFocus;

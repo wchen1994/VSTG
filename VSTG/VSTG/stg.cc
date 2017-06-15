@@ -14,6 +14,7 @@ A touhou like game
 #include "SceneGame.hpp"
 #include "SceneStartMenu.hpp"
 #include "SceneMapEditor.h"
+#include "SceneLobby.h"
 
 #ifdef _DEBUG
 #pragma comment(lib, "sfml-graphics-d.lib")
@@ -52,6 +53,10 @@ int main(){
 				break;
 			case Essential::EDITOR:
 				lScenes.push_back(std::make_unique<SceneMapEditor>(SceneMapEditor()));
+				break;
+			case Essential::LOBBY:
+				lScenes.push_back(std::make_unique<SceneLobby>(SceneLobby()));
+				break;
 			default:
 				break;
 		}
