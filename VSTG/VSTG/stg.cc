@@ -57,6 +57,13 @@ int main(){
 			case Essential::LOBBY:
 				lScenes.push_back(std::make_unique<SceneLobby>(SceneLobby()));
 				break;
+			case Essential::GAMEHOST:
+			{
+				auto game = SceneGame(Essential::wnd);
+				game.SetIsOnline(true);
+				lScenes.push_back(std::make_unique<SceneGame>(game));
+				break;
+			}
 			default:
 				break;
 		}

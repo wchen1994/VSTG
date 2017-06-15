@@ -28,7 +28,7 @@ Essential::GameState SceneLobby::Run()
 			size_t numb = Essential::socket.GetClinetNumb();
 			hostMenu.SetTitle("Start Game ? No.Player : " + std::to_string(numb));
 			if (rc == 1) {
-
+				return Essential::GameState::GAMEHOST;
 			}
 			else if(rc == 2) {
 				Essential::socket.ClearClientInfo();

@@ -202,6 +202,13 @@ void SceneGame::Update() {
 				}
 			}
 		}
+
+		//Send Updated data through network
+		if (isOnline) {
+			for (std::shared_ptr<ObjCharacter> pObj : layerDefault) {
+				Essential::socket.SendPacket(pObj->GetPacket());
+			}
+		}
 	}
 
 	// LateUpdate
@@ -241,13 +248,6 @@ void SceneGame::Update() {
 		brd.RemoveObject(*it);
 	}
 	layerDelete.clear();
-
-	//Send Updated data through network
-	if (isOnline) {
-		for (std::shared_ptr<ObjCharacter> pObj : layerDefault) {
-			Essential::socket.SendPacket(pObj->GetPacket());
-		}
-	}
 }
 
 void SceneGame::DrawScene()
