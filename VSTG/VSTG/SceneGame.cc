@@ -202,13 +202,6 @@ void SceneGame::Update() {
 				}
 			}
 		}
-
-		//Send Updated data through network
-		if (isOnline) {
-			for (std::shared_ptr<ObjCharacter> pObj : layerDefault) {
-				Essential::socket.SendPacket(pObj->GetPacket());
-			}
-		}
 	}
 
 	// LateUpdate
