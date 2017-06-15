@@ -10,6 +10,7 @@ public:
 	ObjMenu(sf::IntRect rect, sf::String title, uint32_t flag);
 	uint32_t MenuUpdate();
 	void Draw(sf::RenderTarget& gfx);
+	void SetTitle(sf::String title) { this->title = title; text.setString(title); }
 private:
 	uint32_t flag;
 
