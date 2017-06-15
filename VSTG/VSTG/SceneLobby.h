@@ -2,6 +2,7 @@
 
 #include "Scene.hpp"
 #include "Button.h"
+#include "ObjMenu.h"
 
 class SceneLobby : public Scene {
 public:
@@ -11,4 +12,6 @@ private:
 	Button butHost;
 	Button butJoin;
 	Button butBack;
+	ObjMenu hostMenu;
+	bool isHostMenu;
 };
