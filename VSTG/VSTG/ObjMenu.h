@@ -12,12 +12,18 @@ public:
 	void Draw(sf::RenderTarget& gfx);
 private:
 	uint32_t flag;
+
 	sf::Sprite bg;
+	sf::Sprite horiBar;
+	sf::Sprite vertBar;
+	sf::Sprite corner;
+
 	sf::String title;
 	sf::Text text;
 	sf::IntRect rect;
 	Button but1;	
 	Button but2;	
 	Button but3;
+	static constexpr int padding = 10;
 	std::shared_ptr<sf::Texture> pBG;
 };
