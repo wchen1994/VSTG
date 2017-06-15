@@ -37,7 +37,7 @@ int main(){
 	std::unique_ptr<Scene> pScene;
 	std::list<std::unique_ptr<Scene>> lScenes;
 
-	Essential::GameState gameState = Essential::MENU;
+	Essential::GameState gameState = Essential::GameState::MENU;
 	Essential::textFont.loadFromFile("Resources/Fonts/msyh.ttf");
 	
 	lScenes.push_back(std::make_unique<SceneStartMenu>(SceneStartMenu(Essential::wnd)));
@@ -45,27 +45,29 @@ int main(){
 	while(!lScenes.empty()){
 		gameState = (lScenes.back())->Run();
 		switch (gameState){
-			case Essential::POP:
-				lScenes.pop_back();
-				break;
-			case Essential::GAME:
-				lScenes.push_back(std::make_unique<SceneGame>(SceneGame(Essential::wnd)));
-				break;
-			case Essential::EDITOR:
-				lScenes.push_back(std::make_unique<SceneMapEditor>(SceneMapEditor()));
-				break;
-			case Essential::LOBBY:
-				lScenes.push_back(std::make_unique<SceneLobby>(SceneLobby()));
-				break;
-			case Essential::GAMEHOST:
-			{
-				auto game = SceneGame(Essential::wnd);
-				game.SetIsOnline(true);
-				lScenes.push_back(std::make_unique<SceneGame>(game));
-				break;
-			}
-			default:
-				break;
+		case Essential::GameState::POP:
+			lScenes.pop_back();
+			break;
+		case Essential::GameState::GAME:
+			Essential::isHost = false;
+			Essential::isClient = false;
+			lScenes.push_back(std::make_unique<SceneGame>(SceneGame(Essential::wnd)));
+			break;
+		case Essential::GameState::EDITOR:
+			lScenes.push_back(std::make_unique<SceneMapEditor>(SceneMapEditor()));
+			break;
+		case Essential::GameState::LOBBY:
+			lScenes.push_back(std::make_unique<SceneLobby>(SceneLobby()));
+			break;
+		case Essential::GameState::GAMEHOST:
+		{
+			Essential::isHost = true;
+			Essential::isClient = false;
+			lScenes.push_back(std::make_unique<SceneGame>(SceneGame(Essential::wnd)));
+			break;
+		}
+		default:
+			break;
 		}
 		Essential::assetManager.killLonePtr();
 	}

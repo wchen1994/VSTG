@@ -12,6 +12,7 @@ public:
 	virtual void OnCollisionEnter(std::shared_ptr<ObjCharacter> pOther);
 	virtual void FixedUpdate(const float dt);
 	sf::Packet GetPacket();
+	void ProcessPacket(sf::Packet &packet);
 protected:
 	std::shared_ptr<sf::Shape> drawCollider;
 	std::shared_ptr<sf::Sprite> drawSprite;

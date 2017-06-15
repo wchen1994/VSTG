@@ -11,6 +11,8 @@ namespace ObjCreator {
 	void AssignTexture(std::shared_ptr<ObjCharacter> pObject, std::string texPath);
 	void AssignTexture(std::shared_ptr<ObjCharacter> pObject, std::string texPath, sf::IntRect texRect);
 
+	void SendPacket(std::shared_ptr<ObjCharacter> pObject);
+
 	enum EnemyBulletType { BROUND, BPOINTING };
 	std::shared_ptr<ObjEnemyBullet> _CreateEnemyBullet(std::string ObjName, float radius, sf::Vector2f pos, sf::Vector2f vel, float rot);
 	std::shared_ptr<ObjEnemyBullet> CreateEnemyBullet(EnemyBulletType type, sf::Vector2f pos, sf::Vector2f vel = { 0.0f,1.0f });

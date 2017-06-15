@@ -45,6 +45,11 @@ sf::Packet ObjCharacter::GetPacket()
 	return packet_out;
 }
 
+void ObjCharacter::ProcessPacket(sf::Packet & packet)
+{
+	packet << type << hashOID << position.x << position.y << rotation;
+}
+
 void ObjCharacter::Draw(sf::RenderTarget& gfx) {
 	if (drawSprite) {
 		gfx.draw(*drawSprite);

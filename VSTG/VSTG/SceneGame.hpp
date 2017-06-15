@@ -31,7 +31,6 @@ private:
 	bool isGamePause;
 	bool isGameFail;
 	bool isGameSucceed;
-	bool isOnline;
 	Map map;
 	int levelCount;
 	std::string levelFileName;
@@ -60,7 +59,4 @@ public:
 	// Changing the tile size require to rebuild the soluction
 	static constexpr int tileWidth = 20;
 	static constexpr int tileHeight = 20;
-
-public:
-	void SetIsOnline(const bool isOnline) { this->isOnline = isOnline; }
 };

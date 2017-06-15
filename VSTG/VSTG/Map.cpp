@@ -70,3 +70,47 @@ void Map::LoadFile(std::ifstream & inFile)
 	}
 	culTime = 0;
 }
+
+bool Map::LoadFromSocket()
+{
+	assert(!Essential::isHost);
+	assert(Essential::isClient);
+	std::set<std::shared_ptr<ObjEnemy>, compare_map> sorted_set;
+	int map_size = -1;
+	while (true) {
+		auto & vPackets = Essential::socket.GetPacket();
+		bool isBreak = false;
+		for (auto & packet : vPackets) {
+			int packetType;
+			packet >> packetType;
+			if (packetType == int(Essential::PacketType::ADD)) {
+
+			}
+			else if (packetType == int(Essential::PacketType::SIGNAL)) {
+				isBreak = true;
+			}
+			else if (packetType == int(Essential::PacketType::SIGNAL_SIZE)) {
+				packet >> map_size;
+			}
+			else {
+				assert(false);
+				return false;
+			}
+		}
+
+		if (isBreak && map_size == sorted_set.size()){
+			break;
+		}
+		else {
+			assert(false);
+			return false;
+		}
+	}
+
+	for (auto & pObject : sorted_set) {
+		objQueue.push(pObject);
+	}
+	sorted_set.clear();
+	culTime = 0;
+	return true;
+}

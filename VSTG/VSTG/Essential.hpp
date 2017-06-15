@@ -58,6 +58,9 @@ public:
 	typedef std::set<sf::Vector2i, vec2Compare<int>> setVecInt;
 
 	static UDPSocket socket;
+	static bool isHost;
+	static bool isClient;
+	enum class PacketType{ADD, REMOVE, SIGNAL, SIGNAL_SIZE, COUNT};
 	struct PacketServer {
 		struct _PakcetServer{
 			sf::Vector2f pos;

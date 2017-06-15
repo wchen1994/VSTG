@@ -58,3 +58,5 @@ bool Essential::inGamecanvas(const sf::Vector2f & pos)
 
 
 UDPSocket Essential::socket;
+bool Essential::isHost = false;
+bool Essential::isClient = false;

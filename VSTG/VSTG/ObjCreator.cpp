@@ -46,6 +46,16 @@ void ObjCreator::AssignTexture(std::shared_ptr<ObjCharacter> pObject, std::strin
 	}
 }
 
+void ObjCreator::SendPacket(std::shared_ptr<ObjCharacter> pObject)
+{
+	assert(Essential::isHost);
+	assert(!Essential::isClient);
+	sf::Packet packet;
+	packet << int(Essential::PacketType::ADD);
+	pObject->ProcessPacket(packet);
+	Essential::socket.SendPacket(packet);
+}
+
 std::shared_ptr<ObjEnemy> ObjCreator::_CreateEnemy(std::string ObjName, float radius, sf::Vector2f pos, sf::Vector2f vel, float rot, float rotSpeed)
 {
 	std::shared_ptr<ObjEnemy> pObj = std::make_shared<ObjEnemy>(ObjEnemy(pos, vel, rot, rotSpeed));
@@ -96,6 +106,11 @@ std::shared_ptr<ObjEnemy> ObjCreator::CreateEnemy(EnemyType type, sf::Vector2f p
 	default:
 		pObject = nullptr;
 	}
+
+	if (Essential::isHost) {
+		SendPacket(pObject);
+	}
+
 	return pObject;
 }
 
@@ -138,6 +153,11 @@ std::shared_ptr<ObjEnemyBullet> ObjCreator::CreateEnemyBullet(EnemyBulletType ty
 	default:
 		pObject = nullptr;
 	}
+
+	if (Essential::isHost) {
+		SendPacket(pObject);
+	}
+
 	return pObject;
 }
 
@@ -162,6 +182,11 @@ std::shared_ptr<ObjEnemyBullet> ObjCreator::CreateEnemyBullet(EnemyBulletType ty
 	default:
 		pObject = nullptr;
 	}
+
+	if (Essential::isHost) {
+		SendPacket(pObject);
+	}
+
 	return pObject;
 }
 
@@ -185,6 +210,11 @@ std::shared_ptr<ObjPlayer> ObjCreator::CreatePlayer(PlayerType type, sf::Vector2
 	default:
 		pObject = nullptr;
 	}
+
+	if (Essential::isHost) {
+		SendPacket(pObject);
+	}
+
 	return pObject;
 }
 
@@ -215,5 +245,10 @@ std::shared_ptr<ObjBullet> ObjCreator::CreateBullet(BulletType type, sf::Vector2
 	default:
 		pObject = nullptr;
 	}
+
+	if (Essential::isHost) {
+		SendPacket(pObject);
+	}
+
 	return pObject;
 }

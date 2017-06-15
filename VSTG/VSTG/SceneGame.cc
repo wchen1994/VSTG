@@ -22,7 +22,7 @@ SceneGame::SceneGame(sf::RenderWindow& wnd) :
 	Scene(),
 	wnd(wnd),
 	map(),
-	isFocused(true), isMenuTriger(false), isGameFail(false), isGameSucceed(false), isOnline(false),
+	isFocused(true), isMenuTriger(false), isGameFail(false), isGameSucceed(false),
 	levelFileName("Maps/Lv1.tmap"), levelCount(1),
 	escMenu(sf::IntRect(50, 80, 206, 139), Essential::textManager.getText(4), ObjMenu::MENUFLAG::YES_NO)
 {
@@ -45,7 +45,8 @@ SceneGame::~SceneGame(){
 }
 
 Essential::GameState SceneGame::Run(){
-	pPlayer = ObjCreator::CreatePlayer(ObjCreator::PlayerType::HULUWA, sf::Vector2f(0.0f, 0.0f));
+	if (!Essential::isClient)
+		pPlayer = ObjCreator::CreatePlayer(ObjCreator::PlayerType::HULUWA, sf::Vector2f(0.0f, 0.0f));
 	
 	Reset();
 
@@ -127,8 +128,14 @@ void SceneGame::Reset()
 	layerPlayer.insert(pPlayer);
 
 	// Load Map
-	if (!map.LoadFile(levelFileName))
-		isGameFail = true;
+	if (Essential::isClient) {
+		if (!map.LoadFromSocket())
+			isGameFail = true;
+	}
+	else {
+		if (!map.LoadFile(levelFileName))
+			isGameFail = true;
+	}
 
 	isGameSucceed = false;
 	ft.Mark();
