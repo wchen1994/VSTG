@@ -17,6 +17,8 @@ public:
 	static GameState gameState;
 	static constexpr int ScreenWidth = 800;
 	static constexpr int ScreenHeight = 600;
+	static constexpr unsigned short DEFAULT_HOST_PORT = 55009;
+	static constexpr unsigned short DEFAULT_CLIENT_PORT = 55010;
 	static sf::RenderWindow wnd;
 	static TextManager textManager;
 	static void defHandleMsg(const sf::Event &eventType);

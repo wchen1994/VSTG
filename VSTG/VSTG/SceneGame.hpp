@@ -31,6 +31,7 @@ private:
 	bool isGamePause;
 	bool isGameFail;
 	bool isGameSucceed;
+	bool isOnline;
 	Map map;
 	int levelCount;
 	std::string levelFileName;

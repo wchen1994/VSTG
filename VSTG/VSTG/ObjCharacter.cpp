@@ -38,6 +38,13 @@ void ObjCharacter::FixedUpdate(const float dt)
 	}
 }
 
+sf::Packet ObjCharacter::GetPacket()
+{
+	sf::Packet packet_out;
+	packet_out << type << hashOID << position.x << position.y << rotation;
+	return packet_out;
+}
+
 void ObjCharacter::Draw(sf::RenderTarget& gfx) {
 	if (drawSprite) {
 		gfx.draw(*drawSprite);

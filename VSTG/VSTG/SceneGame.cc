@@ -6,6 +6,7 @@
 #include "Board.hpp" 
 #include "ObjPlayer.hpp" 
 #include "ObjEnemy.hpp"
+#include "ObjCharacter.h"
 
 
 std::set<std::shared_ptr<ObjCharacter>> SceneGame::layerDefault;
@@ -21,7 +22,7 @@ SceneGame::SceneGame(sf::RenderWindow& wnd) :
 	Scene(),
 	wnd(wnd),
 	map(),
-	isFocused(true), isMenuTriger(false), isGameFail(false), isGameSucceed(false),
+	isFocused(true), isMenuTriger(false), isGameFail(false), isGameSucceed(false), isOnline(false),
 	levelFileName("Maps/Lv1.tmap"), levelCount(1),
 	escMenu(sf::IntRect(50, 80, 206, 139), Essential::textManager.getText(4), ObjMenu::MENUFLAG::YES_NO)
 {
@@ -240,6 +241,13 @@ void SceneGame::Update() {
 		brd.RemoveObject(*it);
 	}
 	layerDelete.clear();
+
+	//Send Updated data through network
+	if (isOnline) {
+		for (std::shared_ptr<ObjCharacter> pObj : layerDefault) {
+			Essential::socket.SendPacket(pObj->GetPacket());
+		}
+	}
 }
 
 void SceneGame::DrawScene()

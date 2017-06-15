@@ -10,6 +10,7 @@ bool UDPSocket::Host(const unsigned short port)
 {
 	try {
 		mode = Mode::HOST;
+		socket.unbind();
 		socket.bind(port);
 	}
 	catch (...) {
@@ -23,6 +24,7 @@ bool UDPSocket::Join(std::string targetIp, const unsigned short targetPort, cons
 	try {
 		mode = Mode::JOIN;
 		std::string msg_out;
+		socket.unbind();
 		socket.bind(cli_port);
 		serverIp = sf::IpAddress(targetIp);
 		serverPort = targetPort;

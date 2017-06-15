@@ -5,7 +5,6 @@
 
 //bool Essential::isGameOver = false;
 bool Essential::isExit = false;
-//Essential::GameState Essential::gameState = GAME;
 sf::RenderWindow Essential::wnd(sf::VideoMode(Essential::ScreenWidth, Essential::ScreenHeight), "Game", sf::Style::Default);
 TextManager Essential::textManager("Resources/texts/en_us.csv");
 AssetManager Essential::assetManager;
@@ -57,3 +56,5 @@ bool Essential::inGamecanvas(const sf::Vector2f & pos)
 	return pos.x >= topLeft.x && pos.y >= topLeft.y && pos.x < botRight.x && pos.y < botRight.y;
 }
 
+
+UDPSocket Essential::socket;
