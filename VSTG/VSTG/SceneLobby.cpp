@@ -19,34 +19,33 @@ Essential::GameState SceneLobby::Run()
 	while (Essential::wnd.isOpen()) {
 		sf::Event e;
 		while (Essential::wnd.pollEvent(e)) {
-			switch (e.type)
-			{
-			default:
-				Essential::defHandleMsg(e);
-			}
+			Essential::defHandleMsg(e);
 		}
-
-		butHost.Update();
 
 		if (isHostMenu) {
 			int rc = hostMenu.MenuUpdate();
+			Essential::socket.servWait();
+			size_t numb = Essential::socket.GetClinetNumb();
+			hostMenu.SetTitle("Start Game ? No.Player : " + std::to_string(numb));
 			if (rc == 1) {
 
 			}
 			else if(rc == 2) {
+				Essential::socket.ClearClientInfo();
 				isHostMenu = false;
 			}
 		}
 		else {
+			butHost.Update();
 			butJoin.Update();
 			butBack.Update();
 
 			if (butHost.getStatus() == Button::ButtonState::Release) {
 				Essential::socket.Host(Essential::DEFAULT_HOST_PORT);
-				Essential::socket.servWait();
 				isHostMenu = true;
 			}
 			if (butBack.getStatus() == Button::ButtonState::Release) {
+				Essential::socket.Unbind();
 				return Essential::GameState::POP;
 			}
 

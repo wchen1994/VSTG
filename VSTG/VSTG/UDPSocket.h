@@ -24,4 +24,8 @@ private:
 	unsigned short serverPort;
 	std::set<std::pair<sf::IpAddress, unsigned short>> clinetInfo;
 	Mode mode;
+public:
+	void ClearClientInfo() { clinetInfo.clear(); }
+	void Unbind() { socket.unbind(); }
+	size_t GetClinetNumb() const { return clinetInfo.size(); }
 };
