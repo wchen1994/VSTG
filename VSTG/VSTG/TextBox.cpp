@@ -17,11 +17,12 @@ TextBox::TextBox() :
 {
 	pTex = Essential::assetManager.GetTexture("Resources/Textures/TextBox01.png");
 	bgFocus.setTexture(*pTex);
-	bgFocus.setTextureRect(sf::IntRect(0, 0, 300, 80));
+	bgFocus.setTextureRect(sf::IntRect(0, 0, 300, 40));
 	bgIdle.setTexture(*pTex);
-	bgIdle.setTextureRect(sf::IntRect(0, 90, 300, 80));
-	rect = sf::IntRect(0, 0, 300, 80);
-	text.setString("-");
+	bgIdle.setTextureRect(sf::IntRect(0, 90, 300, 40));
+	rect = sf::IntRect(0, 0, 300, 40);
+
+	text.setString(prompt);
 	text.setFont(Essential::textFont);
 }
 
@@ -61,12 +62,22 @@ void TextBox::Input(const sf::Event::KeyEvent & keyevent)
 				input.push_back('0' + key - sf::Keyboard::Key::Num0);
 			}
 		}
+		if (flag & flagSIMBOL) {
+			if (key == sf::Keyboard::Key::Period) {
+				input.push_back('.');
+			}
+		}
 	}
 	if (key == sf::Keyboard::Key::BackSpace) {
 		if (input.size() != 0)
 			input.pop_back();
 	}
-	text.setString(input);
+	if (input.size() == 0) {
+		text.setString(prompt);
+	}
+	else {
+		text.setString(input);
+	}
 }
 
 void TextBox::Draw(sf::RenderTarget & gfx)

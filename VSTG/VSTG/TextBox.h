@@ -31,9 +31,9 @@ private:
 	sf::Sprite bgIdle;
 	sf::Sprite bgFocus;
 	sf::Text text;
-	sf::Sprite cursor;
 	bool isFocus;
 	std::string input;
+	std::string prompt;
 	std::shared_ptr<sf::Texture> pTex;
 public:
 	void SetMaxSize(const int s) { size = s; }
@@ -41,4 +41,7 @@ public:
 
 	void SetString(const std::string & s) { input = s; }
 	std::string GetString() const { return input; }
+
+	void SetPrompt(const std::string & s) { prompt = s; text.setString(prompt); }
+	std::string GetPrompt() const { return prompt; }
 };

@@ -3,6 +3,7 @@
 #include "Scene.hpp"
 #include "Button.h"
 #include "ObjMenu.h"
+#include "TextBox.h"
 
 class SceneLobby : public Scene {
 public:
@@ -13,5 +14,9 @@ private:
 	Button butJoin;
 	Button butBack;
 	ObjMenu hostMenu;
+	ObjMenu clientMenu;
 	bool isHostMenu;
+	bool isClientMenu;
+	TextBox boxClientIP;
+	TextBox boxClientPort;
 };

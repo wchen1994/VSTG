@@ -1,8 +1,9 @@
 #include "SceneLobby.h"
 
 SceneLobby::SceneLobby() : 
-	isHostMenu(false), 
-	hostMenu(sf::IntRect(50, 80, 406, 139), "Start Game? No. Player: 1", ObjMenu::MENUFLAG::YES_NO)
+	isHostMenu(false), isClientMenu(false),
+	hostMenu(sf::IntRect(50, 80, 406, 139), "Start Game? No. Player: 1", ObjMenu::MENUFLAG::YES_NO),
+	clientMenu(sf::IntRect(50, 80, 550, 400), "Connect to: ", ObjMenu::MENUFLAG::OK_CANCEL)
 {
 	Button::SettingDefaultButton(butHost, "Host Game", Button::ButtonStyle::MEDIUM);
 	butHost.setPosition(sf::Vector2f(300.0f, 150.0f));
@@ -12,6 +13,16 @@ SceneLobby::SceneLobby() :
 
 	Button::SettingDefaultButton(butBack, "Back", Button::ButtonStyle::SMALL);
 	butBack.setPosition(sf::Vector2f(550.0f, 500.0f));
+
+	boxClientIP.SetPosition(sf::Vector2f(80, 150));
+	boxClientIP.SetMaxSize(15);
+	boxClientIP.flag = TextBox::flagDIGIT | TextBox::flagSIMBOL;
+	boxClientIP.SetPrompt("<IP Address>");
+
+	boxClientPort.SetPosition(sf::Vector2f(80, 200));
+	boxClientPort.SetMaxSize(5);
+	boxClientPort.flag = TextBox::flagDIGIT;
+	boxClientPort.SetPrompt("<Port>");
 }
 
 Essential::GameState SceneLobby::Run()
@@ -19,7 +30,16 @@ Essential::GameState SceneLobby::Run()
 	while (Essential::wnd.isOpen()) {
 		sf::Event e;
 		while (Essential::wnd.pollEvent(e)) {
-			Essential::defHandleMsg(e);
+			switch (e.type) {
+			case sf::Event::KeyReleased:
+				if (isClientMenu) {
+					boxClientIP.Input(e.key);
+					boxClientPort.Input(e.key);
+				}
+				break;
+			default:
+				Essential::defHandleMsg(e);
+			}
 		}
 
 		if (isHostMenu) {
@@ -35,6 +55,17 @@ Essential::GameState SceneLobby::Run()
 				isHostMenu = false;
 			}
 		}
+		if (isClientMenu) {
+			int rc = clientMenu.MenuUpdate();
+			boxClientIP.Update();
+			boxClientPort.Update();
+			if (rc == 1) {
+
+			}
+			else if (rc == 2) {
+				isClientMenu = false;
+			}
+		}
 		else {
 			butHost.Update();
 			butJoin.Update();
@@ -43,6 +74,9 @@ Essential::GameState SceneLobby::Run()
 			if (butHost.getStatus() == Button::ButtonState::Release) {
 				Essential::socket.Host(Essential::DEFAULT_HOST_PORT);
 				isHostMenu = true;
+			}
+			if (butJoin.getStatus() == Button::ButtonState::Release) {
+				isClientMenu = true;
 			}
 			if (butBack.getStatus() == Button::ButtonState::Release) {
 				Essential::socket.Unbind();
@@ -57,6 +91,11 @@ Essential::GameState SceneLobby::Run()
 		butBack.Draw(Essential::wnd);
 		if (isHostMenu) {
 			hostMenu.Draw(Essential::wnd);
+		}
+		if (isClientMenu) {
+			clientMenu.Draw(Essential::wnd);
+			boxClientIP.Draw(Essential::wnd);
+			boxClientPort.Draw(Essential::wnd);
 		}
 		Essential::wnd.display();
 	}
