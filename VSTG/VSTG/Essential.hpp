@@ -53,6 +53,11 @@ public:
 	};
 
 	typedef std::set<sf::Vector2i, vec2Compare<int>> setVecInt;
+
+	template<class T>
+	static bool inRect(sf::Rect<T> rect, sf::Vector2<T> vec) {
+		return vec.x >= rect.left && vec.x < rect.left + rect.width && vec.y >= rect.top && vec.y < rect.top + rect.height;
+	}
 };
 
 
