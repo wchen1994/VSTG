@@ -17,6 +17,7 @@ private:
 	ObjMenu clientMenu;
 	bool isHostMenu;
 	bool isClientMenu;
+	TextBox boxHostPort;
 	TextBox boxClientIP;
 	TextBox boxClientPort;
 };

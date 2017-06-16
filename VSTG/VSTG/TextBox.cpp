@@ -72,12 +72,7 @@ void TextBox::Input(const sf::Event::KeyEvent & keyevent)
 		if (input.size() != 0)
 			input.pop_back();
 	}
-	if (input.size() == 0) {
-		text.setString(prompt);
-	}
-	else {
-		text.setString(input);
-	}
+	UpdateText();
 }
 
 void TextBox::Draw(sf::RenderTarget & gfx)

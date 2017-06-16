@@ -22,9 +22,18 @@ public:
 	void Update();
 	void Input(const sf::Event::KeyEvent& keyevent);
 	void Draw(sf::RenderTarget & gfx);
-	void SetPosition(const sf::Vector2f & pos) { 
+	void SetPosition(const sf::Vector2f & pos) {
 		bgFocus.setPosition(pos); bgIdle.setPosition(pos); text.setPosition(pos);
-		rect.left = int(pos.x); rect.top = int(pos.y); }
+		rect.left = int(pos.x); rect.top = int(pos.y);
+	}
+	void UpdateText() {
+		if (input.size() == 0) {
+			text.setString(prompt);
+		}
+		else {
+			text.setString(input);
+		}
+	}
 private:
 	int size;
 	sf::IntRect rect;
@@ -39,9 +48,11 @@ public:
 	void SetMaxSize(const int s) { size = s; }
 	int GetMaxSize() const { return size; }
 
-	void SetString(const std::string & s) { input = s; }
+	void SetString(const std::string & s) { input = s; UpdateText(); }
 	std::string GetString() const { return input; }
 
-	void SetPrompt(const std::string & s) { prompt = s; text.setString(prompt); }
+	void SetPrompt(const std::string & s) { prompt = s; UpdateText(); }
 	std::string GetPrompt() const { return prompt; }
+
+
 };

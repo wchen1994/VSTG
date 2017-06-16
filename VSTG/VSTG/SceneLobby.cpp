@@ -60,7 +60,8 @@ Essential::GameState SceneLobby::Run()
 			boxClientIP.Update();
 			boxClientPort.Update();
 			if (rc == 1) {
-
+				unsigned short hostPort = std::stoi(boxClientPort.GetString());
+				Essential::socket.Join(boxClientIP.GetString(), hostPort, Essential::DEFAULT_CLIENT_PORT);
 			}
 			else if (rc == 2) {
 				isClientMenu = false;
@@ -76,6 +77,8 @@ Essential::GameState SceneLobby::Run()
 				isHostMenu = true;
 			}
 			if (butJoin.getStatus() == Button::ButtonState::Release) {
+				if (boxClientPort.GetString().size() == 0)
+					boxClientPort.SetString(std::to_string(Essential::DEFAULT_HOST_PORT));
 				isClientMenu = true;
 			}
 			if (butBack.getStatus() == Button::ButtonState::Release) {
