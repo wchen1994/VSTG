@@ -20,4 +20,8 @@ private:
 	TextBox boxHostPort;
 	TextBox boxClientIP;
 	TextBox boxClientPort;
+
+	int playerCounter;
+	bool isClientConnecting;
+	bool isClientConnected;
 };

@@ -65,7 +65,7 @@ sf::Packet UDPSocket::Synch(sf::Packet & packet_send)
 
 	switch (mode) {
 	case HOST:
-		for (auto pair : clinetInfo) {
+		for (auto pair : clientInfo) {
 			socket.send(packet_send, pair.first, pair.second);
 			std::cout << "To:\t" + pair.first.toString() + ":" << pair.second << "\tSize: " << packet_send.getDataSize() << std::endl;
 		}
@@ -90,7 +90,7 @@ bool UDPSocket::servWait()
 	switch (status)
 	{
 	case sf::Socket::Done: 
-		clinetInfo.insert({ remoteIp_in, remotePort_in });
+		clientInfo.push_back({ remoteIp_in, remotePort_in });
 		std::cout << "Connected by: " + remoteIp_in.toString() + ":" << remotePort_in << std::endl;
 		return true;
 		break;
@@ -115,7 +115,7 @@ bool UDPSocket::servTrial()
 {
 	sf::Packet packet_out;
 	packet_out << "Greeting from Server: " << sf::IpAddress::getLocalAddress().toString();
-	for (auto & pair : clinetInfo) {
+	for (auto & pair : clientInfo) {
 		assert(socket.send(packet_out, pair.first, pair.second) == sf::Socket::Done);
 	}
 	return false;
@@ -133,7 +133,7 @@ bool UDPSocket::SendPacket(sf::Packet & packet)
 {
 	switch (mode) {
 	case HOST:
-		for (auto pair : clinetInfo) {
+		for (auto pair : clientInfo) {
 			assert(socket.send(packet, pair.first, pair.second) == sf::Socket::Done);
 			std::cout << "To:\t" + pair.first.toString() + ":" << pair.second << "\tSize: " << packet.getDataSize() << std::endl;
 		}

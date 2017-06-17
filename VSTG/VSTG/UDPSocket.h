@@ -22,10 +22,11 @@ private:
 	sf::UdpSocket socket;
 	sf::IpAddress serverIp;
 	unsigned short serverPort;
-	std::set<std::pair<sf::IpAddress, unsigned short>> clinetInfo;
+	std::vector<std::pair<sf::IpAddress, unsigned short>> clientInfo;
 	Mode mode;
 public:
-	void ClearClientInfo() { clinetInfo.clear(); }
+	void ClearClientInfo() { clientInfo.clear(); }
 	void Unbind() { socket.unbind(); }
-	size_t GetClinetNumb() const { return clinetInfo.size(); }
+	size_t GetClinetNumb() const { return clientInfo.size(); }
+	const auto GetClient() const { return clientInfo; }
 };

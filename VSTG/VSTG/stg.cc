@@ -66,6 +66,11 @@ int main(){
 			lScenes.push_back(std::make_unique<SceneGame>(SceneGame(Essential::wnd)));
 			break;
 		}
+		case Essential::GameState::GAMECLIENT:
+			Essential::isHost = false;
+			Essential::isClient = false;
+			lScenes.push_back(std::make_unique<SceneGame>(SceneGame(Essential::wnd)));
+			break;
 		default:
 			break;
 		}
