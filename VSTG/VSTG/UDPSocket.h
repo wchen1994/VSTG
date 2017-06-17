@@ -1,7 +1,8 @@
 #pragma once
 
 #include "SFML/Network.hpp"
-#include <set>
+#include <queue>
+#include <vector>
 #include <iostream>
 #include <assert.h>
 
@@ -17,13 +18,15 @@ public:
 	bool servTrial();
 	bool cliTrial();
 	bool SendPacket(sf::Packet & packet);
-	std::vector<sf::Packet> GetPacket();
+	std::queue<sf::Packet> GetPacket();
+	void FlushPacketQueue();
 private:
 	sf::UdpSocket socket;
 	sf::IpAddress serverIp;
 	unsigned short serverPort;
 	std::vector<std::pair<sf::IpAddress, unsigned short>> clientInfo;
 	Mode mode;
+	std::queue<sf::Packet> qPackets;
 public:
 	void ClearClientInfo() { clientInfo.clear(); }
 	void Unbind() { socket.unbind(); }

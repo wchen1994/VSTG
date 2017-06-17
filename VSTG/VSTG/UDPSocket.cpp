@@ -89,11 +89,16 @@ bool UDPSocket::servWait()
 	sf::Socket::Status status = socket.receive(packet_in, remoteIp_in, remotePort_in);
 	switch (status)
 	{
-	case sf::Socket::Done: 
-		clientInfo.push_back({ remoteIp_in, remotePort_in });
+	case sf::Socket::Done:
+	{
 		std::cout << "Connected by: " + remoteIp_in.toString() + ":" << remotePort_in << std::endl;
-		return true;
+		const std::pair<sf::IpAddress, unsigned short> pair = { remoteIp_in, remotePort_in };
+		if (std::find(clientInfo.begin(), clientInfo.end(), pair) == clientInfo.end()) {
+			clientInfo.push_back({ remoteIp_in, remotePort_in }); // Being a vector will get increase even with same item
+			return true;
+		}
 		break;
+	}
 	case sf::Socket::NotReady:
 		break;
 	case sf::Socket::Partial:
@@ -148,16 +153,23 @@ bool UDPSocket::SendPacket(sf::Packet & packet)
 	return true;
 }
 
-std::vector<sf::Packet> UDPSocket::GetPacket()
+std::queue<sf::Packet> UDPSocket::GetPacket()
 {
 	std::vector<sf::Packet> vPackets;
 	sf::Packet packet_in;
 	sf::IpAddress ip_in;
 	unsigned short port_in;
 	while (socket.receive(packet_in, ip_in, port_in) == sf::Socket::Done) {
-		vPackets.push_back(packet_in); 
+		qPackets.push(packet_in); 
 		std::cout << "From:\t" + ip_in.toString() + ":" << port_in << "\tSize: " << packet_in.getDataSize() << std::endl;
 	}
 
-	return vPackets;
+	return qPackets;
+}
+
+void UDPSocket::FlushPacketQueue()
+{
+	while (!qPackets.empty()) {
+		qPackets.pop();
+	}
 }

@@ -78,9 +78,11 @@ bool Map::LoadFromSocket()
 	std::set<std::shared_ptr<ObjEnemy>, compare_map> sorted_set;
 	int map_size = -1;
 	while (true) {
-		auto & vPackets = Essential::socket.GetPacket();
+		auto & qPackets = Essential::socket.GetPacket();
 		bool isBreak = false;
-		for (auto & packet : vPackets) {
+		while (!qPackets.empty()) {
+			sf::Packet & packet = qPackets.front();
+			qPackets.pop();
 			int packetType;
 			packet >> packetType;
 			if (packetType == int(Essential::PacketType::ADD)) {

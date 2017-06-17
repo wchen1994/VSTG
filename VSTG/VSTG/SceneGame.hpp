@@ -14,7 +14,7 @@
 #include "ObjCreator.h"
 
 //#define _DEBUG_BOARD
-#define _DEBUG_LOG
+//#define _DEBUG_LOG
 
 class SceneGame : public Scene{
 private:

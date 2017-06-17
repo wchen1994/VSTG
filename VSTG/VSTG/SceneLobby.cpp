@@ -4,7 +4,7 @@ SceneLobby::SceneLobby() :
 	isHostMenu(false), isClientMenu(false), 
 	isClientConnecting(false), isClientConnected(false),
 	playerCounter(0),
-	hostMenu(sf::IntRect(50, 80, 406, 139), "Start Game? No. Player: 1", ObjMenu::MENUFLAG::YES_NO),
+	hostMenu(sf::IntRect(50, 80, 406, 139), "Start Game? No. Player: 0", ObjMenu::MENUFLAG::YES_NO),
 	clientMenu(sf::IntRect(50, 80, 550, 400), "Connect to: ", ObjMenu::MENUFLAG::OK_CANCEL)
 {
 	Button::SettingDefaultButton(butHost, "Host Game", Button::ButtonStyle::MEDIUM);
@@ -54,8 +54,8 @@ Essential::GameState SceneLobby::Run()
 				assert(playerCounter == clientInfo.size());
 				packet_out << int(Essential::PacketType::SIGNAL_SIZE) << playerCounter;
 				Essential::socket.SendPacket(packet_out);
+				hostMenu.SetTitle("Start Game ? No.Player : " + std::to_string(playerCounter));
 			}
-			hostMenu.SetTitle("Start Game ? No.Player : " + std::to_string(playerCounter));
 			if (rc == 1) {
 				sf::Packet packet_out;
 				packet_out << int(Essential::PacketType::SIGNAL);
@@ -70,65 +70,72 @@ Essential::GameState SceneLobby::Run()
 		}
 		else if (isClientMenu) {
 			int rc = clientMenu.MenuUpdate();
-			boxClientIP.Update();
-			boxClientPort.Update();
+
+			if (!isClientConnected) {
+				boxClientIP.Update();
+				boxClientPort.Update();
+			}
 
 			if (isClientConnecting) {
-				std::vector<sf::Packet> & vPackets = Essential::socket.GetPacket();
-				if (vPackets.size() == 0) {
-					
-				} 
-				else if (vPackets.size() == 1) {
+				std::queue<sf::Packet> & qPackets = Essential::socket.GetPacket();
+				while (!qPackets.empty())
+				{
+					sf::Packet &packet = qPackets.front();
 					int type;
 					int playerNumber;
-					sf::Packet & packet = vPackets[0];
-					packet >> type >> playerNumber;
-					assert(type == int(Essential::PacketType::SIGNAL_SIZE));
-					clientMenu.SetTitle("Connected: Player " + std::to_string(playerNumber));
-					assert(Essential::playerNumber == 0);
-					Essential::playerNumber = playerNumber;
-					isClientConnecting = false;
-					isClientConnected = true;
-				}
-				else {
-					assert(false);
+					packet >> type;
+					if (type == int(Essential::PacketType::SIGNAL_SIZE)) {
+						packet >> playerNumber;
+						clientMenu.SetTitle("Connected: Player " + std::to_string(playerNumber));
+						assert(Essential::playerNumber == 0);
+						Essential::playerNumber = playerNumber;
+						isClientConnecting = false;
+						isClientConnected = true;
+					}
+					qPackets.pop();
 				}
 			}
 			else if (isClientConnected) {
-				std::vector<sf::Packet> & vPackets = Essential::socket.GetPacket();
-				if (vPackets.size() == 0) {
-
-				}
-				else if (vPackets.size() == 1) {
+				std::queue<sf::Packet> & qPackets = Essential::socket.GetPacket();
+				while (!qPackets.empty())
+				{
+					sf::Packet &packet = qPackets.front();
 					int type;
-					sf::Packet & packet = vPackets[0];
 					packet >> type;
+					qPackets.pop();
 					if (type == int(Essential::PacketType::SIGNAL)) {
+						isClientConnected = false;
+						isClientConnecting = false; 
+						Essential::playerNumber = 0;
+						clientMenu.SetTitle("Connect to : ");
 						return Essential::GameState::GAMECLIENT;
 					}
 				}
-				else {
-					assert(false);
-				}
+				
 			}
 
 			if (rc == 1) {
-				unsigned short hostPort = std::stoi(boxClientPort.GetString());
-				std::string hostIp = boxClientIP.GetString();
-				Essential::socket.Join(hostIp, hostPort, Essential::DEFAULT_CLIENT_PORT);
+				if (!isClientConnected) {
+					unsigned short hostPort = std::stoi(boxClientPort.GetString());
+					std::string hostIp = boxClientIP.GetString();
+					Essential::socket.Join(hostIp, hostPort, Essential::DEFAULT_CLIENT_PORT);
 
-				clientMenu.SetTitle("Connecting to: " + hostIp);
-				sf::Packet packet_out;
-				packet_out << char(Essential::PacketType::SIGNAL);
-				Essential::socket.SendPacket(packet_out);
+					clientMenu.SetTitle("Connecting to: " + hostIp);
+					sf::Packet packet_out;
+					packet_out << int(Essential::PacketType::SIGNAL);
+					Essential::socket.SendPacket(packet_out);
 
-				isClientConnecting = true;
+					isClientConnecting = true;
+				}
 			}
 			else if (rc == 2) {
 				clientMenu.SetTitle("Connect to: ");
 				isClientConnecting = false;
 				isClientConnected = false;
 				isClientMenu = false;
+				Essential::playerNumber = 0;
+				Essential::socket.FlushPacketQueue();
+				//** Future add sendPacke of Signal Exit
 			}
 		}
 		else {
@@ -147,6 +154,7 @@ Essential::GameState SceneLobby::Run()
 			}
 			if (butBack.getStatus() == Button::ButtonState::Release) {
 				Essential::socket.Unbind();
+				Essential::socket.FlushPacketQueue();
 				return Essential::GameState::POP;
 			}
 
