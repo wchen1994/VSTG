@@ -82,7 +82,6 @@ bool Map::LoadFromSocket()
 		bool isBreak = false;
 		while (!qPackets.empty()) {
 			sf::Packet & packet = qPackets.front();
-			qPackets.pop();
 			int packetType;
 			packet >> packetType;
 			if (packetType == int(Essential::PacketType::ADD)) {
@@ -98,6 +97,7 @@ bool Map::LoadFromSocket()
 				assert(false);
 				return false;
 			}
+			qPackets.pop();
 		}
 
 		if (isBreak && map_size == sorted_set.size()){
@@ -115,4 +115,21 @@ bool Map::LoadFromSocket()
 	sorted_set.clear();
 	culTime = 0;
 	return true;
+}
+
+void Map::AddObjectByPacket(sf::Packet & packet_in, std::set<std::shared_ptr<ObjEnemy>, compare_map> & sorted_set_out)
+{
+	int type;
+	packet_in >> type;
+	
+	// Packet can have enemy and player
+	if (type == GameObject::ENEMY) {
+
+	}
+	else if (type == GameObject::PLAYER) {
+		
+	}
+	else {
+		assert(false);
+	}
 }

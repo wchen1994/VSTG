@@ -105,8 +105,7 @@ Essential::GameState SceneLobby::Run()
 					qPackets.pop();
 					if (type == int(Essential::PacketType::SIGNAL)) {
 						isClientConnected = false;
-						isClientConnecting = false; 
-						Essential::playerNumber = 0;
+						isClientConnecting = false;
 						clientMenu.SetTitle("Connect to : ");
 						return Essential::GameState::GAMECLIENT;
 					}

@@ -25,6 +25,7 @@ public:
 	bool LoadFile(const std::string filepath);
 	void LoadFile(std::ifstream& inFile);
 	bool LoadFromSocket();
+	void AddObjectByPacket(sf::Packet & packet_in, std::set<std::shared_ptr<ObjEnemy>, compare_map> & sorted_set_out);
 	float getCulTime() const { return culTime; }
 private:
 	float culTime;

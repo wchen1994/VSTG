@@ -51,24 +51,28 @@ int main(){
 		case Essential::GameState::GAME:
 			Essential::isHost = false;
 			Essential::isClient = false;
+			Essential::playerNumber = 1;
 			lScenes.push_back(std::make_unique<SceneGame>(SceneGame(Essential::wnd)));
 			break;
 		case Essential::GameState::EDITOR:
 			lScenes.push_back(std::make_unique<SceneMapEditor>(SceneMapEditor()));
 			break;
 		case Essential::GameState::LOBBY:
+			Essential::socket.FlushPacketQueue();
 			lScenes.push_back(std::make_unique<SceneLobby>(SceneLobby()));
 			break;
 		case Essential::GameState::GAMEHOST:
 		{
 			Essential::isHost = true;
 			Essential::isClient = false;
+			Essential::socket.FlushPacketQueue();
 			lScenes.push_back(std::make_unique<SceneGame>(SceneGame(Essential::wnd)));
 			break;
 		}
 		case Essential::GameState::GAMECLIENT:
 			Essential::isHost = false;
-			Essential::isClient = false;
+			Essential::isClient = true;
+			Essential::socket.FlushPacketQueue();
 			lScenes.push_back(std::make_unique<SceneGame>(SceneGame(Essential::wnd)));
 			break;
 		default:

@@ -11,7 +11,7 @@
 
 std::set<std::shared_ptr<ObjCharacter>> SceneGame::layerDefault;
 std::set<std::shared_ptr<ObjCharacter>> SceneGame::layerBullet;
-std::set<std::shared_ptr<ObjCharacter>> SceneGame::layerPlayer;
+std::vector<std::shared_ptr<ObjCharacter>> SceneGame::layerPlayer;
 std::set<std::shared_ptr<ObjCharacter>> SceneGame::layerEnemy;
 std::set<std::shared_ptr<ObjCharacter>> SceneGame::layerEnemyBullet;
 std::set<std::shared_ptr<ObjCharacter>> SceneGame::layerDelete;
@@ -45,9 +45,17 @@ SceneGame::~SceneGame(){
 }
 
 Essential::GameState SceneGame::Run(){
-	if (!Essential::isClient)
+	if (Essential::isClient && !Essential::isHost)
 		pPlayer = ObjCreator::CreatePlayer(ObjCreator::PlayerType::HULUWA, sf::Vector2f(0.0f, 0.0f));
-	
+	else if (Essential::isHost && !Essential::isClient)
+		pPlayer = ObjCreator::CreatePlayer(ObjCreator::PlayerType::HULUWA, sf::Vector2f(0.0f, 0.0f));
+	else if (!Essential::isClient && !Essential::isHost)
+		pPlayer = ObjCreator::CreatePlayer(ObjCreator::PlayerType::HULUWA, sf::Vector2f(0.0f, 0.0f));
+	else
+		assert(false);
+
+	layerPlayer.push_back(pPlayer);
+
 	Reset();
 
 	while (wnd.isOpen()) {
@@ -113,7 +121,7 @@ void SceneGame::Reset()
 	Essential::wnd.display();
 
 	layerDefault.clear();
-	layerPlayer.clear();
+//	layerPlayer.clear();
 	layerBullet.clear();
 	layerEnemy.clear();
 	layerEnemyBullet.clear();
@@ -125,7 +133,7 @@ void SceneGame::Reset()
 	playerPos.y = float(Essential::GameCanvas.top + Essential::GameCanvas.height * 4 / 5);
 	pPlayer->setPosition(playerPos);
 	layerDefault.insert(pPlayer);
-	layerPlayer.insert(pPlayer);
+//	layerPlayer.insert(pPlayer);
 
 	// Load Map
 	if (Essential::isClient) {
@@ -143,8 +151,13 @@ void SceneGame::Reset()
 
 void SceneGame::Update() {
 	// Check for GameOver
-	if (layerPlayer.size() == 0)
-		isGameFail = true;
+	isGameFail = true;
+	for (auto &pPlayer : layerPlayer) {
+		if (pPlayer != NULL)
+			isGameFail = false;
+	}
+//	if (layerPlayer.size() == 0)
+//		isGameFail = true;
 
 	// Update text
 	playerHP.setString("HP: " + std::to_string(int(pPlayer->GetHp())) + "/100");
@@ -198,6 +211,11 @@ void SceneGame::Update() {
 		}
 		// Player collision
 		for (auto it = layerPlayer.begin(); it != layerPlayer.end(); it++) {
+			
+			// layerPlayer is a vector
+			if (*it == NULL)
+				continue;
+
 			std::set<std::shared_ptr<Board::Tile>> sTile = brd.GetPotentialTile(*it);
 			for (auto it_tile = sTile.begin(); it_tile != sTile.end(); it_tile++) {
 				const std::set<std::shared_ptr<ObjCharacter>> sObject = (*it_tile)->GetLayer();
@@ -241,11 +259,17 @@ void SceneGame::Update() {
 	//Remove
 	for (auto it = layerDelete.begin(); it != layerDelete.end(); it++) {
 		layerDefault.erase(*it);
-		layerPlayer.erase(*it);
 		layerBullet.erase(*it);
 		layerEnemy.erase(*it);
 		layerEnemyBullet.erase(*it);
 		brd.RemoveObject(*it);
+		if ((*it)->GetType() == GameObject::PLAYER) {
+			for (auto & pPlayer : layerPlayer) {
+				if (pPlayer == *it) {
+					pPlayer = NULL;
+				}
+			}
+		}
 	}
 	layerDelete.clear();
 }

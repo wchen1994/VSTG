@@ -1,5 +1,9 @@
 #include"GameObject.hpp"
 
+//Static
+unsigned int GameObject::uniqueIdCounter = 0;
+//Static end
+
 GameObject::GameObject() :
 	GameObject(sf::Vector2f(0.0f, 0.0f))
 {
@@ -9,6 +13,7 @@ GameObject::GameObject(sf::Vector2f pos) :
 	position(pos),
 	isDelete(false),
 	type(UNKONW),
+	unique_id(++uniqueIdCounter),
 	enable_shared_from_this()
 {
 	// Setup ID
