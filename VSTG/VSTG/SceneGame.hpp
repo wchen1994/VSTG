@@ -37,7 +37,6 @@ private:
 	std::string levelFileName;
 	ObjMenu escMenu;
 	sf::RectangleShape background; 
-	std::shared_ptr<ObjPlayer> pPlayer;
 
 	// UI
 	sf::Text playerHP;

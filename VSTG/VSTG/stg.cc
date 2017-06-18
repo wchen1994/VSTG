@@ -51,7 +51,7 @@ int main(){
 		case Essential::GameState::GAME:
 			Essential::isHost = false;
 			Essential::isClient = false;
-			Essential::playerNumber = 1;
+			Essential::playerNumber = 0;
 			lScenes.push_back(std::make_unique<SceneGame>(SceneGame(Essential::wnd)));
 			break;
 		case Essential::GameState::EDITOR:

@@ -45,16 +45,20 @@ SceneGame::~SceneGame(){
 }
 
 Essential::GameState SceneGame::Run(){
-	if (Essential::isClient && !Essential::isHost)
-		pPlayer = ObjCreator::CreatePlayer(ObjCreator::PlayerType::HULUWA, sf::Vector2f(0.0f, 0.0f));
-	else if (Essential::isHost && !Essential::isClient)
-		pPlayer = ObjCreator::CreatePlayer(ObjCreator::PlayerType::HULUWA, sf::Vector2f(0.0f, 0.0f));
-	else if (!Essential::isClient && !Essential::isHost)
-		pPlayer = ObjCreator::CreatePlayer(ObjCreator::PlayerType::HULUWA, sf::Vector2f(0.0f, 0.0f));
+	if (Essential::isClient && !Essential::isHost) { // Clinet Start
+
+	}
+	else if (!Essential::isClient && Essential::isHost) { // Host Start
+		Essential::totalNumbPlayer = int(Essential::socket.GetClinetNumb()) + 1;
+		for (int i = 0; i < Essential::totalNumbPlayer; i++) {
+			layerPlayer.push_back(ObjCreator::CreatePlayer(ObjCreator::PlayerType::HULUWA, sf::Vector2f(0.0f, 0.0f)));
+		}
+	}
+	else if (!Essential::isClient && !Essential::isHost) { // Offline Start
+		layerPlayer.push_back(ObjCreator::CreatePlayer(ObjCreator::PlayerType::HULUWA, sf::Vector2f(0.0f, 0.0f)));
+	}
 	else
 		assert(false);
-
-	layerPlayer.push_back(pPlayer);
 
 	Reset();
 
@@ -121,7 +125,6 @@ void SceneGame::Reset()
 	Essential::wnd.display();
 
 	layerDefault.clear();
-//	layerPlayer.clear();
 	layerBullet.clear();
 	layerEnemy.clear();
 	layerEnemyBullet.clear();
@@ -129,11 +132,13 @@ void SceneGame::Reset()
 
 	// Create Player
 	sf::Vector2f playerPos;
-	playerPos.x = float(Essential::GameCanvas.left + Essential::GameCanvas.width / 2);
+	playerPos.x = float(Essential::GameCanvas.left + Essential::GameCanvas.width / (Essential::totalNumbPlayer + 1));
 	playerPos.y = float(Essential::GameCanvas.top + Essential::GameCanvas.height * 4 / 5);
-	pPlayer->setPosition(playerPos);
-	layerDefault.insert(pPlayer);
-//	layerPlayer.insert(pPlayer);
+	for (auto &ptrPlayer : layerPlayer) {
+		ptrPlayer->setPosition(playerPos);
+		layerDefault.insert(ptrPlayer);
+		playerPos.x += playerPos.x;
+	}
 
 	// Load Map
 	if (Essential::isClient) {
@@ -160,7 +165,12 @@ void SceneGame::Update() {
 //		isGameFail = true;
 
 	// Update text
-	playerHP.setString("HP: " + std::to_string(int(pPlayer->GetHp())) + "/100");
+	if (layerPlayer[Essential::playerNumber] != NULL) {
+		playerHP.setString("HP: " + std::to_string(int(layerPlayer[Essential::playerNumber]->GetHp())) + "/100");
+	}
+	else {
+		playerHP.setString("HP: 0/100");
+	}
 
 	//Update
 	dt = ft.Mark();
@@ -189,41 +199,44 @@ void SceneGame::Update() {
 		}
 		culDt -= fixedUpdateDuration;
 
-		for (auto it = layerEnemy.begin(); it != layerEnemy.end(); it++) {
-			brd.UpdateObjectPos(*it);
-		}
-		for (auto it = layerEnemyBullet.begin(); it != layerEnemyBullet.end(); it++) {
-			brd.UpdateObjectPos(*it);
-		}
+		// Disable collison n client
+		if (!Essential::isClient) {
+			for (auto it = layerEnemy.begin(); it != layerEnemy.end(); it++) {
+				brd.UpdateObjectPos(*it);
+			}
+			for (auto it = layerEnemyBullet.begin(); it != layerEnemyBullet.end(); it++) {
+				brd.UpdateObjectPos(*it);
+			}
 
-		//Bullet collision
-		for (auto it = layerBullet.begin(); it != layerBullet.end(); it++) {
-			const std::set<std::shared_ptr<Board::Tile>>& sTile = brd.GetPotentialTile(*it);
-			for (auto it_tile = sTile.begin(); it_tile != sTile.end(); it_tile++) {
-				const std::set<std::shared_ptr<ObjCharacter>>& sObject = (*it_tile)->GetLayer();
-				for (auto it2 = sObject.begin(); it2 != sObject.end(); it2++) {
-					sf::Vector2<float> diffPos = (*it)->getPosition() - (*it2)->getPosition();
-					float len = (*it)->GetColliderSize() + (*it2)->GetColliderSize();
-					if (diffPos.x*diffPos.x + diffPos.y*diffPos.y <= len*len)
-						(*it)->OnCollisionEnter(*it2);
+			//Bullet collision
+			for (auto it = layerBullet.begin(); it != layerBullet.end(); it++) {
+				const std::set<std::shared_ptr<Board::Tile>>& sTile = brd.GetPotentialTile(*it);
+				for (auto it_tile = sTile.begin(); it_tile != sTile.end(); it_tile++) {
+					const std::set<std::shared_ptr<ObjCharacter>>& sObject = (*it_tile)->GetLayer();
+					for (auto it2 = sObject.begin(); it2 != sObject.end(); it2++) {
+						sf::Vector2<float> diffPos = (*it)->getPosition() - (*it2)->getPosition();
+						float len = (*it)->GetColliderSize() + (*it2)->GetColliderSize();
+						if (diffPos.x*diffPos.x + diffPos.y*diffPos.y <= len*len)
+							(*it)->OnCollisionEnter(*it2);
+					}
 				}
 			}
-		}
-		// Player collision
-		for (auto it = layerPlayer.begin(); it != layerPlayer.end(); it++) {
-			
-			// layerPlayer is a vector
-			if (*it == NULL)
-				continue;
+			// Player collision
+			for (auto it = layerPlayer.begin(); it != layerPlayer.end(); it++) {
 
-			std::set<std::shared_ptr<Board::Tile>> sTile = brd.GetPotentialTile(*it);
-			for (auto it_tile = sTile.begin(); it_tile != sTile.end(); it_tile++) {
-				const std::set<std::shared_ptr<ObjCharacter>> sObject = (*it_tile)->GetLayer();
-				for (auto it2 = sObject.begin(); it2 != sObject.end(); it2++) {
-					sf::Vector2<float> diffPos = (*it)->getPosition() - (*it2)->getPosition();
-					float len = (*it)->GetColliderSize() + (*it2)->GetColliderSize();
-					if (diffPos.x*diffPos.x + diffPos.y*diffPos.y <= len*len)
-						(*it)->OnCollisionEnter(*it2);
+				// layerPlayer is a vector
+				if (*it == NULL)
+					continue;
+
+				std::set<std::shared_ptr<Board::Tile>> sTile = brd.GetPotentialTile(*it);
+				for (auto it_tile = sTile.begin(); it_tile != sTile.end(); it_tile++) {
+					const std::set<std::shared_ptr<ObjCharacter>> sObject = (*it_tile)->GetLayer();
+					for (auto it2 = sObject.begin(); it2 != sObject.end(); it2++) {
+						sf::Vector2<float> diffPos = (*it)->getPosition() - (*it2)->getPosition();
+						float len = (*it)->GetColliderSize() + (*it2)->GetColliderSize();
+						if (diffPos.x*diffPos.x + diffPos.y*diffPos.y <= len*len)
+							(*it)->OnCollisionEnter(*it2);
+					}
 				}
 			}
 		}

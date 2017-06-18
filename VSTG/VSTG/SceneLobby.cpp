@@ -4,7 +4,7 @@ SceneLobby::SceneLobby() :
 	isHostMenu(false), isClientMenu(false), 
 	isClientConnecting(false), isClientConnected(false),
 	playerCounter(0),
-	hostMenu(sf::IntRect(50, 80, 406, 139), "Start Game? No. Player: 0", ObjMenu::MENUFLAG::YES_NO),
+	hostMenu(sf::IntRect(50, 80, 406, 139), "Start Game? No. Player: 1", ObjMenu::MENUFLAG::YES_NO),
 	clientMenu(sf::IntRect(50, 80, 550, 400), "Connect to: ", ObjMenu::MENUFLAG::OK_CANCEL)
 {
 	Button::SettingDefaultButton(butHost, "Host Game", Button::ButtonStyle::MEDIUM);
@@ -54,7 +54,7 @@ Essential::GameState SceneLobby::Run()
 				assert(playerCounter == clientInfo.size());
 				packet_out << int(Essential::PacketType::SIGNAL_SIZE) << playerCounter;
 				Essential::socket.SendPacket(packet_out);
-				hostMenu.SetTitle("Start Game ? No.Player : " + std::to_string(playerCounter));
+				hostMenu.SetTitle("Start Game ? No. Player : " + std::to_string(playerCounter+1));
 			}
 			if (rc == 1) {
 				sf::Packet packet_out;
@@ -86,7 +86,7 @@ Essential::GameState SceneLobby::Run()
 					packet >> type;
 					if (type == int(Essential::PacketType::SIGNAL_SIZE)) {
 						packet >> playerNumber;
-						clientMenu.SetTitle("Connected: Player " + std::to_string(playerNumber));
+						clientMenu.SetTitle("Connected: Player " + std::to_string(playerNumber + 1));
 						assert(Essential::playerNumber == 0);
 						Essential::playerNumber = playerNumber;
 						isClientConnecting = false;

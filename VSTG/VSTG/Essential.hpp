@@ -66,6 +66,7 @@ public:
 	static bool isHost;
 	static bool isClient;
 	static int playerNumber;
+	static int totalNumbPlayer;
 	enum class PacketType : int {ADD, REMOVE, SIGNAL, SIGNAL_SIZE, COUNT};
 	struct PacketServer {
 		struct _PakcetServer{

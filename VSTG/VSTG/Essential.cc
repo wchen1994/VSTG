@@ -61,3 +61,4 @@ UDPSocket Essential::socket;
 bool Essential::isHost = false;
 bool Essential::isClient = false;
 int Essential::playerNumber = 0;
+int Essential::totalNumbPlayer = 1;
