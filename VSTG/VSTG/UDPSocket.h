@@ -18,7 +18,7 @@ public:
 	bool servTrial();
 	bool cliTrial();
 	bool SendPacket(sf::Packet & packet);
-	std::queue<sf::Packet> GetPacket();
+	std::queue<sf::Packet> & GetPacket();
 	void FlushPacketQueue();
 private:
 	sf::UdpSocket socket;

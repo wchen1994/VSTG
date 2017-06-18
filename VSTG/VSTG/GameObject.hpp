@@ -23,12 +23,12 @@ protected:
 protected:
 	sf::Vector2f position;
 	char objectID[128];
-	size_t hashOID;
+	uint32_t hashOID;
 	bool isDelete;
 	GameObjectType type;
-	unsigned int unique_id;
+	uint32_t unique_id;
 private:
-	static unsigned int uniqueIdCounter;
+	static uint32_t uniqueIdCounter;
 public:
 	GameObject();
 	GameObject(sf::Vector2f pos);
@@ -45,7 +45,7 @@ public:
 	std::string GetName() const { return objectID; }
 	void SetName(const std::string id) { strcpy_s(objectID, id.c_str()); }
 	
-	size_t GetOID() const { return hashOID; }
+	uint32_t GetOID() const { return hashOID; }
 	void SetOID(const uint32_t id) { hashOID = id; }
 
 	GameObjectType GetType() const { return type; }

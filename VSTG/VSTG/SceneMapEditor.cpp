@@ -291,7 +291,7 @@ bool SceneMapEditor::WriteToFile(const std::string filepath)
 			vec.y = dim2time(vec.y);
 			
 			// Write
-			sprintf_s(str, "%f,%f,%zu", vec.x, vec.y, pObject->GetOID());
+			sprintf_s(str, "%f,%f,%u", vec.x, vec.y, pObject->GetOID());
 			outfile << str << endl;
 		}
 		outfile.close();

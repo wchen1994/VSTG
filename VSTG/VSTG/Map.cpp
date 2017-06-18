@@ -68,6 +68,15 @@ void Map::LoadFile(std::ifstream & inFile)
 			objQueue.push(ObjCreator::CreateEnemy(OID, sf::Vector2f(vec.x, vec.y)));
 		}
 	}
+
+	if (Essential::isHost) {
+		sf::Packet packet_out;
+		packet_out << int(Essential::PacketType::SIGNAL_SIZE) << int(objQueue.size());
+		Essential::socket.SendPacket(packet_out);
+
+
+	}
+
 	culTime = 0;
 }
 
@@ -85,10 +94,7 @@ bool Map::LoadFromSocket()
 			int packetType;
 			packet >> packetType;
 			if (packetType == int(Essential::PacketType::ADD)) {
-
-			}
-			else if (packetType == int(Essential::PacketType::SIGNAL)) {
-				isBreak = true;
+				AddObjectByPacket(packet, sorted_set);
 			}
 			else if (packetType == int(Essential::PacketType::SIGNAL_SIZE)) {
 				packet >> map_size;
@@ -100,12 +106,16 @@ bool Map::LoadFromSocket()
 			qPackets.pop();
 		}
 
-		if (isBreak && map_size == sorted_set.size()){
+		if (map_size == sorted_set.size()) {
 			break;
 		}
+		else if (map_size == -1) {
+			// Continue loop Wait for the SIZE Signal
+		}
 		else {
+			// Size is not match
+			// Resynch the map
 			assert(false);
-			return false;
 		}
 	}
 
@@ -113,6 +123,25 @@ bool Map::LoadFromSocket()
 		objQueue.push(pObject);
 	}
 	sorted_set.clear();
+
+//	//Signal for ready to start and wait for the signal from server
+//	sf::Packet packet_out;
+//	packet_out << int(Essential::PacketType::SIGNAL);
+//	Essential::socket.SendPacket(packet_out);
+//	while (true) {
+//		auto & vPackets = Essential::socket.GetPacket();
+//		while (!vPackets.empty()) {
+//			sf::Packet & packet_in = vPackets.front();
+//			int type;
+//			packet_in >> type;
+//			if (type == int(Essential::PacketType::SIGNAL))
+//				break;
+//			else
+//				assert(false);
+//			vPackets.pop();
+//		}
+//	}
+
 	culTime = 0;
 	return true;
 }
@@ -120,14 +149,20 @@ bool Map::LoadFromSocket()
 void Map::AddObjectByPacket(sf::Packet & packet_in, std::set<std::shared_ptr<ObjEnemy>, compare_map> & sorted_set_out)
 {
 	int type;
-	packet_in >> type;
+	unsigned int unique_id;
+	uint32_t OID;
+	sf::Vector2f pos;
+	sf::Vector2f vel;
+	float rotation;
+	float rotSpeed;
+	packet_in >> type >> OID >> unique_id >> pos.x >> pos.y >> vel.x >> vel.y >> rotation >> rotSpeed;
 	
 	// Packet can have enemy and player
 	if (type == GameObject::ENEMY) {
-
+		sorted_set_out.insert(ObjCreator::CreateEnemy(ObjCreator::EnemyType(OID), pos, vel, rotation));
 	}
 	else if (type == GameObject::PLAYER) {
-		
+		SceneGame::layerPlayer.push_back(ObjCreator::CreatePlayer(ObjCreator::PlayerType(OID), pos));
 	}
 	else {
 		assert(false);

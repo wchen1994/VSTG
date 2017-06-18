@@ -6,7 +6,7 @@
 
 //Forward Declare
 namespace ObjCreator {
-	enum EnemyBulletType :int;
+	enum EnemyBulletType : uint32_t;
 }
 
 class EnemyDuck : public ObjEnemy {

@@ -10,8 +10,8 @@
 
 class Map {
 public:
-	class compare_map {
-		bool operator()(std::shared_ptr<ObjCharacter> first, std::shared_ptr<ObjCharacter> second) {
+	struct compare_map {
+		bool operator()(const std::shared_ptr<ObjCharacter> first, const std::shared_ptr<ObjCharacter> second) {
 			if (first->getPosition().y < second->getPosition().y) { 
 				return true; }
 			return false;

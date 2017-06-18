@@ -41,13 +41,13 @@ void ObjCharacter::FixedUpdate(const float dt)
 sf::Packet ObjCharacter::GetPacket() //Legacy
 {
 	sf::Packet packet_out;
-	packet_out << int(type) << unique_id << position.x << velocity.x << velocity.y << rotation << rotSpeed;
+	packet_out << int(type) << sf::Uint32(hashOID) << sf::Uint32(unique_id) << position.x << position.y << velocity.x << velocity.y << rotation << rotSpeed;
 	return packet_out;
 }
 
 void ObjCharacter::ProcessPacket(sf::Packet & packet)
 {
-	packet << int(type) << unique_id << position.x << position.y << velocity.x << velocity.y << rotation << rotSpeed;
+	packet << int(type) << sf::Uint32(hashOID) << sf::Uint32(unique_id) << position.x << position.y << velocity.x << velocity.y << rotation << rotSpeed;
 }
 
 void ObjCharacter::Draw(sf::RenderTarget& gfx) {

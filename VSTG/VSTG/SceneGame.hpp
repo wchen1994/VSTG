@@ -26,7 +26,7 @@ private:
 	float culDt = 0.0f;//Culmulative delta time
 	float logTimer = 0.0f;
 	static constexpr float fixedUpdateDuration = 1 / 30.0f;
-	size_t nDeletes = 0;
+	unsigned int nDeletes = 0;
 	bool isFocused;
 	bool isMenuTriger;
 	bool isGamePause;

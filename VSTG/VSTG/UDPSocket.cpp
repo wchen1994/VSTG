@@ -153,7 +153,7 @@ bool UDPSocket::SendPacket(sf::Packet & packet)
 	return true;
 }
 
-std::queue<sf::Packet> UDPSocket::GetPacket()
+std::queue<sf::Packet> & UDPSocket::GetPacket()
 {
 	std::vector<sf::Packet> vPackets;
 	sf::Packet packet_in;
