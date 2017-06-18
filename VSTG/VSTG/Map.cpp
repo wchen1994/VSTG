@@ -86,10 +86,12 @@ bool Map::LoadFromSocket()
 	assert(Essential::isClient);
 	std::set<std::shared_ptr<ObjEnemy>, compare_map> sorted_set;
 	int map_size = -1;
+	bool isItem = false;
 	while (true) {
 		auto & qPackets = Essential::socket.GetPacket();
 		bool isBreak = false;
 		while (!qPackets.empty()) {
+			isItem = true;
 			sf::Packet & packet = qPackets.front();
 			int packetType;
 			packet >> packetType;
@@ -111,6 +113,10 @@ bool Map::LoadFromSocket()
 		}
 		else if (map_size == -1) {
 			// Continue loop Wait for the SIZE Signal
+		}
+		else if (isItem) {
+			// Check for last loop make sure not more item received
+			isItem = false;
 		}
 		else {
 			// Size is not match
@@ -159,7 +165,7 @@ void Map::AddObjectByPacket(sf::Packet & packet_in, std::set<std::shared_ptr<Obj
 	
 	// Packet can have enemy and player
 	if (type == GameObject::ENEMY) {
-		sorted_set_out.insert(ObjCreator::CreateEnemy(ObjCreator::EnemyType(OID), pos, vel, rotation));
+		sorted_set_out.insert(ObjCreator::CreateEnemyX(ObjCreator::EnemyType(OID), pos, vel, rotation, rotSpeed));
 	}
 	else if (type == GameObject::PLAYER) {
 		SceneGame::layerPlayer.push_back(ObjCreator::CreatePlayer(ObjCreator::PlayerType(OID), pos));

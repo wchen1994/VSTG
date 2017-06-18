@@ -22,6 +22,7 @@ namespace ObjCreator {
 	std::shared_ptr<ObjEnemy> _CreateEnemy(std::string ObjName, float radius, sf::Vector2f pos, sf::Vector2f vel, float rot, float rotSpeed);
 	std::shared_ptr<ObjEnemy> _CreateEnemy2(std::string ObjName, float radius, sf::Vector2f pos, sf::Vector2f vel, EnemyBulletType bullet);
 	std::shared_ptr<ObjEnemy> CreateEnemy(EnemyType type, sf::Vector2f pos, sf::Vector2f vel = { 0.0f,1.0f }, float rot=0.0f);
+	std::shared_ptr<ObjEnemy> CreateEnemyX(EnemyType type, sf::Vector2f pos, sf::Vector2f vel, float rot, float rotSpeed);
 
 	enum PlayerType : uint32_t {HULUWA};
 	std::shared_ptr<ObjPlayer> _CreatePlayer(std::string ObjName, float radius, sf::Vector2f pos);

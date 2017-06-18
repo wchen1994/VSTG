@@ -12,8 +12,16 @@ class Map {
 public:
 	struct compare_map {
 		bool operator()(const std::shared_ptr<ObjCharacter> first, const std::shared_ptr<ObjCharacter> second) {
-			if (first->getPosition().y < second->getPosition().y) { 
-				return true; }
+			const sf::Vector2f pos1 = first->getPosition();
+			const sf::Vector2f pos2 = second->getPosition();
+			if (pos1.y < pos2.y) { 
+				return true; 
+			}
+			else if (pos1.y == pos2.y) {
+				if (pos1.x < pos2.x) {
+					return true;
+				}
+			}
 			return false;
 		}
 	};
