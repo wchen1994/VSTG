@@ -156,6 +156,63 @@ void SceneGame::Reset()
 	}
 
 	isGameSucceed = false;
+
+
+	//Signal for ready to start
+	if (Essential::isHost) {
+		std::map<int, bool> checkMap;
+		checkMap[0] = true;
+		for (int i = 1; i < Essential::totalNumbPlayer; i++) {
+			checkMap[i] = false;
+		}
+		bool isLoop = true;
+		while (isLoop) {
+			auto & vPackets = Essential::socket.GetPacket();
+			while (!vPackets.empty()) {
+				sf::Packet & packet_in = vPackets.front();
+				int type;
+				packet_in >> type;
+				if (type == int(Essential::PacketType::SIGNAL_SIZE)) {
+					int playerNumber;
+					packet_in >> playerNumber;
+					checkMap[playerNumber] = true;
+				}
+				else {
+					assert(false);
+				}
+				vPackets.pop();
+			}
+			isLoop = false;
+			for (auto & pair : checkMap) {
+				if (pair.second == false)
+					isLoop = true;
+			}
+		}
+		sf::Packet packet_out;
+		packet_out << int(Essential::PacketType::SIGNAL);
+		Essential::socket.SendPacket(packet_out);
+	}
+	else if (Essential::isClient) {
+		sf::Packet packet_out;
+		packet_out << int(Essential::PacketType::SIGNAL_SIZE) << Essential::playerNumber;
+		Essential::socket.SendPacket(packet_out);
+		bool isLoop = true;
+		while (isLoop) {
+			auto & vPackets = Essential::socket.GetPacket();
+			while (!vPackets.empty()) {
+				sf::Packet & packet_in = vPackets.front();
+				int type;
+				packet_in >> type;
+				if (type == int(Essential::PacketType::SIGNAL))
+					isLoop = false;
+				else
+					assert(false);
+				vPackets.pop();
+			}
+		}
+	}
+	
+
 	ft.Mark();
 }
 
@@ -202,18 +259,23 @@ void SceneGame::Update() {
 		switch(Essential::PacketType(type)) {
 		case Essential::PacketType::ADD:
 		{
-			int type;
+			int objType;
 			unsigned int unique_id;
 			uint32_t OID;
 			sf::Vector2f pos;
 			sf::Vector2f vel;
 			float rotation;
 			float rotSpeed;
-			packet >> type >> OID >> unique_id >> pos.x >> pos.y >> vel.x >> vel.y >> rotation >> rotSpeed;
+			packet >> objType >> OID >> unique_id >> pos.x >> pos.y >> vel.x >> vel.y >> rotation >> rotSpeed;
 
-			if (type == GameObject::ENEMYNOTDEAD) {
+			if (objType == GameObject::ENEMYNOTDEAD) {
 				auto pBullet = ObjCreator::CreateEnemyBullet(ObjCreator::EnemyBulletType(OID), pos, vel);
 				layerEnemyBullet.insert(pBullet);
+				layerDefault.insert(pBullet);
+			} 
+			else if (objType == GameObject::BULLET) {
+				auto pBullet = ObjCreator::CreateBullet(ObjCreator::BulletType(OID), pos, rotation);
+				layerBullet.insert(pBullet);
 				layerDefault.insert(pBullet);
 			}
 			else {

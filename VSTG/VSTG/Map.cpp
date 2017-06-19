@@ -73,8 +73,6 @@ void Map::LoadFile(std::ifstream & inFile)
 		sf::Packet packet_out;
 		packet_out << int(Essential::PacketType::SIGNAL_SIZE) << int(objQueue.size());
 		Essential::socket.SendPacket(packet_out);
-
-
 	}
 
 	culTime = 0;
@@ -132,24 +130,6 @@ bool Map::LoadFromSocket()
 		objQueue.push(pObject);
 	}
 	sorted_set.clear();
-
-//	//Signal for ready to start and wait for the signal from server
-//	sf::Packet packet_out;
-//	packet_out << int(Essential::PacketType::SIGNAL);
-//	Essential::socket.SendPacket(packet_out);
-//	while (true) {
-//		auto & vPackets = Essential::socket.GetPacket();
-//		while (!vPackets.empty()) {
-//			sf::Packet & packet_in = vPackets.front();
-//			int type;
-//			packet_in >> type;
-//			if (type == int(Essential::PacketType::SIGNAL))
-//				break;
-//			else
-//				assert(false);
-//			vPackets.pop();
-//		}
-//	}
 
 	culTime = 0;
 	return true;
