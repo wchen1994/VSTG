@@ -247,6 +247,11 @@ void SceneGame::Update() {
 
 	// check whether the game is success
 	if (!isEnemy && nBrdObj == 0 && !Essential::isClient) {
+		if (Essential::isHost) {
+			sf::Packet packet_out;
+			packet_out << int(Essential::PacketType::SIGNAL);
+			Essential::socket.SendPacket(packet_out);
+		}
 		isGameSucceed = true;
 	}
 
@@ -304,7 +309,8 @@ void SceneGame::Update() {
 			packet >> Input.isChange >> Input.up >> Input.down >> Input.left >> Input.right >> Input.fire;
 			assert(packet.endOfPacket());
 			assert(playerNumber >= 0 && playerNumber < Essential::totalNumbPlayer);
-			layerPlayer[playerNumber]->UpdateInput(Input);
+			if(layerPlayer[playerNumber])
+				layerPlayer[playerNumber]->UpdateInput(Input);
 			
 			// echo the packet if is host
 			if (Essential::isHost) {
@@ -315,6 +321,9 @@ void SceneGame::Update() {
 			}
 			break;
 		}
+		case ::Essential::PacketType::SIGNAL:
+			assert(Essential::isClient);
+			isGameSucceed = true;
 		default:
 			break;
 		}

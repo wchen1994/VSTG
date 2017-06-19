@@ -102,6 +102,9 @@ bool Map::LoadFromSocket()
 			else if (packetType == int(Essential::PacketType::REMOVE)) {
 
 			}
+			else if (packetType == int(Essential::PacketType::CHANGE)) {
+
+			}
 			else {
 				assert(1 != 1);
 				return false;
@@ -156,6 +159,6 @@ void Map::AddObjectByPacket(sf::Packet & packet_in, std::set<std::shared_ptr<Obj
 		SceneGame::layerPlayer.push_back(pPlayer);
 	}
 	else {
-		assert(1 != 1);
+		assert(false);
 	}
 }

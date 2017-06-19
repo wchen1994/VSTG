@@ -48,7 +48,7 @@ void ObjPlayer::Update(const float dt){
 	if (cooldown > 0) {
 		cooldown -= dt;
 	}
-	else if (fire) {
+	else if (fire && !Essential::isClient) {
 //		const std::shared_ptr<ObjBullet> pBullet = std::make_shared<ObjBullet>(ObjBullet(position));
 		const std::shared_ptr<ObjBullet> pBullet1 = ObjCreator::CreateBullet(ObjCreator::BulletType::BLUE, position, 0.0f);
 		SceneGame::layerDefault.insert(pBullet1);
