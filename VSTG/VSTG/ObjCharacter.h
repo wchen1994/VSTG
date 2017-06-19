@@ -8,6 +8,7 @@ class ObjCharacter : public GameObject {
 public:
 	ObjCharacter();
 	ObjCharacter(sf::Vector2f pos, sf::Vector2f vel, float rot, float rotSpeed);
+	~ObjCharacter();
 	void ObjCharacter::Draw(sf::RenderTarget& gfx);
 	virtual void OnCollisionEnter(std::shared_ptr<ObjCharacter> pOther);
 	virtual void FixedUpdate(const float dt);

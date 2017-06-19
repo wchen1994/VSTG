@@ -21,6 +21,11 @@ ObjCharacter::ObjCharacter(sf::Vector2f pos, sf::Vector2f vel, float rot, float 
 	speed = std::sqrt(vel.x * vel.x + vel.y * vel.y);
 }
 
+ObjCharacter::~ObjCharacter()
+{
+	
+}
+
 void ObjCharacter::FixedUpdate(const float dt)
 {
 	if (!isDelete) {

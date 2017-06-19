@@ -101,8 +101,11 @@ bool Map::LoadFromSocket()
 			else if (packetType == int(Essential::PacketType::SIGNAL_SIZE)) {
 				packet >> map_size;
 			}
+			else if (packetType == int(Essential::PacketType::REMOVE)) {
+
+			}
 			else {
-				assert(false);
+				assert(1 != 1);
 				return false;
 			}
 			qPackets.pop();
@@ -168,9 +171,11 @@ void Map::AddObjectByPacket(sf::Packet & packet_in, std::set<std::shared_ptr<Obj
 		sorted_set_out.insert(ObjCreator::CreateEnemyX(ObjCreator::EnemyType(OID), pos, vel, rotation, rotSpeed));
 	}
 	else if (type == GameObject::PLAYER) {
-		SceneGame::layerPlayer.push_back(ObjCreator::CreatePlayer(ObjCreator::PlayerType(OID), pos));
+		auto & pPlayer = ObjCreator::CreatePlayer(ObjCreator::PlayerType(OID), pos);
+		SceneGame::layerDefault.insert(pPlayer);
+		SceneGame::layerPlayer.push_back(pPlayer);
 	}
 	else {
-		assert(false);
+		assert(1 != 1);
 	}
 }

@@ -34,6 +34,11 @@ A touhou like game
 
 
 int main(){
+	// For test used
+	Essential::wnd.setSize(sf::Vector2u(400, 300));
+	// End
+
+
 	std::unique_ptr<Scene> pScene;
 	std::list<std::unique_ptr<Scene>> lScenes;
 

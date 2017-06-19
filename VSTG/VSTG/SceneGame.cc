@@ -135,8 +135,10 @@ void SceneGame::Reset()
 	playerPos.x = float(Essential::GameCanvas.left + Essential::GameCanvas.width / (Essential::totalNumbPlayer + 1));
 	playerPos.y = float(Essential::GameCanvas.top + Essential::GameCanvas.height * 4 / 5);
 	for (auto &ptrPlayer : layerPlayer) {
-		ptrPlayer->setPosition(playerPos);
-		layerDefault.insert(ptrPlayer);
+		if (ptrPlayer != NULL) {
+			ptrPlayer->setPosition(playerPos);
+			layerDefault.insert(ptrPlayer);
+		}
 		playerPos.x += playerPos.x;
 	}
 
@@ -156,13 +158,13 @@ void SceneGame::Reset()
 
 void SceneGame::Update() {
 	// Check for GameOver
-	isGameFail = true;
-	for (auto &pPlayer : layerPlayer) {
-		if (pPlayer != NULL)
-			isGameFail = false;
+	if (!isGameFail) {
+		isGameFail = true;
+		for (auto &pPlayer : layerPlayer) {
+			if (pPlayer != NULL)
+				isGameFail = false;
+		}
 	}
-//	if (layerPlayer.size() == 0)
-//		isGameFail = true;
 
 	// Update text
 	if (layerPlayer[Essential::playerNumber] != NULL) {
@@ -172,20 +174,50 @@ void SceneGame::Update() {
 		playerHP.setString("HP: 0/100");
 	}
 
-	//Update
+	//check whether still enemy have not spon
 	dt = ft.Mark();
 	bool isEnemy = map.Update(dt);
-	
+
+	//check the current number of enemy
 	std::vector<size_t>& EnemyCount = brd.GetCount();
-	size_t nEnemy = 0;
+	size_t nBrdObj = 0;
 	for (size_t count : EnemyCount) {
-		nEnemy += count;
+		nBrdObj += count;
 	}
 
-	if (!isEnemy && nEnemy == 0) {
+	// check whether the game is success
+	if (!isEnemy && nBrdObj == 0 && !Essential::isClient) {
 		isGameSucceed = true;
 	}
 
+	//OnlineUpdate : add or delete object
+	auto & vPackets = Essential::socket.GetPacket();
+	while (!vPackets.empty()) {
+		sf::Packet & packet = vPackets.front();
+		int type;
+		packet >> type;
+		switch(Essential::PacketType(type)) {
+		case Essential::PacketType::ADD:
+			break;
+		case Essential::PacketType::REMOVE:
+		{
+			assert(Essential::isClient);
+			uint32_t uni_id;
+			packet >> uni_id;
+			for (auto & pObject : layerDefault) {
+				if (pObject->GetUniId() == uni_id) {
+					layerDelete.insert(pObject);
+				}
+			}
+			break;
+		}
+		default:
+			break;
+		}
+		vPackets.pop();
+	}
+
+	// MainUpdate
 	for (auto it = layerDefault.begin(); it != layerDefault.end(); it++) {
 		(*it)->Update(dt);
 	}
@@ -263,7 +295,7 @@ void SceneGame::Update() {
 		std::cout << "Enemys:\t" << layerEnemy.size() << std::endl;
 		std::cout << "EnemyBullets:\t" << layerEnemyBullet.size() << std::endl;
 		std::cout << "Deletes:\t" << nDeletes << std::endl;
-		std::cout << "Brd:Totoal:\t" << nEnemy << std::endl;
+		std::cout << "Brd:Totoal:\t" << nBrdObj << std::endl;
 
 		nDeletes = 0;
 	}
@@ -282,6 +314,14 @@ void SceneGame::Update() {
 					pPlayer = NULL;
 				}
 			}
+		}
+		
+		if (Essential::isHost) {
+			assert(!Essential::isClient);
+			sf::Packet packet_out;
+			uint32_t unique_id = (*it)->GetUniId();
+			packet_out << int(Essential::PacketType::REMOVE) << sf::Uint32(unique_id);
+			Essential::socket.SendPacket(packet_out);
 		}
 	}
 	layerDelete.clear();
