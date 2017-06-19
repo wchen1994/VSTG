@@ -281,6 +281,7 @@ std::shared_ptr<ObjBullet> ObjCreator::CreateBullet(BulletType type, sf::Vector2
 		pObject = _CreateBullet("Bullet Blue", 6.0f, pos, 500.0f, rot);
 		AssignTexture(pObject, "Resources/Textures/BulletPlayer02.png", sf::IntRect(150, 0, 100, 400));
 		pObject->SetRotation(rot);
+		pObject->SetOID(BulletType::GREEN);
 		break;
 	default:
 		pObject = nullptr;
