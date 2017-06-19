@@ -141,6 +141,8 @@ void SceneGame::Reset()
 			isGameFail = true;
 	}
 
+	Essential::totalNumbPlayer = int(layerPlayer.size());
+
 	// Change Player Pos
 	sf::Vector2f playerPos;
 	playerPos.x = float(Essential::GameCanvas.left + Essential::GameCanvas.width / (Essential::totalNumbPlayer + 1));
