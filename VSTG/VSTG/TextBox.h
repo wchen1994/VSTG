@@ -24,7 +24,7 @@ public:
 	void Draw(sf::RenderTarget & gfx);
 	void SetPosition(const sf::Vector2f & pos) {
 		bgFocus.setPosition(pos); bgIdle.setPosition(pos); text.setPosition(pos);
-		rect.left = int(pos.x); rect.top = int(pos.y);
+		rect.left = pos.x; rect.top = pos.y;
 	}
 	void UpdateText() {
 		if (input.size() == 0) {

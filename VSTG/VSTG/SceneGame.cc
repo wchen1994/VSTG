@@ -201,7 +201,27 @@ void SceneGame::Update() {
 		packet >> type;
 		switch(Essential::PacketType(type)) {
 		case Essential::PacketType::ADD:
+		{
+			int type;
+			unsigned int unique_id;
+			uint32_t OID;
+			sf::Vector2f pos;
+			sf::Vector2f vel;
+			float rotation;
+			float rotSpeed;
+			packet >> type >> OID >> unique_id >> pos.x >> pos.y >> vel.x >> vel.y >> rotation >> rotSpeed;
+
+			if (type == GameObject::ENEMYNOTDEAD) {
+				auto pBullet = ObjCreator::CreateEnemyBullet(ObjCreator::EnemyBulletType(OID), pos, vel);
+				layerEnemyBullet.insert(pBullet);
+				layerDefault.insert(pBullet);
+			}
+			else {
+				assert(1 != 1);
+			}
+			
 			break;
+		}
 		case Essential::PacketType::REMOVE:
 		{
 			assert(Essential::isClient);

@@ -9,7 +9,7 @@ TextBox::TextBox(sf::Texture & texture, sf::IntRect & rectFocus, sf::IntRect & r
 	bgFocus.setTexture(texture);
 	bgFocus.setTextureRect(rectFocus);
 
-	rect = sf::FloatRect(0, 0, rectFocus.left, rectFocus.width);
+	rect = sf::FloatRect(0, 0, float(rectFocus.left), float(rectFocus.width));
 }
 
 TextBox::TextBox() :
@@ -20,7 +20,7 @@ TextBox::TextBox() :
 	bgFocus.setTextureRect(sf::IntRect(0, 0, 300, 40));
 	bgIdle.setTexture(*pTex);
 	bgIdle.setTextureRect(sf::IntRect(0, 90, 300, 40));
-	rect = sf::IntRect(0, 0, 300, 40);
+	rect = sf::FloatRect(0, 0, 300, 40);
 
 	text.setString(prompt);
 	text.setFont(Essential::textFont);
