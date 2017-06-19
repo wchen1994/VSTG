@@ -9,7 +9,7 @@ TextBox::TextBox(sf::Texture & texture, sf::IntRect & rectFocus, sf::IntRect & r
 	bgFocus.setTexture(texture);
 	bgFocus.setTextureRect(rectFocus);
 
-	rect = sf::IntRect(0, 0, rectFocus.left, rectFocus.width);
+	rect = sf::FloatRect(0, 0, rectFocus.left, rectFocus.width);
 }
 
 TextBox::TextBox() :
@@ -20,7 +20,7 @@ TextBox::TextBox() :
 	bgFocus.setTextureRect(sf::IntRect(0, 0, 300, 80));
 	bgIdle.setTexture(*pTex);
 	bgIdle.setTextureRect(sf::IntRect(0, 90, 300, 80));
-	rect = sf::IntRect(0, 0, 300, 80);
+	rect = sf::FloatRect(0, 0, 300, 80);
 	text.setString("-");
 	text.setFont(Essential::textFont);
 }
@@ -29,7 +29,9 @@ void TextBox::Update()
 {
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
 		const sf::Vector2i & pos = sf::Mouse::getPosition(Essential::wnd);
-		if (Essential::inRect(rect, pos)) {
+		sf::Vector2f fpos = { float(pos.x), float(pos.y) };
+		fpos /= Essential::windowScale;
+		if (Essential::inRect(rect, fpos)) {
 			isFocus = true;
 		} else {
 			isFocus = false;

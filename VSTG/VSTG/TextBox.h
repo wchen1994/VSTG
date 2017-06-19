@@ -27,7 +27,7 @@ public:
 		rect.left = int(pos.x); rect.top = int(pos.y); }
 private:
 	int size;
-	sf::IntRect rect;
+	sf::FloatRect rect;
 	sf::Sprite bgIdle;
 	sf::Sprite bgFocus;
 	sf::Text text;
