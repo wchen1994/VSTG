@@ -11,7 +11,7 @@
 
 std::set<std::shared_ptr<ObjCharacter>> SceneGame::layerDefault;
 std::set<std::shared_ptr<ObjCharacter>> SceneGame::layerBullet;
-std::vector<std::shared_ptr<ObjCharacter>> SceneGame::layerPlayer;
+std::vector<std::shared_ptr<ObjPlayer>> SceneGame::layerPlayer;
 std::set<std::shared_ptr<ObjCharacter>> SceneGame::layerEnemy;
 std::set<std::shared_ptr<ObjCharacter>> SceneGame::layerEnemyBullet;
 std::set<std::shared_ptr<ObjCharacter>> SceneGame::layerDelete;
@@ -71,7 +71,8 @@ Essential::GameState SceneGame::Run(){
 					isMenuTriger = !isMenuTriger;
 				break;
 			case sf::Event::LostFocus:
-				isFocused = false;
+				if(!Essential::isHost && !Essential::isClient)
+					isFocused = false;
 				break;
 			case sf::Event::GainedFocus:
 				isFocused = true;
@@ -130,7 +131,17 @@ void SceneGame::Reset()
 	layerEnemyBullet.clear();
 	brd.clear();
 
-	// Create Player
+	// Load Map
+	if (Essential::isClient) {
+		if (!map.LoadFromSocket())
+			isGameFail = true;
+	}
+	else {
+		if (!map.LoadFile(levelFileName))
+			isGameFail = true;
+	}
+
+	// Change Player Pos
 	sf::Vector2f playerPos;
 	playerPos.x = float(Essential::GameCanvas.left + Essential::GameCanvas.width / (Essential::totalNumbPlayer + 1));
 	playerPos.y = float(Essential::GameCanvas.top + Essential::GameCanvas.height * 4 / 5);
@@ -140,16 +151,6 @@ void SceneGame::Reset()
 			layerDefault.insert(ptrPlayer);
 		}
 		playerPos.x += playerPos.x;
-	}
-
-	// Load Map
-	if (Essential::isClient) {
-		if (!map.LoadFromSocket())
-			isGameFail = true;
-	}
-	else {
-		if (!map.LoadFile(levelFileName))
-			isGameFail = true;
 	}
 
 	isGameSucceed = false;
@@ -211,15 +212,54 @@ void SceneGame::Update() {
 			}
 			break;
 		}
+		case Essential::PacketType::CHANGE:
+		{
+			int playerNumber;
+			ObjPlayer::StructInput Input;
+			packet >> playerNumber;
+			packet >> Input.isChange >> Input.up >> Input.down >> Input.left >> Input.right >> Input.fire;
+			assert(packet.endOfPacket());
+			assert(playerNumber >= 0 && playerNumber < Essential::totalNumbPlayer);
+			layerPlayer[playerNumber]->UpdateInput(Input);
+			break;
+		}
 		default:
 			break;
 		}
 		vPackets.pop();
 	}
 
+	//===========
 	// MainUpdate
-	for (auto it = layerDefault.begin(); it != layerDefault.end(); it++) {
-		(*it)->Update(dt);
+	//===========
+	// Player Input Update
+	if (layerPlayer[Essential::playerNumber]) {
+		if (Essential::isHost || Essential::isClient) { // Online
+			ObjPlayer::StructInput & input = layerPlayer[Essential::playerNumber]->UpdateInput();
+			if (input.isChange) {
+				sf::Packet packet_out;
+				int type = int(Essential::PacketType::CHANGE);
+				packet_out << type;
+				packet_out << Essential::playerNumber;
+				packet_out.append(&input, sizeof(input));
+				Essential::socket.SendPacket(packet_out);
+			}
+		}else if (!Essential::isHost && !Essential::isClient) { // Offline
+			layerPlayer[Essential::playerNumber]->UpdateInput();
+		}
+		else {
+			assert(1 != 1);
+		}
+	}
+
+	// All Obj Update
+	if (!Essential::isClient) {
+		for (auto it = layerDefault.begin(); it != layerDefault.end(); it++) {
+			(*it)->Update(dt);
+		}
+	}
+	else {
+		// Player Update according to input packet
 	}
 
 	//FixedUpdate

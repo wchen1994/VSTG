@@ -27,38 +27,6 @@ ObjPlayer::ObjPlayer(sf::Vector2f pos) :
 }
 
 void ObjPlayer::Update(const float dt){
-	// Handle Input
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-		up = true;
-	}
-	else {
-		up = false;
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
-		down = true;
-	}
-	else {
-		down = false;
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-		left = true;
-	}
-	else {
-		left = false;
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-		right = true;
-	}
-	else {
-		right = false;
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z)) {
-		fire = true;
-	}
-	else {
-		fire = false;
-	}
-
 	velocity = { 0.0f,0.0f };
 	if (up)
 		velocity.y -= 1.0f;
@@ -93,6 +61,76 @@ void ObjPlayer::Update(const float dt){
 		SceneGame::layerBullet.insert(pBullet3);
 		cooldown = cooldownDuration;
 	}
+}
+
+ObjPlayer::StructInput ObjPlayer::UpdateInput()
+{	
+	// Handle Input
+	static StructInput input;
+	
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+		up = true;
+	}
+	else {
+		up = false;
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+		down = true;
+	}
+	else {
+		down = false;
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+		left = true;
+	}
+	else {
+		left = false;
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+		right = true;
+	}
+	else {
+		right = false;
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z)) {
+		fire = true;
+	}
+	else {
+		fire = false;
+	}
+
+	input.isChange = false;
+	if (input.up != up) {
+		input.up = up;
+		input.isChange = true;
+	}
+	if (input.left != left) {
+		input.left = left;
+		input.isChange = true;
+	}
+	if (input.down != down) {
+		input.down = down;
+		input.isChange = true;
+	}
+	if (input.right != right) {
+		input.right = right;
+		input.isChange = true;
+	}
+	if (input.fire != fire) {
+		input.fire = fire;
+		input.isChange = true;
+	}
+
+	return input;
+}
+
+void ObjPlayer::UpdateInput(StructInput & input)
+{
+	up = input.up;
+	down = input.down;
+	left = input.left;
+	right = input.right;
+	fire = input.fire;
 }
 
 void ObjPlayer::LateUpdate()

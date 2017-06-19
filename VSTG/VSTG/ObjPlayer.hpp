@@ -7,6 +7,12 @@
 #include "ObjCharacter.h"
 
 class ObjPlayer : public ObjCharacter{
+public:
+	struct StructInput {
+		bool isChange;
+		bool up, down, left, right;
+		bool fire;
+	};
 private:
 	std::shared_ptr<sf::CircleShape> pSprite;
 	float moveSpeed;
@@ -18,6 +24,8 @@ public:
 	ObjPlayer();
 	ObjPlayer(sf::Vector2f pos);
 	void Update(const float dt);
+	StructInput UpdateInput();
+	void UpdateInput(StructInput & input);
 	void LateUpdate();
 	void OnCollisionEnter(std::shared_ptr<ObjCharacter> pOther);
 };
