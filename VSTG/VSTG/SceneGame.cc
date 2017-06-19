@@ -223,6 +223,14 @@ void SceneGame::Update() {
 			assert(packet.endOfPacket());
 			assert(playerNumber >= 0 && playerNumber < Essential::totalNumbPlayer);
 			layerPlayer[playerNumber]->UpdateInput(Input);
+			
+			// echo the packet if is host
+			if (Essential::isHost) {
+				sf::Packet packet_echo;
+				packet_echo << int(Essential::PacketType::CHANGE) << playerNumber;
+				packet_echo.append(&Input, sizeof(Input));
+				Essential::socket.SendPacket(packet_echo);
+			}
 			break;
 		}
 		default:
@@ -262,6 +270,11 @@ void SceneGame::Update() {
 	}
 	else {
 		// Player Update according to input packet
+		for (auto &pPlayer : layerPlayer) {
+			if (pPlayer) {
+				pPlayer->Update(dt);
+			}
+		}
 	}
 
 	//FixedUpdate
