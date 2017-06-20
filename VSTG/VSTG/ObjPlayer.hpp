@@ -26,6 +26,7 @@ public:
 	void Update(const float dt);
 	StructInput UpdateInput();
 	void UpdateInput(StructInput & input);
+	void FixedUpdateInv(const float dt);
 	void LateUpdate();
 	void OnCollisionEnter(std::shared_ptr<ObjCharacter> pOther);
 };

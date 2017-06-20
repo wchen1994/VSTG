@@ -40,6 +40,9 @@ private:
 
 	// UI
 	sf::Text playerHP;
+
+	// Online
+	float onlineLatency;
 public:
 	SceneGame(sf::RenderWindow& wnd);
 	~SceneGame();

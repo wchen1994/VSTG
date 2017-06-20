@@ -51,9 +51,18 @@ void ObjCreator::SendPacket(std::shared_ptr<ObjCharacter> pObject)
 	assert(Essential::isHost);
 	assert(!Essential::isClient);
 	sf::Packet packet;
-	packet << int(Essential::PacketType::ADD);
-	pObject->ProcessPacket(packet);
-	Essential::socket.SendPacket(packet);
+	if (Essential::isGameStart) {
+		packet << int(Essential::PacketType::ADD_T);
+		std::chrono::duration<float> duration = std::chrono::steady_clock::now() - Essential::timeStart;
+		packet << duration.count();
+		pObject->ProcessPacket(packet);
+		Essential::socket.SendPacket(packet);
+	}
+	else {
+		packet << int(Essential::PacketType::ADD);
+		pObject->ProcessPacket(packet);
+		Essential::socket.SendPacket(packet);
+	}
 }
 
 std::shared_ptr<ObjEnemy> ObjCreator::_CreateEnemy(std::string ObjName, float radius, sf::Vector2f pos, sf::Vector2f vel, float rot, float rotSpeed)

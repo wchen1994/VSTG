@@ -4,6 +4,7 @@
 #include <SFML/Window.hpp>
 #include <set>
 #include <random>
+#include <chrono>
 
 #include "TextManager.h"
 #include "AssetManager.h"
@@ -67,17 +68,9 @@ public:
 	static bool isClient;
 	static int playerNumber;
 	static int totalNumbPlayer;
-	enum class PacketType : int {ADD, REMOVE, SIGNAL, SIGNAL_SIZE, CHANGE, COUNT};
-	struct PacketServer {
-		struct _PakcetServer{
-			sf::Vector2f pos;
-			float rot;
-		};
-		std::vector<_PakcetServer> vObjects;
-	};
-	struct PacketClient {
-		sf::Vector2f pos;
-	};
+	static bool isGameStart;
+	static std::chrono::time_point<std::chrono::steady_clock> timeStart;
+	enum class PacketType : int {ADD, REMOVE, SIGNAL, SIGNAL_SIZE, CHANGE, ADD_T, CHANGE_T, COUNT};
 };
 
 

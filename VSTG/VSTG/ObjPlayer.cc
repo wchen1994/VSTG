@@ -133,6 +133,21 @@ void ObjPlayer::UpdateInput(StructInput & input)
 	fire = input.fire;
 }
 
+void ObjPlayer::FixedUpdateInv(const float dt)
+{
+	if (!isDelete) {
+		position -= velocity * dt;
+		rotation -= rotSpeed * dt;
+
+		if (drawSprite) {
+			drawSprite->setPosition(position);
+			drawSprite->setRotation(rotation);
+		}
+		drawCollider->setPosition(position);
+		drawCollider->setRotation(rotation);
+	}
+}
+
 void ObjPlayer::LateUpdate()
 {
 	static float boundary[] = {

@@ -6,6 +6,7 @@
 #include "ObjEnemyBullet.h"
 #include <memory>
 #include <SFML/System.hpp>
+#include <chrono>
 
 namespace ObjCreator {
 	void AssignTexture(std::shared_ptr<ObjCharacter> pObject, std::string texPath);

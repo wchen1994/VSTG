@@ -25,6 +25,7 @@ SceneGame::SceneGame(sf::RenderWindow& wnd) :
 	map(),
 	isFocused(true), isMenuTriger(false), isGameFail(false), isGameSucceed(false),
 	levelFileName("Maps/Lv1.tmap"), levelCount(1),
+	onlineLatency(0.0f),
 	escMenu(sf::IntRect(50, 80, 206, 139), Essential::textManager.getText(4), ObjMenu::MENUFLAG::YES_NO)
 {
 	background.setPosition(Essential::vec2i2f(Essential::GameCanvas.left, Essential::GameCanvas.top));
@@ -110,6 +111,7 @@ Essential::GameState SceneGame::Run(){
 			Essential::totalNumbPlayer = 1;
 			Essential::isClient = false;
 			Essential::isHost = false;
+			Essential::isGameStart = false;
 			return Essential::POP;
 		}
 		if (isGameSucceed) {
@@ -123,6 +125,7 @@ Essential::GameState SceneGame::Run(){
 
 void SceneGame::Reset()
 {
+	Essential::isGameStart = false;
 	// Draw Loading Menu
 	sf::Text loadingText("Loading ...", Essential::textFont);
 	loadingText.setPosition(300.0f, 280.0f);
@@ -136,7 +139,7 @@ void SceneGame::Reset()
 	layerEnemyBullet.clear();
 	brd.clear();
 
-	std::this_thread::sleep_for(std::chrono::duration<float>(0.5f));
+	std::this_thread::sleep_for(std::chrono::duration<float>(1.0f));
 	// Load Map
 	if (Essential::isClient) {
 		if (!map.LoadFromSocket())
@@ -146,7 +149,7 @@ void SceneGame::Reset()
 		if (!map.LoadFile(levelFileName))
 			isGameFail = true;
 	}
-	std::this_thread::sleep_for(std::chrono::duration<float>(0.5f));
+	std::this_thread::sleep_for(std::chrono::duration<float>(1.0f));
 
 	Essential::totalNumbPlayer = int(layerPlayer.size());
 
@@ -223,8 +226,9 @@ void SceneGame::Reset()
 			}
 		}
 	}
-	std::this_thread::sleep_for(std::chrono::duration<float>(0.5f));
-	
+	std::this_thread::sleep_for(std::chrono::duration<float>(1.0f));
+	Essential::timeStart = std::chrono::steady_clock::now();
+	Essential::isGameStart = true;
 
 	ft.Mark();
 }
@@ -275,8 +279,9 @@ void SceneGame::Update() {
 		int type;
 		packet >> type;
 		switch(Essential::PacketType(type)) {
-		case Essential::PacketType::ADD:
+		case Essential::PacketType::ADD_T:
 		{
+			float hostTime;
 			int objType;
 			unsigned int unique_id;
 			uint32_t OID;
@@ -284,16 +289,23 @@ void SceneGame::Update() {
 			sf::Vector2f vel;
 			float rotation;
 			float rotSpeed;
-			packet >> objType >> OID >> unique_id >> pos.x >> pos.y >> vel.x >> vel.y >> rotation >> rotSpeed;
+			packet >> hostTime >> objType >> OID >> unique_id >> pos.x >> pos.y >> vel.x >> vel.y >> rotation >> rotSpeed;
 			assert(packet.endOfPacket());
+
+			std::chrono::duration<float> duration = std::chrono::steady_clock::now() - Essential::timeStart;
+			float dt = duration.count() - hostTime;
+			if (dt < 0)
+				dt = 0.0f;
 
 			if (objType == GameObject::ENEMYNOTDEAD) {
 				auto pBullet = ObjCreator::CreateEnemyBullet(ObjCreator::EnemyBulletType(OID), pos, vel);
+				pBullet->FixedUpdate(dt);
 				layerEnemyBullet.insert(pBullet);
 				layerDefault.insert(pBullet);
 			} 
 			else if (objType == GameObject::BULLET) {
 				auto pBullet = ObjCreator::CreateBullet(ObjCreator::BulletType(OID), pos, rotation);
+				pBullet->FixedUpdate(dt);
 				layerBullet.insert(pBullet);
 				layerDefault.insert(pBullet);
 			}
@@ -316,21 +328,31 @@ void SceneGame::Update() {
 			}
 			break;
 		}
-		case Essential::PacketType::CHANGE:
+		case Essential::PacketType::CHANGE_T:
 		{
 			int playerNumber;
 			ObjPlayer::StructInput Input;
-			packet >> playerNumber;
+			float time;
+			packet >> time >> playerNumber;
 			packet >> Input.isChange >> Input.up >> Input.down >> Input.left >> Input.right >> Input.fire;
 			assert(packet.endOfPacket());
 			assert(playerNumber >= 0 && playerNumber < Essential::totalNumbPlayer);
-			if(layerPlayer[playerNumber])
+
+			std::chrono::duration<float> duration = std::chrono::steady_clock::now() - Essential::timeStart;
+			float dt = duration.count() - time;
+//			if (dt < 0)
+//				dt = 0.0f;
+			if (layerPlayer[playerNumber]) {
 				layerPlayer[playerNumber]->UpdateInput(Input);
+				layerPlayer[playerNumber]->FixedUpdateInv(dt);
+				layerPlayer[playerNumber]->Update(dt);
+				layerPlayer[playerNumber]->FixedUpdate(dt);
+			}
 			
 			// echo the packet if is host
 			if (Essential::isHost) {
 				sf::Packet packet_echo;
-				packet_echo << int(Essential::PacketType::CHANGE) << playerNumber;
+				packet_echo << int(Essential::PacketType::CHANGE_T) << time << playerNumber;
 				packet_echo.append(&Input, sizeof(Input));
 				Essential::socket.SendPacket(packet_echo);
 			}
@@ -354,8 +376,9 @@ void SceneGame::Update() {
 			ObjPlayer::StructInput & input = layerPlayer[Essential::playerNumber]->UpdateInput();
 			if (input.isChange) {
 				sf::Packet packet_out;
-				int type = int(Essential::PacketType::CHANGE);
-				packet_out << type;
+				int type = int(Essential::PacketType::CHANGE_T);
+				std::chrono::duration<float> duration = std::chrono::steady_clock::now() - Essential::timeStart;
+				packet_out << type << duration.count();
 				packet_out << Essential::playerNumber;
 				packet_out.append(&input, sizeof(input));
 				Essential::socket.SendPacket(packet_out);
