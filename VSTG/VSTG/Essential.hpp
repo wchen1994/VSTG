@@ -70,7 +70,7 @@ public:
 	static int totalNumbPlayer;
 	static bool isGameStart;
 	static std::chrono::time_point<std::chrono::steady_clock> timeStart;
-	enum class PacketType : int {ADD, REMOVE, SIGNAL, SIGNAL_SIZE, CHANGE, ADD_T, CHANGE_T, COUNT};
+	enum class PacketType : int {ADD, REMOVE, SIGNAL, SIGNAL_SIZE, CHANGE, ADD_T, CHANGE_T, CHANGE_POS, COUNT};
 };
 
 

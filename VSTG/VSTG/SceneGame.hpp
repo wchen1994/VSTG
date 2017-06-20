@@ -43,6 +43,8 @@ private:
 
 	// Online
 	float onlineLatency;
+	static constexpr float synCooldown = 1.0f;
+	float synTimer;
 public:
 	SceneGame(sf::RenderWindow& wnd);
 	~SceneGame();

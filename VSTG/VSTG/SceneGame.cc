@@ -229,7 +229,7 @@ void SceneGame::Reset()
 	std::this_thread::sleep_for(std::chrono::duration<float>(1.0f));
 	Essential::timeStart = std::chrono::steady_clock::now();
 	Essential::isGameStart = true;
-
+	synTimer = 0.0f;
 	ft.Mark();
 }
 
@@ -253,6 +253,8 @@ void SceneGame::Update() {
 
 	//check whether still enemy have not spon
 	dt = ft.Mark();
+	if (Essential::isHost && !Essential::isClient)
+		synTimer += dt;
 	bool isEnemy = map.Update(dt);
 
 	//check the current number of enemy
@@ -272,7 +274,7 @@ void SceneGame::Update() {
 		isGameSucceed = true;
 	}
 
-	//OnlineUpdate : add or delete object
+	//OnlineUpdate : Receive packet add or delete object
 	auto & vPackets = Essential::socket.GetPacket();
 	while (!vPackets.empty()) {
 		sf::Packet & packet = vPackets.front();
@@ -358,9 +360,25 @@ void SceneGame::Update() {
 			}
 			break;
 		}
-		case ::Essential::PacketType::SIGNAL:
+		case Essential::PacketType::SIGNAL:
 			assert(Essential::isClient);
 			isGameSucceed = true;
+			break;
+		case Essential::PacketType::CHANGE_POS:
+		{
+			assert(Essential::isClient);
+			int totalNumb;
+			packet >> totalNumb;
+			for (auto &pPlayer : layerPlayer) {
+				sf::Vector2f pos;
+				packet >> pos.x >> pos.y;
+				if (pPlayer) {
+					pPlayer->setPosition(pos);
+				}
+			}
+			assert(packet.endOfPacket());
+			break;
+		}
 		default:
 			break;
 		}
@@ -388,6 +406,26 @@ void SceneGame::Update() {
 		}
 		else {
 			assert(1 != 1);
+		}
+	}
+
+	// Syn player pos
+	if (Essential::isHost) {
+		if (synTimer > synCooldown) {
+			synTimer -= synCooldown;
+
+			sf::Packet packet_out;
+			packet_out << int(Essential::PacketType::CHANGE_POS) << int(Essential::totalNumbPlayer);
+			for (auto & pPlayer : layerPlayer) {
+				if (pPlayer) {
+					sf::Vector2f & pos = pPlayer->getPosition();
+					packet_out << pos.x << pos.y;
+				}
+				else {
+					packet_out << 0.0f << 0.0f;
+				}
+			}
+			Essential::socket.SendPacket(packet_out);
 		}
 	}
 
