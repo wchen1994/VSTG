@@ -7,6 +7,8 @@
 #include <string>
 #include <memory>
 #include <cstring>
+#include <assert.h>
+#include <climits>
 
 //#define _DEBUG_COLLIDER
 

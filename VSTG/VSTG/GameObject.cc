@@ -21,6 +21,9 @@ GameObject::GameObject(sf::Vector2f pos) :
 		objectID[i] = '\0';
 	}
 	hashOID = 0;
+
+
+	assert(uniqueIdCounter < UINT32_MAX);
 }
 
 
