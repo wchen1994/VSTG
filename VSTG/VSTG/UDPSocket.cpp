@@ -44,7 +44,9 @@ sf::Packet UDPSocket::Synch(sf::Packet & packet_send)
 	switch (status)
 	{
 	case sf::Socket::Done:
+#ifdef _DEBUG_VERBOSE
 		std::cout << "From:\t" + ip_in.toString() + ":" << port_in << "\tSize: " << packet_in.getDataSize() << std::endl;
+#endif
 		break;
 	case sf::Socket::NotReady:
 		break;
@@ -67,12 +69,16 @@ sf::Packet UDPSocket::Synch(sf::Packet & packet_send)
 	case HOST:
 		for (auto pair : clientInfo) {
 			socket.send(packet_send, pair.first, pair.second);
+#ifdef _DEBUG_VERBOSE
 			std::cout << "To:\t" + pair.first.toString() + ":" << pair.second << "\tSize: " << packet_send.getDataSize() << std::endl;
+#endif
 		}
 		break;
 	case JOIN:
 		socket.send(packet_send, serverIp, serverPort);
+#ifdef _DEBUG_VERBOSE
 		std::cout << "To:\t" + serverIp.toString() + ":" << serverPort << "\tSize: " << packet_send.getDataSize() << std::endl;
+#endif
 		break;
 	default:
 		assert(false);
@@ -91,7 +97,9 @@ bool UDPSocket::servWait()
 	{
 	case sf::Socket::Done:
 	{
+#ifdef _DEBUG_VERBOSE
 		std::cout << "Connected by: " + remoteIp_in.toString() + ":" << remotePort_in << std::endl;
+#endif
 		const std::pair<sf::IpAddress, unsigned short> pair = { remoteIp_in, remotePort_in };
 		if (std::find(clientInfo.begin(), clientInfo.end(), pair) == clientInfo.end()) {
 			clientInfo.push_back({ remoteIp_in, remotePort_in }); // Being a vector will get increase even with same item
@@ -140,12 +148,16 @@ bool UDPSocket::SendPacket(sf::Packet & packet)
 	case HOST:
 		for (auto pair : clientInfo) {
 			assert(socket.send(packet, pair.first, pair.second) == sf::Socket::Done);
+#ifdef _DEBUG_VERBOSE
 			std::cout << "To:\t" + pair.first.toString() + ":" << pair.second << "\tSize: " << packet.getDataSize() << std::endl;
+#endif
 		}
 		break;
 	case JOIN:
 		assert(socket.send(packet, serverIp, serverPort) == sf::Socket::Done);
+#ifdef _DEBUG_VERBOSE
 		std::cout << "To:\t" + serverIp.toString() + ":" << serverPort << "\tSize: " << packet.getDataSize() << std::endl;
+#endif
 		break;
 	default:
 		assert(false);
@@ -160,8 +172,10 @@ std::queue<sf::Packet> & UDPSocket::GetPacket()
 	sf::IpAddress ip_in;
 	unsigned short port_in;
 	while (socket.receive(packet_in, ip_in, port_in) == sf::Socket::Done) {
-		qPackets.push(packet_in); 
+		qPackets.push(packet_in);
+#ifdef _DEBUG_VERBOSE
 		std::cout << "From:\t" + ip_in.toString() + ":" << port_in << "\tSize: " << packet_in.getDataSize() << std::endl;
+#endif
 	}
 
 	return qPackets;

@@ -6,6 +6,8 @@
 #include <iostream>
 #include <assert.h>
 
+//#define _DEBUG_VERBOSE
+
 class UDPSocket {
 public:
 	enum Mode{HOST, JOIN, COUNT};
