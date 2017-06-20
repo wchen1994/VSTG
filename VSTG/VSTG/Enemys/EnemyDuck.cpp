@@ -37,11 +37,15 @@ void EnemyDuck::Update(const float dt)
 			}
 			else {
 				std::shared_ptr<ObjEnemyBullet> pBullet;
-				const sf::Vector2f playerPos = (*SceneGame::layerPlayer.begin())->getPosition();
-				sf::Vector2f diffPos = playerPos - position;
-				pBullet = ObjCreator::CreateEnemyBullet(ObjCreator::EnemyBulletType::BPOINTING, position, diffPos);
-				SceneGame::layerDefault.insert(pBullet);
-				SceneGame::layerEnemyBullet.insert(pBullet);
+				for (int i = 0; i < Essential::totalNumbPlayer; i++) {
+					if (SceneGame::layerPlayer[i] != NULL) {
+						const sf::Vector2f playerPos = SceneGame::layerPlayer[i]->getPosition();
+						const sf::Vector2f diffPos = playerPos - position;
+						pBullet = ObjCreator::CreateEnemyBullet(ObjCreator::EnemyBulletType::BPOINTING, position, diffPos);
+						SceneGame::layerDefault.insert(pBullet);
+						SceneGame::layerEnemyBullet.insert(pBullet);
+					}
+				}
 			}
 			timer -= coolDown;
 		}
