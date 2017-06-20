@@ -60,6 +60,7 @@ Essential::GameState SceneLobby::Run()
 				sf::Packet packet_out;
 				packet_out << int(Essential::PacketType::SIGNAL);
 				Essential::socket.SendPacket(packet_out);
+				isHostMenu = false;
 				return Essential::GameState::GAMEHOST;
 			}
 			else if(rc == 2) {

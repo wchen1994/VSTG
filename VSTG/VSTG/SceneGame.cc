@@ -1,5 +1,6 @@
 #include <cstdlib>
 #include <iomanip>
+#include <thread>
 
 #include "Essential.hpp"
 #include "SceneGame.hpp"
@@ -105,6 +106,10 @@ Essential::GameState SceneGame::Run(){
 		}
 		DrawScene();
 		if (isGameFail) {
+			Essential::playerNumber = 0;
+			Essential::totalNumbPlayer = 1;
+			Essential::isClient = false;
+			Essential::isHost = false;
 			return Essential::POP;
 		}
 		if (isGameSucceed) {
@@ -131,6 +136,7 @@ void SceneGame::Reset()
 	layerEnemyBullet.clear();
 	brd.clear();
 
+	std::this_thread::sleep_for(std::chrono::duration<float>(0.5f));
 	// Load Map
 	if (Essential::isClient) {
 		if (!map.LoadFromSocket())
@@ -140,6 +146,7 @@ void SceneGame::Reset()
 		if (!map.LoadFile(levelFileName))
 			isGameFail = true;
 	}
+	std::this_thread::sleep_for(std::chrono::duration<float>(0.5f));
 
 	Essential::totalNumbPlayer = int(layerPlayer.size());
 
@@ -211,6 +218,7 @@ void SceneGame::Reset()
 			}
 		}
 	}
+	std::this_thread::sleep_for(std::chrono::duration<float>(0.5f));
 	
 
 	ft.Mark();
