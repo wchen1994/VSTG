@@ -152,14 +152,15 @@ void SceneGame::Reset()
 
 	// Change Player Pos
 	sf::Vector2f playerPos;
-	playerPos.x = float(Essential::GameCanvas.left + Essential::GameCanvas.width / (Essential::totalNumbPlayer + 1));
+	const float xDiff = float(Essential::GameCanvas.width / (Essential::totalNumbPlayer + 1));
+	playerPos.x = Essential::GameCanvas.left + xDiff;
 	playerPos.y = float(Essential::GameCanvas.top + Essential::GameCanvas.height * 4 / 5);
 	for (auto &ptrPlayer : layerPlayer) {
 		if (ptrPlayer != NULL) {
 			ptrPlayer->setPosition(playerPos);
 			layerDefault.insert(ptrPlayer);
 		}
-		playerPos.x += playerPos.x;
+		playerPos.x += xDiff;
 	}
 
 	isGameSucceed = false;
