@@ -98,12 +98,10 @@ bool Map::LoadFromSocket()
 			}
 			else if (packetType == int(Essential::PacketType::SIGNAL_SIZE)) {
 				packet >> map_size;
+				assert(packet.endOfPacket());
 			}
 			else if (packetType == int(Essential::PacketType::REMOVE)) {
-
-			}
-			else if (packetType == int(Essential::PacketType::CHANGE)) {
-
+				assert(packet.endOfPacket());
 			}
 			else {
 				assert(1 != 1);
@@ -148,6 +146,7 @@ void Map::AddObjectByPacket(sf::Packet & packet_in, std::set<std::shared_ptr<Obj
 	float rotation;
 	float rotSpeed;
 	packet_in >> type >> OID >> unique_id >> pos.x >> pos.y >> vel.x >> vel.y >> rotation >> rotSpeed;
+	assert(packet_in.endOfPacket());
 	
 	// Packet can have enemy and player
 	if (type == GameObject::ENEMY) {

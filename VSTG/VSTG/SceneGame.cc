@@ -183,6 +183,7 @@ void SceneGame::Reset()
 				if (type == int(Essential::PacketType::SIGNAL_SIZE)) {
 					int playerNumber;
 					packet_in >> playerNumber;
+					assert(packet_in.endOfPacket());
 					checkMap[playerNumber] = true;
 				}
 				else {
@@ -211,10 +212,13 @@ void SceneGame::Reset()
 				sf::Packet & packet_in = vPackets.front();
 				int type;
 				packet_in >> type;
-				if (type == int(Essential::PacketType::SIGNAL))
+				if (type == int(Essential::PacketType::SIGNAL)) {
+					assert(packet_in.endOfPacket());
 					isLoop = false;
-				else
+				}
+				else {
 					assert(false);
+				}
 				vPackets.pop();
 			}
 		}
@@ -281,6 +285,7 @@ void SceneGame::Update() {
 			float rotation;
 			float rotSpeed;
 			packet >> objType >> OID >> unique_id >> pos.x >> pos.y >> vel.x >> vel.y >> rotation >> rotSpeed;
+			assert(packet.endOfPacket());
 
 			if (objType == GameObject::ENEMYNOTDEAD) {
 				auto pBullet = ObjCreator::CreateEnemyBullet(ObjCreator::EnemyBulletType(OID), pos, vel);
@@ -303,6 +308,7 @@ void SceneGame::Update() {
 			assert(Essential::isClient);
 			uint32_t uni_id;
 			packet >> uni_id;
+			assert(packet.endOfPacket());
 			for (auto & pObject : layerDefault) {
 				if (pObject->GetUniId() == uni_id) {
 					layerDelete.insert(pObject);
