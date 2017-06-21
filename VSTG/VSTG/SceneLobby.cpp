@@ -25,6 +25,12 @@ SceneLobby::SceneLobby() :
 	boxClientPort.SetMaxSize(5);
 	boxClientPort.flag = TextBox::flagDIGIT;
 	boxClientPort.SetPrompt("<Port>");
+
+	boxLocalPort.SetPosition(sf::Vector2f(300, 400));
+	boxLocalPort.SetMaxSize(5);
+	boxLocalPort.flag = TextBox::flagDIGIT;
+	boxLocalPort.SetPrompt("<Port Local>");
+	boxLocalPort.SetString(std::to_string(Essential::DEFAULT_HOST_PORT));
 }
 
 Essential::GameState SceneLobby::Run()
@@ -38,6 +44,7 @@ Essential::GameState SceneLobby::Run()
 					boxClientIP.Input(e.key);
 					boxClientPort.Input(e.key);
 				}
+				boxLocalPort.Input(e.key);
 				break;
 			default:
 				Essential::defHandleMsg(e);
@@ -118,7 +125,7 @@ Essential::GameState SceneLobby::Run()
 				if (!isClientConnected) {
 					unsigned short hostPort = std::stoi(boxClientPort.GetString());
 					std::string hostIp = boxClientIP.GetString();
-					Essential::socket.Join(hostIp, hostPort, Essential::DEFAULT_CLIENT_PORT);
+					Essential::socket.Join(hostIp, hostPort, unsigned short(std::stoul(boxLocalPort.GetString())));
 
 					clientMenu.SetTitle("Connecting to: " + hostIp);
 					sf::Packet packet_out;
@@ -142,9 +149,10 @@ Essential::GameState SceneLobby::Run()
 			butHost.Update();
 			butJoin.Update();
 			butBack.Update();
+			boxLocalPort.Update();
 
 			if (butHost.getStatus() == Button::ButtonState::Release) {
-				Essential::socket.Host(Essential::DEFAULT_HOST_PORT);
+				Essential::socket.Host(unsigned short(std::stoul(boxLocalPort.GetString())));
 				isHostMenu = true;
 			}
 			if (butJoin.getStatus() == Button::ButtonState::Release) {
@@ -164,6 +172,7 @@ Essential::GameState SceneLobby::Run()
 		butHost.Draw(Essential::wnd);
 		butJoin.Draw(Essential::wnd);
 		butBack.Draw(Essential::wnd);
+		boxLocalPort.Draw(Essential::wnd);
 		if (isHostMenu) {
 			hostMenu.Draw(Essential::wnd);
 		}
