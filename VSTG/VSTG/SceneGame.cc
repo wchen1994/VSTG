@@ -88,6 +88,9 @@ Essential::GameState SceneGame::Run(){
 				Update();
 			}
 			else {
+				if (Essential::isClient || Essential::isHost) {
+					Update(); // Can not stop while playing online
+				}
 				ft.Mark();
 				const int rc = escMenu.MenuUpdate();
 				switch (rc) {
