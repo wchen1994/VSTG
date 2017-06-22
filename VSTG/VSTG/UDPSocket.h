@@ -15,7 +15,7 @@ public:
 	UDPSocket();
 	bool Host(const unsigned short port);
 	bool Join(std::string targetIp, const unsigned short targetPort, const unsigned short port);
-	sf::Packet Synch(sf::Packet & packet_send);
+	bool Synch();
 	bool servWait();
 	bool servTrial();
 	bool cliTrial();

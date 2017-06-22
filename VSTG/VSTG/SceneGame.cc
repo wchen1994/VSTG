@@ -142,6 +142,7 @@ void SceneGame::Reset()
 	layerEnemyBullet.clear();
 	brd.clear();
 
+
 	std::this_thread::sleep_for(std::chrono::duration<float>(1.0f));
 	// Load Map
 	if (Essential::isClient) {
@@ -171,64 +172,64 @@ void SceneGame::Reset()
 
 	isGameSucceed = false;
 
-
+	Essential::socket.Synch();
 	//Signal for ready to start
-	if (Essential::isHost) {
-		std::map<int, bool> checkMap;
-		checkMap[0] = true;
-		for (int i = 1; i < Essential::totalNumbPlayer; i++) {
-			checkMap[i] = false;
-		}
-		bool isLoop = true;
-		while (isLoop) {
-			auto & vPackets = Essential::socket.GetPacket();
-			while (!vPackets.empty()) {
-				sf::Packet & packet_in = vPackets.front();
-				int type;
-				packet_in >> type;
-				if (type == int(Essential::PacketType::SIGNAL_SIZE)) {
-					int playerNumber;
-					packet_in >> playerNumber;
-					assert(packet_in.endOfPacket());
-					checkMap[playerNumber] = true;
-				}
-				else {
-					assert(false);
-				}
-				vPackets.pop();
-			}
-			isLoop = false;
-			for (auto & pair : checkMap) {
-				if (pair.second == false)
-					isLoop = true;
-			}
-		}
-		sf::Packet packet_out;
-		packet_out << int(Essential::PacketType::SIGNAL);
-		Essential::socket.SendPacket(packet_out);
-	}
-	else if (Essential::isClient) {
-		sf::Packet packet_out;
-		packet_out << int(Essential::PacketType::SIGNAL_SIZE) << Essential::playerNumber;
-		Essential::socket.SendPacket(packet_out);
-		bool isLoop = true;
-		while (isLoop) {
-			auto & vPackets = Essential::socket.GetPacket();
-			while (!vPackets.empty()) {
-				sf::Packet & packet_in = vPackets.front();
-				int type;
-				packet_in >> type;
-				if (type == int(Essential::PacketType::SIGNAL)) {
-					assert(packet_in.endOfPacket());
-					isLoop = false;
-				}
-				else {
-					assert(false);
-				}
-				vPackets.pop();
-			}
-		}
-	}
+//	if (Essential::isHost) {
+//		std::map<int, bool> checkMap;
+//		checkMap[0] = true;
+//		for (int i = 1; i < Essential::totalNumbPlayer; i++) {
+//			checkMap[i] = false;
+//		}
+//		bool isLoop = true;
+//		while (isLoop) {
+//			auto & vPackets = Essential::socket.GetPacket();
+//			while (!vPackets.empty()) {
+//				sf::Packet & packet_in = vPackets.front();
+//				int type;
+//				packet_in >> type;
+//				if (type == int(Essential::PacketType::SIGNAL_SIZE)) {
+//					int playerNumber;
+//					packet_in >> playerNumber;
+//					assert(packet_in.endOfPacket());
+//					checkMap[playerNumber] = true;
+//				}
+//				else {
+//					assert(false);
+//				}
+//				vPackets.pop();
+//			}
+//			isLoop = false;
+//			for (auto & pair : checkMap) {
+//				if (pair.second == false)
+//					isLoop = true;
+//			}
+//		}
+//		sf::Packet packet_out;
+//		packet_out << int(Essential::PacketType::SIGNAL);
+//		Essential::socket.SendPacket(packet_out);
+//	}
+//	else if (Essential::isClient) {
+//		sf::Packet packet_out;
+//		packet_out << int(Essential::PacketType::SIGNAL_SIZE) << Essential::playerNumber;
+//		Essential::socket.SendPacket(packet_out);
+//		bool isLoop = true;
+//		while (isLoop) {
+//			auto & vPackets = Essential::socket.GetPacket();
+//			while (!vPackets.empty()) {
+//				sf::Packet & packet_in = vPackets.front();
+//				int type;
+//				packet_in >> type;
+//				if (type == int(Essential::PacketType::SIGNAL)) {
+//					assert(packet_in.endOfPacket());
+//					isLoop = false;
+//				}
+//				else {
+//					assert(false);
+//				}
+//				vPackets.pop();
+//			}
+//		}
+//	}
 	std::this_thread::sleep_for(std::chrono::duration<float>(1.0f));
 	Essential::timeStart = std::chrono::steady_clock::now();
 	Essential::isGameStart = true;

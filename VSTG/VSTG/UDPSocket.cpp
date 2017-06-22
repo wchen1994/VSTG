@@ -35,56 +35,50 @@ bool UDPSocket::Join(std::string targetIp, const unsigned short targetPort, cons
 	return true;
 }
 
-sf::Packet UDPSocket::Synch(sf::Packet & packet_send)
+bool UDPSocket::Synch()
 {
-	sf::Packet packet_in;
-	sf::IpAddress ip_in;
-	unsigned short port_in;
-	sf::Socket::Status status = socket.receive(packet_in, ip_in, port_in);
-	switch (status)
-	{
-	case sf::Socket::Done:
-#ifdef _DEBUG_VERBOSE
-		std::cout << "From:\t" + ip_in.toString() + ":" << port_in << "\tSize: " << packet_in.getDataSize() << std::endl;
-#endif
-		break;
-	case sf::Socket::NotReady:
-		break;
-	case sf::Socket::Partial:
-		assert(false);
-		break;
-	case sf::Socket::Disconnected:
-		break;
-	case sf::Socket::Error:
-		assert(false);
-		break;
-	default:
-		break;
-	}
-
-	if (!packet_send)
-		return packet_in;
-
-	switch (mode) {
-	case HOST:
-		for (auto pair : clientInfo) {
-			socket.send(packet_send, pair.first, pair.second);
-#ifdef _DEBUG_VERBOSE
-			std::cout << "To:\t" + pair.first.toString() + ":" << pair.second << "\tSize: " << packet_send.getDataSize() << std::endl;
-#endif
+	sf::Packet packet;
+	packet << 1;
+	int num = std::rand();
+	if (mode == HOST) {
+		for (auto &pair : clientInfo) {
+			socket.send(&num, sizeof(int), pair.first, pair.second);
 		}
-		break;
-	case JOIN:
-		socket.send(packet_send, serverIp, serverPort);
-#ifdef _DEBUG_VERBOSE
-		std::cout << "To:\t" + serverIp.toString() + ":" << serverPort << "\tSize: " << packet_send.getDataSize() << std::endl;
-#endif
-		break;
-	default:
-		assert(false);
+		for (int i = 0; i < clientInfo.size();) {
+			int num_in;
+			size_t size_in;
+			sf::IpAddress address_in;
+			unsigned short port_in;
+			while (socket.receive(&num_in, sizeof(int), size_in, address_in, port_in) != sf::Socket::Done);
+			assert(num_in == num);
+			if (num_in != num)
+				return false;
+			i++;
+		}
+		for (auto &pair : clientInfo) {
+			socket.send(&num, sizeof(int), pair.first, pair.second);
+		}
 	}
-	return packet_in;
+	else if (mode == JOIN) {
+		int num_in;
+		size_t size_in;
+		sf::IpAddress address_in;
+		unsigned short port_in;
+		while (socket.receive(&num_in, sizeof(int), size_in, address_in, port_in) != sf::Socket::Done);
+		assert(size_in == sizeof(int));
+		if (size_in != sizeof(int))
+			return false;
+		socket.send(&num_in,sizeof(int), serverIp,serverPort);
+		while (socket.receive(&num_in, sizeof(int), size_in, address_in, port_in) != sf::Socket::Done);
+	}
+	else {
+		assert(false);
+		return false;
+	}
+
+	return true;
 }
+
 
 bool UDPSocket::servWait()
 {		
