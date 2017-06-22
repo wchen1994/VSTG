@@ -383,6 +383,18 @@ void SceneGame::Update() {
 			assert(packet.endOfPacket());
 			break;
 		}
+		case Essential::PacketType::CHANGE_HP:
+		{
+			assert(Essential::isClient);
+			int playerNumb;
+			float playerHP;
+			packet >> playerNumb >> playerHP;
+			assert(packet.endOfPacket());
+			if (playerNumb == Essential::playerNumber) {
+				layerPlayer[playerNumb]->SetHp(playerHP);
+			}
+			break;
+		}
 		default:
 			break;
 		}
@@ -480,20 +492,33 @@ void SceneGame::Update() {
 				}
 			}
 			// Player collision
-			for (auto it = layerPlayer.begin(); it != layerPlayer.end(); it++) {
-
+//			for (auto it = layerPlayer.begin(); it != layerPlayer.end(); it++) {
+			for (int i=0; i<Essential::totalNumbPlayer; i++){
+				
 				// layerPlayer is a vector
-				if (*it == NULL)
+				if (layerPlayer[i] == NULL)
 					continue;
 
-				std::set<std::shared_ptr<Board::Tile>> sTile = brd.GetPotentialTile(*it);
+				float hp_old;
+				if (Essential::isHost)
+					hp_old = layerPlayer[i]->GetHp();
+
+
+				std::set<std::shared_ptr<Board::Tile>> sTile = brd.GetPotentialTile(layerPlayer[i]);
 				for (auto it_tile = sTile.begin(); it_tile != sTile.end(); it_tile++) {
 					const std::set<std::shared_ptr<ObjCharacter>> sObject = (*it_tile)->GetLayer();
 					for (auto it2 = sObject.begin(); it2 != sObject.end(); it2++) {
-						sf::Vector2<float> diffPos = (*it)->getPosition() - (*it2)->getPosition();
-						float len = (*it)->GetColliderSize() + (*it2)->GetColliderSize();
+						sf::Vector2<float> diffPos = layerPlayer[i]->getPosition() - (*it2)->getPosition();
+						float len = layerPlayer[i]->GetColliderSize() + (*it2)->GetColliderSize();
+
 						if (diffPos.x*diffPos.x + diffPos.y*diffPos.y <= len*len)
-							(*it)->OnCollisionEnter(*it2);
+							layerPlayer[i]->OnCollisionEnter(*it2);
+						float hp_new = layerPlayer[i]->GetHp();
+						if (Essential::isHost && i != 0 && hp_new != hp_old) {
+							sf::Packet packet_out;
+							packet_out << int(Essential::PacketType::CHANGE_HP) << i << hp_new;
+							Essential::socket.SendPacket(packet_out);
+						}
 					}
 				}
 			}
