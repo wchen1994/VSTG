@@ -39,37 +39,32 @@ bool UDPSocket::Synch()
 {
 	sf::Packet packet;
 	packet << 1;
-	int num = std::rand();
+	int num;
+	std::map<std::string, int> numMap;
 	if (mode == HOST) {
-		for (auto &pair : clientInfo) {
-			socket.send(&num, sizeof(int), pair.first, pair.second);
-		}
 		for (int i = 0; i < clientInfo.size();) {
-			int num_in;
 			size_t size_in;
 			sf::IpAddress address_in;
 			unsigned short port_in;
-			while (socket.receive(&num_in, sizeof(int), size_in, address_in, port_in) != sf::Socket::Done);
-			assert(num_in == num);
-			if (num_in != num)
-				return false;
+			while (socket.receive(&num, sizeof(int), size_in, address_in, port_in) != sf::Socket::Done);
+			numMap[address_in.toString()] = num;
 			i++;
 		}
 		for (auto &pair : clientInfo) {
-			socket.send(&num, sizeof(int), pair.first, pair.second);
+			socket.send(&numMap[pair.first.toString()], sizeof(int), pair.first, pair.second);
 		}
 	}
 	else if (mode == JOIN) {
-		int num_in;
+		int num = rand();
 		size_t size_in;
 		sf::IpAddress address_in;
 		unsigned short port_in;
+		socket.send(&num,sizeof(int), serverIp,serverPort);
+		int num_in;
 		while (socket.receive(&num_in, sizeof(int), size_in, address_in, port_in) != sf::Socket::Done);
-		assert(size_in == sizeof(int));
-		if (size_in != sizeof(int))
+		assert(num_in == num);
+		if (num_in != num)
 			return false;
-		socket.send(&num_in,sizeof(int), serverIp,serverPort);
-		while (socket.receive(&num_in, sizeof(int), size_in, address_in, port_in) != sf::Socket::Done);
 	}
 	else {
 		assert(false);
