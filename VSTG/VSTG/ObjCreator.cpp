@@ -221,12 +221,14 @@ std::shared_ptr<ObjEnemyBullet> ObjCreator::CreateEnemyBullet(EnemyBulletType ty
 		AssignTexture(pObject, "Resources/Textures/Bullet00.png");
 		pObject->SetOID(EnemyBulletType::BROUND);
 		pObject->SetDamage(40.0f);
+		SoundPlayer::soundPlayer.play("Resources/Sounds/laser3.wav", sf::Vector2f(0.0f, 0.0f), 0.6f);
 		break;
 	case EnemyBulletType::BPOINTING:
 		pObject = _CreateEnemyBullet("Bullet Round", 12.0f, pos, vel, rot);
 		AssignTexture(pObject, "Resources/Textures/Bullet01.png");
 		pObject->SetOID(EnemyBulletType::BPOINTING);
 		pObject->SetDamage(60.0f);
+		SoundPlayer::soundPlayer.play("Resources/Sounds/laser4.wav", sf::Vector2f(0.0f, 0.0f), 0.6f);
 		break;
 	default:
 		pObject = nullptr;
@@ -285,12 +287,14 @@ std::shared_ptr<ObjBullet> ObjCreator::CreateBullet(BulletType type, sf::Vector2
 		AssignTexture(pObject, "Resources/Textures/BulletPlayer.png", sf::IntRect(150, 0, 100, 400));
 		pObject->SetRotation(rot);
 		pObject->SetOID(BulletType::BLUE);
+		SoundPlayer::soundPlayer.play("Resources/Sounds/laser1.wav", sf::Vector2f(0.0f, 0.0f), 0.3f);
 		break;
 	case BulletType::GREEN:
 		pObject = _CreateBullet("Bullet Blue", 6.0f, pos, 500.0f, rot);
 		AssignTexture(pObject, "Resources/Textures/BulletPlayer02.png", sf::IntRect(150, 0, 100, 400));
 		pObject->SetRotation(rot);
 		pObject->SetOID(BulletType::GREEN);
+		SoundPlayer::soundPlayer.play("Resources/Sounds/laser2.wav", sf::Vector2f(0.0f, 0.0f), 0.3f);
 		break;
 	default:
 		pObject = nullptr;

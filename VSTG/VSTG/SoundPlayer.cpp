@@ -1,34 +1,55 @@
 #include "SoundPlayer.h"
 
+#include <iostream>
+
+SoundPlayer SoundPlayer::soundPlayer;
+
 SoundPlayer::SoundPlayer()
 {
 }
 
-void SoundPlayer::play(std::string const & path, sf::Vector2f pos)
+void SoundPlayer::play(std::string const & path, const sf::Vector2f & pos, const float duration)
 {
 	auto & pSoundBuffer = AssetManager::assetManager.GetSoundBuffer(path);
 	StructSound *structSound = new StructSound();
+	structSound->id = reinterpret_cast<std::uintptr_t>(pSoundBuffer.get());
 	structSound->sound.setBuffer(*pSoundBuffer);
 	structSound->sqDist = pos.x*pos.x + pos.y*pos.y;
-	structSound->duration = pSoundBuffer->getDuration().asSeconds();
+	structSound->duration = duration;
 	structSound->pBuffer = pSoundBuffer;
+	std::chrono::duration<float> time = std::chrono::steady_clock::now() - Essential::timeStart;
+	structSound->spornTime = time.count();
 	if (structSound->duration > 0) {
 		structSound->sound.setLoop(false);
 	}
 	else {
 		structSound->sound.setLoop(true);
 	}
-	structSound->sound.play();
 
-	setSound.insert(structSound);
-	for (auto &itSound = setSound.begin(); itSound != setSound.end(); itSound++) {
-		if ((*itSound)->sound.getPlayingOffset().asSeconds() > (*itSound)->duration) {
-			(*itSound)->sound.stop();
+	for (auto &itSound = setSound.begin(); itSound != setSound.end();) {
+		float offset = (*itSound)->sound.getPlayingOffset().asSeconds();
+		if ((*itSound)->sound.getStatus() == sf::Sound::Status::Stopped || 
+			(*itSound)->sound.getPlayingOffset().asSeconds() > (*itSound)->duration) {
 			delete *itSound;
-			setSound.erase(itSound);
+			setSound.erase(itSound++);
+		}
+		else {
+			itSound++;
 		}
 	}
-	if (setSound.size() > MAX_SOUND_NUMB) {
+
+	std::cout << setSound.size() << std::endl;
+
+	auto &pair = setSound.insert(structSound);
+
+	structSound->sound.play();
+
+	if (!pair.second) {
+		delete structSound;
+		return;
+	}
+
+	if (setSound.size() >= MAX_SOUND_NUMB) {
 		auto itSound = --setSound.end();
 		(*itSound)->sound.stop();
 		delete *itSound;

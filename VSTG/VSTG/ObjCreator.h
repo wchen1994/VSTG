@@ -4,6 +4,7 @@
 #include "Enemys/EnemyDuck.h"
 #include "Essential.hpp"
 #include "ObjEnemyBullet.h"
+#include "SoundPlayer.h"
 #include <memory>
 #include <SFML/System.hpp>
 #include <chrono>
