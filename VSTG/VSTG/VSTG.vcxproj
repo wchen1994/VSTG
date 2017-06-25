@@ -143,6 +143,7 @@
     <ClCompile Include="SceneLobby.cpp" />
     <ClCompile Include="SceneMapEditor.cpp" />
     <ClCompile Include="SceneStartMenu.cc" />
+    <ClCompile Include="SoundPlayer.cpp" />
     <ClCompile Include="stg.cc" />
     <ClCompile Include="TextBox.cpp" />
     <ClCompile Include="TextManager.cpp" />
@@ -170,6 +171,7 @@
     <ClInclude Include="SceneLobby.h" />
     <ClInclude Include="SceneMapEditor.h" />
     <ClInclude Include="SceneStartMenu.hpp" />
+    <ClInclude Include="SoundPlayer.h" />
     <ClInclude Include="TextBox.h" />
     <ClInclude Include="TextManager.h" />
     <ClInclude Include="UDPSocket.h" />

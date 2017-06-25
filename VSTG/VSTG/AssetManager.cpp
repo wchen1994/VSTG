@@ -1,5 +1,7 @@
 #include "AssetManager.h"
 
+AssetManager AssetManager::assetManager;
+
 AssetManager::AssetManager()
 {
 }
@@ -15,6 +17,21 @@ std::shared_ptr<sf::Texture> AssetManager::GetTexture(std::string const& path)
 		pTex->loadFromFile(path);
 		return pTex;
 	}
+}
+
+std::shared_ptr<sf::SoundBuffer> AssetManager::GetSoundBuffer(std::string const & path)
+{
+	auto itSound = m_pSoundMap.find(path);
+	if (itSound == m_pSoundMap.end()) {
+		auto soundBuffer = std::make_shared<sf::SoundBuffer>(sf::SoundBuffer());
+		soundBuffer->loadFromFile(path);
+		m_pSoundMap[path] = soundBuffer;
+		return soundBuffer;
+	}
+	else {
+		return itSound->second;
+	}
+	return nullptr;
 }
 
 bool AssetManager::killLonePtr()

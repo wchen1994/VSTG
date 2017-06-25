@@ -171,8 +171,8 @@ void SceneGame::Reset()
 	}
 
 	isGameSucceed = false;
-
-	Essential::socket.Synch();
+	if (Essential::isHost || Essential::isClient)
+		Essential::socket.Synch();
 	//Signal for ready to start
 //	if (Essential::isHost) {
 //		std::map<int, bool> checkMap;
