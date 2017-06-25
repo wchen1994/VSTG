@@ -18,7 +18,7 @@ void Button::setSprites(const sf::Vector2i & ipos, const sf::Vector2i & ppos, co
 
 void Button::setSprites(const sf::Vector2i pos[], const sf::Vector2i & size)
 {
-	pTex = Essential::assetManager.GetTexture(textureName);
+	pTex = AssetManager::assetManager.GetTexture(textureName);
 	for (int i = 0; i < 3; i++) {
 		sprites[i].setTexture(*pTex);
 		sprites[i].setTextureRect(sf::IntRect(pos[i], size));

@@ -2,7 +2,7 @@
 
 void ObjCreator::AssignTexture(std::shared_ptr<ObjCharacter> pObject, std::string texPath)
 {
-	std::shared_ptr<sf::Texture> pTexture = Essential::assetManager.GetTexture(texPath);
+	std::shared_ptr<sf::Texture> pTexture = AssetManager::assetManager.GetTexture(texPath);
 	std::shared_ptr<sf::Sprite> sprite = pObject->GetSprite();
 	if (!sprite) {
 		sprite = std::make_shared<sf::Sprite>(sf::Sprite());
@@ -26,7 +26,7 @@ void ObjCreator::AssignTexture(std::shared_ptr<ObjCharacter> pObject, std::strin
 
 void ObjCreator::AssignTexture(std::shared_ptr<ObjCharacter> pObject, std::string texPath, sf::IntRect texRect)
 {
-	std::shared_ptr<sf::Texture> pTexture = Essential::assetManager.GetTexture(texPath);
+	std::shared_ptr<sf::Texture> pTexture = AssetManager::assetManager.GetTexture(texPath);
 	std::shared_ptr<sf::Sprite> sprite = pObject->GetSprite();
 	if (!sprite) {
 		sprite = std::make_shared<sf::Sprite>(sf::Sprite());
@@ -183,6 +183,7 @@ std::shared_ptr<ObjEnemyBullet> ObjCreator::CreateEnemyBullet(EnemyBulletType ty
 		pObject->SetOID(EnemyBulletType::BROUND);
 		pObject->SetDamage(40.0f);
 		pObject->SetSpeed(100.0f);
+		SoundPlayer::soundPlayer.play("Resources/Sounds/laser3.wav", sf::Vector2f(0.0f, 0.0f), 0.6f);
 		break;
 	case EnemyBulletType::BPOINTING:
 		if (vel.y != 0.0f)
@@ -198,6 +199,7 @@ std::shared_ptr<ObjEnemyBullet> ObjCreator::CreateEnemyBullet(EnemyBulletType ty
 		pObject->SetOID(EnemyBulletType::BPOINTING);
 		pObject->SetDamage(60.0f);
 		pObject->SetSpeed(200.0f);
+		SoundPlayer::soundPlayer.play("Resources/Sounds/laser4.wav", sf::Vector2f(0.0f, 0.0f), 0.6f);
 		break;
 	default:
 		pObject = nullptr;

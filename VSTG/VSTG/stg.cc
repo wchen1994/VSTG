@@ -15,6 +15,7 @@ A touhou like game
 #include "SceneStartMenu.hpp"
 #include "SceneMapEditor.h"
 #include "SceneLobby.h"
+#include "AssetManager.h"
 
 #ifdef _DEBUG
 #pragma comment(lib, "sfml-graphics-d.lib")
@@ -37,7 +38,24 @@ int main(){
 	// For test used
 	Essential::wnd.setSize(sf::Vector2u(400, 300));
 	// End
-
+	AssetManager::assetManager.GetTexture("Resources/Textures/Bullet00.png");
+	AssetManager::assetManager.GetTexture("Resources/Textures/Bullet01.png");
+	AssetManager::assetManager.GetTexture("Resources/Textures/BulletPlayer.png");
+	AssetManager::assetManager.GetTexture("Resources/Textures/BulletPlayer02.png");
+	AssetManager::assetManager.GetTexture("Resources/Textures/button01.png");
+	AssetManager::assetManager.GetTexture("Resources/Textures/Enemy01.png");
+	AssetManager::assetManager.GetTexture("Resources/Textures/Enemy02.png");
+	AssetManager::assetManager.GetTexture("Resources/Textures/Enemy03.png");
+	AssetManager::assetManager.GetTexture("Resources/Textures/menu01.png");
+	AssetManager::assetManager.GetTexture("Resources/Textures/menu02.png");
+	AssetManager::assetManager.GetTexture("Resources/Textures/Player00.png");
+	AssetManager::assetManager.GetTexture("Resources/Textures/rock0.png");
+	AssetManager::assetManager.GetTexture("Resources/Textures/rock1.png");
+	AssetManager::assetManager.GetTexture("Resources/Textures/TextBox01.png");
+	AssetManager::assetManager.GetSoundBuffer("Resources/Sounds/laser1.wav");
+	AssetManager::assetManager.GetSoundBuffer("Resources/Sounds/laser2.wav");
+	AssetManager::assetManager.GetSoundBuffer("Resources/Sounds/laser3.wav");
+	AssetManager::assetManager.GetSoundBuffer("Resources/Sounds/laser4.wav");
 
 	std::unique_ptr<Scene> pScene;
 	std::list<std::unique_ptr<Scene>> lScenes;
@@ -83,7 +101,7 @@ int main(){
 		default:
 			break;
 		}
-		Essential::assetManager.killLonePtr();
+//		Essential::assetManager.killLonePtr();
 	}
 
 	return 0;

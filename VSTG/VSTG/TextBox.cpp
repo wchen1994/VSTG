@@ -15,7 +15,7 @@ TextBox::TextBox(sf::Texture & texture, sf::IntRect & rectFocus, sf::IntRect & r
 TextBox::TextBox() :
 	isFocus(false), flag(flagDEFAULT), size(12)
 {
-	pTex = Essential::assetManager.GetTexture("Resources/Textures/TextBox01.png");
+	pTex = AssetManager::assetManager.GetTexture("Resources/Textures/TextBox01.png");
 	bgFocus.setTexture(*pTex);
 	bgFocus.setTextureRect(sf::IntRect(0, 0, 300, 40));
 	bgIdle.setTexture(*pTex);

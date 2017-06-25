@@ -33,7 +33,7 @@ public:
 	static sf::IntRect GameCanvas;
 	static bool inGamecanvas(const sf::Vector2f & pos);
 	static float windowScale;
-	static AssetManager assetManager;
+//	static AssetManager assetManager;
 	static std::random_device rd;
 	static std::mt19937 rng;
 

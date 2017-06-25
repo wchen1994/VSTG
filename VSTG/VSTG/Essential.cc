@@ -7,7 +7,7 @@
 bool Essential::isExit = false;
 sf::RenderWindow Essential::wnd(sf::VideoMode(Essential::ScreenWidth, Essential::ScreenHeight), "Game", sf::Style::Default);
 TextManager Essential::textManager("Resources/texts/zh_ch.csv");
-AssetManager Essential::assetManager;
+//AssetManager Essential::assetManager;
 sf::Font Essential::textFont;
 float Essential::textScale = 1.0;
 sf::IntRect Essential::GameCanvas(25, 25, 500, 550);

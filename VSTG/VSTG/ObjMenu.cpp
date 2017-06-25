@@ -4,7 +4,7 @@
 ObjMenu::ObjMenu(sf::IntRect rect, sf::String title, uint32_t flag)
 {
 	this->flag = flag;
-	pBG = Essential::assetManager.GetTexture("Resources/Textures/menu01.png");
+	pBG = AssetManager::assetManager.GetTexture("Resources/Textures/menu01.png");
 
 	bg.setTexture(*pBG);
 	bg.setTextureRect(sf::IntRect(padding, padding, rect.width, rect.height));

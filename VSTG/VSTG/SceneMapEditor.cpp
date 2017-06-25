@@ -2,6 +2,7 @@
 #include "Essential.hpp"
 #include "ObjEnemy.hpp"
 #include "ObjCreator.h"
+#include "AssetManager.h"
 
 #include "nfd.h"
 
@@ -22,12 +23,6 @@ SceneMapEditor::SceneMapEditor() :
 	objectEraser.setFillColor(sf::Color::Transparent);
 	objectEraser.setOutlineThickness(0.0f);
 
-//	pTexBuffer = Essential::assetManager.GetTexture("Resources/Textures/rock.png");
-//	objectBrush.setTexture(*pTexBuffer);
-//	objectBrush.setOrigin(200.0f, 200.0f);
-//	spriteScale = 0.1f;
-//	objectBrush.setScale(sf::Vector2f(spriteScale,spriteScale));
-//	objectBrush.setFillColor(sf::Color(255, 0, 0, 100));
 	objectBrush = ObjCreator::CreateEnemy(ObjCreator::EnemyType(typeIdx), sf::Vector2f(0.0f, 0.0f));
 
 	paintboard.setPosition(sf::Vector2f(float(Essential::GameCanvas.left), float(Essential::GameCanvas.top)));
@@ -176,19 +171,14 @@ void SceneMapEditor::DrawScene()
 
 		// Draw if in paintboard
 		if (inPaintboard(vec)) {
-//			sf::Sprite sprite(pObject->GetSprite());
-//			sprite.setPosition(vec);
-//			Essential::wnd.draw(sprite);
 			sf::Sprite sprite(*pObject->GetSprite());
 			sprite.setPosition(vec);
 			Essential::wnd.draw(sprite);
-//			pObject->Draw(Essential::wnd);
 		}
 	}
 
 	// draw tool
 	Essential::wnd.draw(objectEraser);
-//	Essential::wnd.draw(objectBrush);
 	objectBrush->Draw(Essential::wnd);
 
 	// draw menu
