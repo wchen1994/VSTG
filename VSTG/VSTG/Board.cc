@@ -67,8 +67,13 @@ std::set<std::shared_ptr<Board::Tile>>& Board::GetPotentialTile(const int id_x, 
 #ifdef _DEBUG
 			for (auto & pObj : tile->GetLayer()) {
 				sf::Vector2f pos = pObj->getPosition();
-				assert(pos.x >= x*tileWidth && pos.x < (x + 1) *tileWidth);
-				assert(pos.y >= y*tileHeight && pos.y < (y + 1) *tileHeight);
+				if (pos.x >= 0 && pos.x < Essential::ScreenWidth && pos.y >= 0 && pos.y < Essential::ScreenHeight) {
+					assert(pos.x >= x*tileWidth && pos.x < (x + 1) *tileWidth);
+					assert(pos.y >= y*tileHeight && pos.y < (y + 1) *tileHeight);
+				}
+				else {
+					assert(y*nCol + x == nCol * nRow);
+				}
 			}
 #endif
 			if (!tile->isColiChecked && tile->layerObject.size() > 0) {
@@ -219,7 +224,13 @@ sf::Vector2i Board::UpdateObjectPos(std::shared_ptr<ObjCharacter> pObj)
 {
 	const auto& position = pObj->getPosition();
 	const auto& brdPos = pObj->GetBrdPos();
-	const sf::Vector2i newBrdPos(int(position.x / tileWidth), int(position.y / tileHeight));
+	sf::Vector2i newBrdPos;
+	if (position.x >= 0 && position.x < Essential::ScreenWidth && position.y >= 0 && position.y < Essential::ScreenHeight) {
+		newBrdPos = sf::Vector2i(int(position.x / tileWidth), int(position.y / tileHeight));
+	}
+	else {
+		newBrdPos = sf::Vector2i(0, nRow+1);
+	}
 	if (brdPos.x != newBrdPos.x || brdPos.y != newBrdPos.y) {
 		RemoveObject(brdPos, pObj);
 		AddObject(newBrdPos, pObj);

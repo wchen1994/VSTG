@@ -253,14 +253,19 @@ void SceneGame::Update() {
 	bool isEnemy = map.Update(dt);
 
 	//check the current number of enemy
-	const std::vector<size_t>& EnemyCount = brd.GetCount();
+	const std::vector<size_t>& brdCount = brd.GetCount();
 	size_t nBrdObj = 0;
-	for (size_t count : EnemyCount) {
+	for (size_t count : brdCount) {
 		nBrdObj += count;
 	}
 
 	// check whether the game is success
-	if (!isEnemy && nBrdObj == 0 && !Essential::isClient) {
+	int playerAliveNumb = 0;
+	for (auto &pPlayer : layerPlayer) {
+		if (pPlayer)
+			playerAliveNumb++;
+	}
+	if (!isEnemy && layerDefault.size() == playerAliveNumb && !Essential::isClient) {
 		if (Essential::isHost) {
 			sf::Packet packet_out;
 			packet_out << int(Essential::PacketType::SIGNAL);
