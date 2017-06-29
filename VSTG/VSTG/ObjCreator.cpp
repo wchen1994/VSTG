@@ -1,5 +1,7 @@
 #include "ObjCreator.h"
 
+const double PI = 3.141592653589793238463;
+
 void ObjCreator::AssignTexture(std::shared_ptr<ObjCharacter> pObject, std::string texPath)
 {
 	std::shared_ptr<sf::Texture> pTexture = AssetManager::assetManager.GetTexture(texPath);
@@ -187,7 +189,7 @@ std::shared_ptr<ObjEnemyBullet> ObjCreator::CreateEnemyBullet(EnemyBulletType ty
 		break;
 	case EnemyBulletType::BPOINTING:
 		if (vel.y != 0.0f)
-			rot = float(180 - atan(vel.x / vel.y) * 180 / std::_Pi);
+			rot = float(180 - atan(vel.x / vel.y) * 180 / PI);
 		else if (vel.x > 0) {
 			rot = 90.0f;
 		}
@@ -215,7 +217,7 @@ std::shared_ptr<ObjEnemyBullet> ObjCreator::CreateEnemyBullet(EnemyBulletType ty
 std::shared_ptr<ObjEnemyBullet> ObjCreator::CreateEnemyBullet(EnemyBulletType type, sf::Vector2f pos, float speed, float rot)
 {
 	std::shared_ptr<ObjEnemyBullet> pObject = nullptr;
-	sf::Vector2f vel = { float(sin(rot * std::_Pi / 180.0f)), float(-cos(rot * std::_Pi / 180.0f)) };
+	sf::Vector2f vel = { float(sin(rot * PI / 180.0f)), float(-cos(rot * PI / 180.0f)) };
 	vel *= speed;
 	switch (type) {
 	case EnemyBulletType::BROUND:
@@ -273,7 +275,7 @@ std::shared_ptr<ObjPlayer> ObjCreator::CreatePlayer(PlayerType type, sf::Vector2
 
 std::shared_ptr<ObjBullet> ObjCreator::_CreateBullet(std::string Objname, float radius, sf::Vector2f pos, float speed, float rot)
 {
-	sf::Vector2f vel = { float(sin(rot * std::_Pi / 180.0f)), float(-cos(rot * std::_Pi / 180.0f)) };
+	sf::Vector2f vel = { float(sin(rot * PI / 180.0f)), float(-cos(rot * PI / 180.0f)) };
 	vel *= speed;
 	std::shared_ptr<ObjBullet> pObject = std::make_shared<ObjBullet>(ObjBullet(pos, vel));
 	pObject->SetColliderSize(radius);

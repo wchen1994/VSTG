@@ -153,7 +153,7 @@ void Map::AddObjectByPacket(sf::Packet & packet_in, std::set<std::shared_ptr<Obj
 		sorted_set_out.insert(ObjCreator::CreateEnemyX(ObjCreator::EnemyType(OID), pos, vel, rotation, rotSpeed));
 	}
 	else if (type == GameObject::PLAYER) {
-		auto & pPlayer = ObjCreator::CreatePlayer(ObjCreator::PlayerType(OID), pos);
+		const auto & pPlayer = ObjCreator::CreatePlayer(ObjCreator::PlayerType(OID), pos);
 		SceneGame::layerDefault.insert(pPlayer);
 		SceneGame::layerPlayer.push_back(pPlayer);
 	}

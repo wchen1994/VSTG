@@ -125,7 +125,7 @@ Essential::GameState SceneLobby::Run()
 				if (!isClientConnected) {
 					unsigned short hostPort = std::stoi(boxClientPort.GetString());
 					std::string hostIp = boxClientIP.GetString();
-					Essential::socket.Join(hostIp, hostPort, unsigned short(std::stoul(boxLocalPort.GetString())));
+					Essential::socket.Join(hostIp, hostPort, (unsigned short)(std::stoul(boxLocalPort.GetString())));
 
 					clientMenu.SetTitle("Connecting to: " + hostIp);
 					sf::Packet packet_out;
@@ -152,7 +152,7 @@ Essential::GameState SceneLobby::Run()
 			boxLocalPort.Update();
 
 			if (butHost.getStatus() == Button::ButtonState::Release) {
-				Essential::socket.Host(unsigned short(std::stoul(boxLocalPort.GetString())));
+				Essential::socket.Host((unsigned short)(std::stoul(boxLocalPort.GetString())));
 				isHostMenu = true;
 			}
 			if (butJoin.getStatus() == Button::ButtonState::Release) {

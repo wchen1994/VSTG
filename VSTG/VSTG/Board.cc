@@ -74,7 +74,7 @@ std::set<std::shared_ptr<Board::Tile>>& Board::GetPotentialTile(const int id_x, 
 
 void Board::RemoveObject(const std::shared_ptr<ObjCharacter> pObject)
 {
-	sf::Vector2i& brdPos = pObject->GetBrdPos();
+	const sf::Vector2i& brdPos = pObject->GetBrdPos();
 	RemoveObject(brdPos, pObject);
 }
 
@@ -90,7 +90,7 @@ void Board::RemoveObject(const sf::Vector2i& brdPos, const std::shared_ptr<ObjCh
 
 void Board::AddObject(const std::shared_ptr<ObjCharacter> pObject)
 {
-	sf::Vector2i& pos = pObject->GetBrdPos();
+	const sf::Vector2i& pos = pObject->GetBrdPos();
 	AddObject(pos, pObject);
 }
 
@@ -189,8 +189,8 @@ void Board::ProcColiLayer(std::set<std::shared_ptr<ObjCharacter>> layer1, std::s
 
 sf::Vector2i Board::UpdateObjectPos(std::shared_ptr<ObjCharacter> pObj)
 {
-	auto& position = pObj->getPosition();
-	auto& brdPos = pObj->GetBrdPos();
+	const auto& position = pObj->getPosition();
+	const auto& brdPos = pObj->GetBrdPos();
 	const sf::Vector2i newBrdPos(int(position.x / tileWidth), int(position.y / tileHeight));
 	if (brdPos.x != newBrdPos.x || brdPos.y != newBrdPos.y) {
 		RemoveObject(brdPos, pObj);

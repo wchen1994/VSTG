@@ -262,7 +262,7 @@ void SceneGame::Update() {
 	bool isEnemy = map.Update(dt);
 
 	//check the current number of enemy
-	std::vector<size_t>& EnemyCount = brd.GetCount();
+	const std::vector<size_t>& EnemyCount = brd.GetCount();
 	size_t nBrdObj = 0;
 	for (size_t count : EnemyCount) {
 		nBrdObj += count;
@@ -407,7 +407,7 @@ void SceneGame::Update() {
 	// Player Input Update
 	if (layerPlayer[Essential::playerNumber]) {
 		if (Essential::isHost || Essential::isClient) { // Online
-			ObjPlayer::StructInput & input = layerPlayer[Essential::playerNumber]->UpdateInput();
+			const ObjPlayer::StructInput & input = layerPlayer[Essential::playerNumber]->UpdateInput();
 			if (input.isChange) {
 				sf::Packet packet_out;
 				int type = int(Essential::PacketType::CHANGE_T);
@@ -434,7 +434,7 @@ void SceneGame::Update() {
 			packet_out << int(Essential::PacketType::CHANGE_POS) << int(Essential::totalNumbPlayer);
 			for (auto & pPlayer : layerPlayer) {
 				if (pPlayer) {
-					sf::Vector2f & pos = pPlayer->getPosition();
+					const sf::Vector2f & pos = pPlayer->getPosition();
 					packet_out << pos.x << pos.y;
 				}
 				else {

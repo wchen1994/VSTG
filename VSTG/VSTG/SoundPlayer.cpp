@@ -10,7 +10,7 @@ SoundPlayer::SoundPlayer()
 
 void SoundPlayer::play(std::string const & path, const sf::Vector2f & pos, const float duration)
 {
-	auto & pSoundBuffer = AssetManager::assetManager.GetSoundBuffer(path);
+	const auto & pSoundBuffer = AssetManager::assetManager.GetSoundBuffer(path);
 	StructSound *structSound = new StructSound();
 	structSound->id = reinterpret_cast<std::uintptr_t>(pSoundBuffer.get());
 	structSound->sound.setBuffer(*pSoundBuffer);
@@ -26,12 +26,12 @@ void SoundPlayer::play(std::string const & path, const sf::Vector2f & pos, const
 		structSound->sound.setLoop(true);
 	}
 
-	for (auto &itSound = setSound.begin(); itSound != setSound.end();) {
+	for (auto itSound = setSound.begin(); itSound != setSound.end();) {
 		float offset = (*itSound)->sound.getPlayingOffset().asSeconds();
 		if ((*itSound)->sound.getStatus() == sf::Sound::Status::Stopped || 
 			(*itSound)->sound.getPlayingOffset().asSeconds() > (*itSound)->duration) {
 			delete *itSound;
-			setSound.erase(itSound++);
+			itSound = setSound.erase(itSound);
 		}
 		else {
 			itSound++;
@@ -40,7 +40,7 @@ void SoundPlayer::play(std::string const & path, const sf::Vector2f & pos, const
 
 	std::cout << setSound.size() << std::endl;
 
-	auto &pair = setSound.insert(structSound);
+	const auto &pair = setSound.insert(structSound);
 
 	structSound->sound.play();
 
