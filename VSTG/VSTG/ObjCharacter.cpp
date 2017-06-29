@@ -62,7 +62,7 @@ void ObjCharacter::Draw(sf::RenderTarget& gfx) {
 	else if (drawCollider) {
 		gfx.draw(*drawCollider);
 	}
-#ifdef _DEBUG_COLLIDER
+#if defined(_DEBUG_COLLIDER) && defined(_DEBUG)
 	if (drawCollider) {
 		gfx.draw(*drawCollider);
 	}

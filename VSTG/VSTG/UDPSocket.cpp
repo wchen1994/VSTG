@@ -42,7 +42,7 @@ bool UDPSocket::Synch()
 	int num;
 	std::map<std::string, int> numMap;
 	if (mode == HOST) {
-		for (int i = 0; i < clientInfo.size();) {
+		for (int i = 0; i < int(clientInfo.size());) {
 			size_t size_in;
 			sf::IpAddress address_in;
 			unsigned short port_in;
@@ -86,7 +86,7 @@ bool UDPSocket::servWait()
 	{
 	case sf::Socket::Done:
 	{
-#ifdef _DEBUG_VERBOSE
+#if defined(_DEBUG_VERBOSE) && defined(_DEBUG)
 		std::cout << "Connected by: " + remoteIp_in.toString() + ":" << remotePort_in << std::endl;
 #endif
 		const std::pair<sf::IpAddress, unsigned short> pair = { remoteIp_in, remotePort_in };
@@ -137,14 +137,14 @@ bool UDPSocket::SendPacket(sf::Packet & packet)
 	case HOST:
 		for (auto pair : clientInfo) {
 			assert(socket.send(packet, pair.first, pair.second) == sf::Socket::Done);
-#ifdef _DEBUG_VERBOSE
+#if defined(_DEBUG_VERBOSE) && defined(_DEBUG)
 			std::cout << "To:\t" + pair.first.toString() + ":" << pair.second << "\tSize: " << packet.getDataSize() << std::endl;
 #endif
 		}
 		break;
 	case JOIN:
 		assert(socket.send(packet, serverIp, serverPort) == sf::Socket::Done);
-#ifdef _DEBUG_VERBOSE
+#if defined(_DEBUG_VERBOSE) && defined(_DEBUG)
 		std::cout << "To:\t" + serverIp.toString() + ":" << serverPort << "\tSize: " << packet.getDataSize() << std::endl;
 #endif
 		break;
@@ -162,7 +162,7 @@ std::queue<sf::Packet> & UDPSocket::GetPacket()
 	unsigned short port_in;
 	while (socket.receive(packet_in, ip_in, port_in) == sf::Socket::Done) {
 		qPackets.push(packet_in);
-#ifdef _DEBUG_VERBOSE
+#if defined(_DEBUG_VERBOSE) && defined(_DEBUG)
 		std::cout << "From:\t" + ip_in.toString() + ":" << port_in << "\tSize: " << packet_in.getDataSize() << std::endl;
 #endif
 	}

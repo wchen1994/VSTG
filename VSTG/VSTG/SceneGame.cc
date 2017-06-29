@@ -528,7 +528,7 @@ void SceneGame::Update() {
 		(*it)->LateUpdate();
 	}
 
-#ifdef _DEBUG_LOG
+#if defined(_DEBUG_LOG) && defined(_DEBUG)
 
 	//Log
 	if (logTimer > 0) {
@@ -578,7 +578,7 @@ void SceneGame::DrawScene()
 	wnd.draw(background);
 	wnd.draw(playerHP);
 
-#ifdef _DEBUG_BOARD
+#if defined(_DEBUG) && defined(_DEBUG_BOARD)
 	brd.Highlight(wnd);
 	brd.View(wnd);
 #endif
