@@ -5,13 +5,10 @@
 #include "SceneGame.hpp"
 #include "ObjCreator.h"
 
-ObjPlayer::ObjPlayer() :
-	ObjPlayer(sf::Vector2f(0.0f, 0.0f))
-{
-}
 
-ObjPlayer::ObjPlayer(sf::Vector2f pos) :
-	ObjCharacter(pos, sf::Vector2f(0.0f,0.0f), 0.0f, 0.0f)
+ObjPlayer::ObjPlayer(sf::Vector2f pos, int playerNumb) :
+	ObjCharacter(pos, sf::Vector2f(0.0f,0.0f), 0.0f, 0.0f),
+	playerNumb(playerNumb)
 {
 	up = down = left = right = false;
 	fire = false;
@@ -174,6 +171,11 @@ void ObjPlayer::OnCollisionEnter(std::shared_ptr<ObjCharacter> pOther){
 	if ( type == GameObject::ENEMY || type == GameObject::ENEMYNOTDEAD){
 		SceneGame::layerDelete.insert(pOther);
 		hp -= pOther->GetDamage();
+		if (Essential::isHost) {
+			sf::Packet packet_out;
+			packet_out << int(Essential::PacketType::CHANGE_HP) << playerNumb << hp;
+			Essential::socket.SendPacket(packet_out);
+		}
 		if (hp < 0) {
 			SceneGame::layerDelete.insert(shared_from_derived<ObjPlayer>());
 		}

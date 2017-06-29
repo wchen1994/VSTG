@@ -88,7 +88,7 @@ std::shared_ptr<ObjEnemy> ObjCreator::CreateEnemy(EnemyType type, sf::Vector2f p
 	std::shared_ptr<ObjEnemy> pObject = nullptr;
 	switch (type) {
 	case EnemyType::ROCK_DOWN:
-		pObject = CreateEnemy(type, pos, sf::Vector2f(0.0f, 1.0f), Essential::angleDist(Essential::rng), Essential::angleDist(Essential::rng));
+		pObject = CreateEnemy(type, pos, sf::Vector2f(0.0f, 120.0f), Essential::angleDist(Essential::rng), Essential::angleDist(Essential::rng));
 		break;
 	case EnemyType::ROCK_RAND:
 		pObject = CreateEnemy(type, 
@@ -202,19 +202,19 @@ std::shared_ptr<ObjEnemyBullet> ObjCreator::CreateEnemyBullet(EnemyBulletType ty
 	return ObjCreator::CreateEnemyBullet(type, pos, vel);
 }
 
-std::shared_ptr<ObjPlayer> ObjCreator::_CreatePlayer(std::string ObjName, float radius, sf::Vector2f pos)
+std::shared_ptr<ObjPlayer> ObjCreator::_CreatePlayer(std::string ObjName, float radius, sf::Vector2f pos, int playerNumb)
 {
-	std::shared_ptr<ObjPlayer> pObject = std::make_shared<ObjPlayer>(ObjPlayer(pos));
+	std::shared_ptr<ObjPlayer> pObject = std::make_shared<ObjPlayer>(ObjPlayer(pos, playerNumb));
 	pObject->SetColliderSize(radius);
 	return pObject;
 }
 
-std::shared_ptr<ObjPlayer> ObjCreator::CreatePlayer(PlayerType type, sf::Vector2f pos)
+std::shared_ptr<ObjPlayer> ObjCreator::CreatePlayer(PlayerType type, sf::Vector2f pos, int playerNumb)
 {
 	std::shared_ptr<ObjPlayer> pObject = nullptr;
 	switch (type) {
 	case PlayerType::HULUWA:
-		pObject = _CreatePlayer("HuLuWa", 20.0f, pos);
+		pObject = _CreatePlayer("HuLuWa", 20.0f, pos, playerNumb);
 		AssignTexture(pObject, "Resources/Textures/Player00.png");
 		pObject->SetColliderSize(5.0f);
 		pObject->SetOID(PlayerType::HULUWA);

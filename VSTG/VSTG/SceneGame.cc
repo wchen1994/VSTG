@@ -49,11 +49,11 @@ Essential::GameState SceneGame::Run(){
 	else if (!Essential::isClient && Essential::isHost) { // Host Start
 		Essential::totalNumbPlayer = int(Essential::socket.GetClinetNumb()) + 1;
 		for (int i = 0; i < Essential::totalNumbPlayer; i++) {
-			layerPlayer.push_back(ObjCreator::CreatePlayer(ObjCreator::PlayerType::HULUWA, sf::Vector2f(0.0f, 0.0f)));
+			layerPlayer.push_back(ObjCreator::CreatePlayer(ObjCreator::PlayerType::HULUWA, sf::Vector2f(0.0f, 0.0f), i));
 		}
 	}
 	else if (!Essential::isClient && !Essential::isHost) { // Offline Start
-		layerPlayer.push_back(ObjCreator::CreatePlayer(ObjCreator::PlayerType::HULUWA, sf::Vector2f(0.0f, 0.0f)));
+		layerPlayer.push_back(ObjCreator::CreatePlayer(ObjCreator::PlayerType::HULUWA, sf::Vector2f(0.0f, 0.0f), 0));
 	}
 	else
 		assert(false);
