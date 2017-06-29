@@ -14,6 +14,7 @@ ObjBullet::ObjBullet(sf::Vector2f pos, sf::Vector2f vel) :
 	drawSprite = std::make_shared<sf::Sprite>(sf::Sprite());
 
 	type = GameObject::BULLET;
+	typeInteract = GameObject::ENEMY;
 }
 
 void ObjBullet::Update(const float dt)

@@ -13,6 +13,7 @@ GameObject::GameObject(sf::Vector2f pos) :
 	position(pos),
 	isDelete(false),
 	type(UNKONW),
+	typeInteract(UNKONW),
 	unique_id(++uniqueIdCounter),
 	enable_shared_from_this()
 {

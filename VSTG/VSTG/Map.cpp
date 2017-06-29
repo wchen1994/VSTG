@@ -27,7 +27,6 @@ bool Map::Update(const float dt)
 			vec.y = float(Essential::GameCanvas.top) - 10.0f;
 			pObject->setPosition(vec);
 			SceneGame::layerDefault.insert(pObject);
-			SceneGame::layerEnemy.insert(pObject);
 		}
 		return true;
 	}

@@ -8,7 +8,7 @@ ObjCharacter::ObjCharacter():
 
 ObjCharacter::ObjCharacter(sf::Vector2f pos, sf::Vector2f vel, float rot, float rotSpeed):
 	GameObject(pos),
-	brdPos(0, 0),
+	brdPos(-10, -10),
 	drawCollider(nullptr),
 	drawSprite(nullptr),
 	hp(100.0f),

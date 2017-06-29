@@ -14,8 +14,8 @@
 #include "ObjMenu.h"
 #include "ObjCreator.h"
 
-//#define _DEBUG_BOARD
-//#define _DEBUG_LOG
+#define _DEBUG_BOARD
+#define _DEBUG_LOG
 
 class SceneGame : public Scene{
 private:
@@ -26,7 +26,7 @@ private:
 	float culDt = 0.0f;//Culmulative delta time
 	float logTimer = 0.0f;
 	static constexpr float fixedUpdateDuration = 1 / 30.0f;
-	unsigned int nDeletes = 0;
+	size_t nDeletes = 0;
 	bool isFocused;
 	bool isMenuTriger;
 	bool isGamePause;
@@ -54,14 +54,11 @@ public:
 	void DrawScene();
 public:
 	static std::set<std::shared_ptr<ObjCharacter>> layerDefault;
-	static std::set<std::shared_ptr<ObjCharacter>> layerBullet;
 	static std::vector<std::shared_ptr<ObjPlayer>> layerPlayer;
-	static std::set<std::shared_ptr<ObjCharacter>> layerEnemy;	
-	static std::set<std::shared_ptr<ObjCharacter>> layerEnemyBullet;
 	static std::set<std::shared_ptr<ObjCharacter>> layerDelete;
 	static Board brd;
 
 	// Changing the tile size require to rebuild the soluction
-	static constexpr int tileWidth = 20;
-	static constexpr int tileHeight = 20;
+	static constexpr int tileWidth = 50;
+	static constexpr int tileHeight = 50;
 };
