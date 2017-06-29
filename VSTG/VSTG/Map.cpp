@@ -149,7 +149,7 @@ void Map::AddObjectByPacket(sf::Packet & packet_in, std::set<std::shared_ptr<Obj
 	
 	// Packet can have enemy and player
 	if (type == GameObject::ENEMY) {
-		sorted_set_out.insert(ObjCreator::CreateEnemyX(ObjCreator::EnemyType(OID), pos, vel, rotation, rotSpeed));
+		sorted_set_out.insert(ObjCreator::CreateEnemy(ObjCreator::EnemyType(OID), pos, vel, rotation, rotSpeed));
 	}
 	else if (type == GameObject::PLAYER) {
 		const auto & pPlayer = ObjCreator::CreatePlayer(ObjCreator::PlayerType(OID), pos);

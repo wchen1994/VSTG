@@ -83,53 +83,34 @@ std::shared_ptr<ObjEnemy> ObjCreator::_CreateEnemy2(std::string ObjName, float r
 	return pObj;
 }
 
-std::shared_ptr<ObjEnemy> ObjCreator::CreateEnemy(EnemyType type, sf::Vector2f pos, sf::Vector2f vel, float rot)
+std::shared_ptr<ObjEnemy> ObjCreator::CreateEnemy(EnemyType type, sf::Vector2f pos)
 {
 	std::shared_ptr<ObjEnemy> pObject = nullptr;
 	switch (type) {
 	case EnemyType::ROCK_DOWN:
-		 pObject = _CreateEnemy("Stupid Rock", 20.0f, pos, sf::Vector2f(0.0f, 120.0f), 
-			 Essential::angleDist(Essential::rng), Essential::angleDist(Essential::rng));
-		 AssignTexture(pObject, "Resources/Textures/rock0.png");
-		pObject->SetOID(EnemyType::ROCK_DOWN);
+		pObject = CreateEnemy(type, pos, sf::Vector2f(0.0f, 1.0f), Essential::angleDist(Essential::rng), Essential::angleDist(Essential::rng));
 		break;
 	case EnemyType::ROCK_RAND:
-		pObject = _CreateEnemy("Insane Rock", 20.0f, pos, 
-			sf::Vector2f(60.0f * (Essential::normalizedDist(Essential::rng) - 0.5f), 60.0f + 60.0f * Essential::normalizedDist(Essential::rng)),
+		pObject = CreateEnemy(type, 
+			pos, sf::Vector2f(60.0f * (Essential::normalizedDist(Essential::rng) - 0.5f), 60.0f + 60.0f * Essential::normalizedDist(Essential::rng)),
 			Essential::angleDist(Essential::rng), Essential::angleDist(Essential::rng));
-		AssignTexture(pObject, "Resources/Textures/rock1.png");
-		pObject->SetOID(EnemyType::ROCK_RAND);
 		break;
 	case EnemyType::DUCK_RED:
-		pObject = _CreateEnemy2("Duck Red t 1", 30.0f, pos,
-			sf::Vector2f(0.0f, 30.0f), EnemyBulletType::BROUND);
-		AssignTexture(pObject, "Resources/Textures/Enemy02.png");
-		pObject->SetHp(800.0f);
-		pObject->SetOID(EnemyType::DUCK_RED);
+		pObject = CreateEnemy(type, pos, sf::Vector2f(0.0f, 30.0f), 0.0f, 0.0f);
 		break;
 	case EnemyType::DUCK_BLUE:
-		pObject = _CreateEnemy2("Duck Blue t 1", 30.0f, pos,
-			sf::Vector2f(60.0f * (Essential::normalizedDist(Essential::rng) - 0.5f), 30.0f), EnemyBulletType::BPOINTING);
-		AssignTexture(pObject, "Resources/Textures/Enemy03.png");
-		pObject->SetHp(500.0f);
-		pObject->SetOID(EnemyType::DUCK_BLUE);
+		pObject = CreateEnemy(type, pos, sf::Vector2f(60.0f * (Essential::normalizedDist(Essential::rng) - 0.5f), 30.0f), 0.0f, 0.0f);
 		break;
 	default:
-		pObject = nullptr;
-	}
-
-	if (Essential::isHost) {
-		SendPacket(pObject);
+		pObject = CreateEnemy(type, pos, sf::Vector2f(0.0f, 1.0f), 0.0f, 0.0f);
 	}
 
 	return pObject;
 }
 
 // For Online version
-std::shared_ptr<ObjEnemy> ObjCreator::CreateEnemyX(EnemyType type, sf::Vector2f pos, sf::Vector2f vel, float rot, float rotSpeed)
+std::shared_ptr<ObjEnemy> ObjCreator::CreateEnemy(EnemyType type, sf::Vector2f pos, sf::Vector2f vel, float rot, float rotSpeed)
 {
-	assert(Essential::isClient);
-
 	std::shared_ptr<ObjEnemy> pObject = nullptr;
 	switch (type) {
 	case EnemyType::ROCK_DOWN:
@@ -184,7 +165,7 @@ std::shared_ptr<ObjEnemyBullet> ObjCreator::CreateEnemyBullet(EnemyBulletType ty
 		AssignTexture(pObject, "Resources/Textures/Bullet00.png");
 		pObject->SetOID(EnemyBulletType::BROUND);
 		pObject->SetDamage(40.0f);
-		pObject->SetSpeed(100.0f);
+		pObject->SetSpeed(120.0f);
 		SoundPlayer::soundPlayer.play("Resources/Sounds/laser3.wav", sf::Vector2f(0.0f, 0.0f), 0.6f);
 		break;
 	case EnemyBulletType::BPOINTING:
@@ -214,35 +195,11 @@ std::shared_ptr<ObjEnemyBullet> ObjCreator::CreateEnemyBullet(EnemyBulletType ty
 	return pObject;
 }
 
-std::shared_ptr<ObjEnemyBullet> ObjCreator::CreateEnemyBullet(EnemyBulletType type, sf::Vector2f pos, float speed, float rot)
+std::shared_ptr<ObjEnemyBullet> ObjCreator::CreateEnemyBullet(EnemyBulletType type, sf::Vector2f pos, float rot)
 {
 	std::shared_ptr<ObjEnemyBullet> pObject = nullptr;
 	sf::Vector2f vel = { float(sin(rot * PI / 180.0f)), float(-cos(rot * PI / 180.0f)) };
-	vel *= speed;
-	switch (type) {
-	case EnemyBulletType::BROUND:
-		pObject = _CreateEnemyBullet("Bullet Round", 12.0f, pos, vel, 0.0f);
-		AssignTexture(pObject, "Resources/Textures/Bullet00.png");
-		pObject->SetOID(EnemyBulletType::BROUND);
-		pObject->SetDamage(40.0f);
-		SoundPlayer::soundPlayer.play("Resources/Sounds/laser3.wav", sf::Vector2f(0.0f, 0.0f), 0.6f);
-		break;
-	case EnemyBulletType::BPOINTING:
-		pObject = _CreateEnemyBullet("Bullet Round", 12.0f, pos, vel, rot);
-		AssignTexture(pObject, "Resources/Textures/Bullet01.png");
-		pObject->SetOID(EnemyBulletType::BPOINTING);
-		pObject->SetDamage(60.0f);
-		SoundPlayer::soundPlayer.play("Resources/Sounds/laser4.wav", sf::Vector2f(0.0f, 0.0f), 0.6f);
-		break;
-	default:
-		pObject = nullptr;
-	}
-
-	if (Essential::isHost) {
-		SendPacket(pObject);
-	}
-
-	return pObject;
+	return ObjCreator::CreateEnemyBullet(type, pos, vel);
 }
 
 std::shared_ptr<ObjPlayer> ObjCreator::_CreatePlayer(std::string ObjName, float radius, sf::Vector2f pos)
