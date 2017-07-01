@@ -1,38 +1,52 @@
 #pragma once
 
 #include "ObjCharacter.h"
+#include "SceneGame.hpp"
 
 class ObjCostume : ObjCharacter {
 public:
-	enum ExitCondition : int {
-		HP = 0,
-		TIME = 1 < 0,
-		POS_X = 1 < 1,
-		POS_Y = 1 < 2,
-		DIST = 1 < 3,
+	struct Behaviour {
+		enum Type {
+			NONE,
+			BOUNCE,
+			TO_POS,
+			SET_VEL,
+		} type;
+		union {
+			sf::Vector2f vel;
+			sf::Vector2f pos;
+		} u = {sf::Vector2f(0.0f, 0.0f)};
 	};
-	enum PassBehaiout : int {
-		NO_CHANGE,
-		FLIP,
-		SET_DIRECT,
-		TO_POS,
+	struct ExitInfo {
+		enum Condition : int {
+			HP = 0,
+			TIME = 1 < 0,
+			POS_X = 1 < 1,
+			POS_Y = 1 < 2,
+			DIST = 1 < 3,
+		} condition;
+		struct {
+			float minHp;
+			float maxTime;
+			float minX;
+			float maxX;
+			float minY;
+			float maxY;
+			float dist;
+		} status;
+		bool isKill;
 	};
 public:
-	ObjCostume(sf::Vector2f pos, ExitCondition condition);
-	void update(float dt);
-	void spornNext();
-	void spornBy(ObjCharacter & parent);
+	ObjCostume(const ObjCostume & parent, const ExitInfo & exitInfo, std::string nextObjName);
+	ObjCostume(const sf::Vector2f & pos, const sf::Vector2f & vel, const float rot, const float rotSp, 
+		const ExitInfo & exitInfo, std::string nextObjName);
+	void Inherit(const ObjCostume &parent, ExitInfo::Condition exitState);
+	void Update(const float dt) override;
+	void Exit();
 private:
-	ObjCharacter *nextMode;
-	ExitCondition condition;
-	struct {
-		float minHp;
-		float maxTime;
-		float minX;
-		float maxX;
-		float minY;
-		float maxY;
-		float dist;
-	} exitStatus;
+	std::shared_ptr<ObjCostume> nextObj;
+	const ExitInfo & exitInfo;
 	float duration;
+	ExitInfo::Condition exitState;
+	Behaviour behaviour;
 };

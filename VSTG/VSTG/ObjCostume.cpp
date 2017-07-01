@@ -1,50 +1,90 @@
 #include "ObjCostume.h"
 #include "SceneGame.hpp"
 
-ObjCostume::ObjCostume(sf::Vector2f pos, ExitCondition condition)
+ObjCostume::ObjCostume(const ObjCostume & parent, const ExitInfo & exitInfo, std::string nextObjName) : 
+	ObjCostume(parent.position, parent.velocity, parent.rotation, parent.rotSpeed, exitInfo, nextObjName)
 {
 }
 
-void ObjCostume::update(float dt)
+ObjCostume::ObjCostume(const sf::Vector2f & pos, const sf::Vector2f & vel, const float rot, const float rotSp, const ExitInfo & exitInfo, std::string nextObjName) :
+	ObjCharacter(),
+	exitInfo(exitInfo)
 {
-	if (nextMode == nullptr)
-		return;
-	if (condition & ExitCondition::HP && hp < exitStatus.minHp) {
-		spornNext();
+	position = pos;
+	velocity = vel;
+	rotation = rot;
+	rotSpeed = rotSp;
+	duration = 0.0f;
+	behaviour.type = Behaviour::NONE;
+}
+
+void ObjCostume::Inherit(const ObjCostume & parent, ExitInfo::Condition exitState)
+{
+	position = parent.position;
+	velocity = parent.velocity;
+	rotation = parent.rotation;
+	rotSpeed = parent.rotSpeed;
+
+	switch (behaviour.type)
+	{
+	case Behaviour::SET_VEL: {
+		velocity = behaviour.u.vel;
+		break;
 	}
-	if (condition & ExitCondition::TIME) {
-		if (duration > exitStatus.maxTime) {
-			spornNext();
+	default:
+		break;
+	}
+}
+
+void ObjCostume::Update(float dt)
+{
+	switch (behaviour.type)
+	{
+	case Behaviour::BOUNCE:
+	{
+		break;
+	}
+	case Behaviour::TO_POS:
+	{
+		const sf::Vector2f diffPos = behaviour.u.pos - position;
+		if (diffPos.x + diffPos.y < 2) {
+			velocity = { 0.0f, 0.0f };
 		}
 		else {
-			duration += dt;
+			velocity = Essential::normalize(diffPos) * speed;
 		}
+		break;
 	}
-	if (condition & ExitCondition::POS_X && 
-		position.x < exitStatus.minX && position.x > exitStatus.maxX) {
-		spornNext();
+	case Behaviour::SET_VEL: {
+		break;
 	}
-	if (condition & ExitCondition::POS_Y &&
-		position.y < exitStatus.minY && position.y > exitStatus.maxY) {
-		spornNext();
+	default:
+		break;
 	}
-	if (condition & ExitCondition::DIST) {
-		for (auto pPlayer : SceneGame::layerPlayer) {
-			if (pPlayer) {
-				const sf::Vector2f & posPlayer = pPlayer->getPosition();
-				const sf::Vector2f diffpos = position - posPlayer;
-				if (diffpos.x * diffpos.x + diffpos.y * diffpos.y < exitStatus.dist * exitStatus.dist) {
-					spornNext();
-				}
-			}
-		}
+
+	// Check Exit
+	if (exitInfo.condition & ExitInfo::Condition::HP && hp < exitInfo.status.minHp)
+		Exit();
+	if (exitInfo.condition & ExitInfo::Condition::TIME) {
+		if (duration > exitInfo.status.maxTime)
+			Exit();
+		duration += dt;
+	}
+	if (exitInfo.condition & ExitInfo::Condition::POS_X && (position.x < exitInfo.status.minX || position.x > exitInfo.status.maxX))
+		Exit();
+	if (exitInfo.condition & ExitInfo::Condition::POS_Y && (position.y < exitInfo.status.minY || position.y > exitInfo.status.maxY))
+		Exit();
+	if (exitInfo.condition & ExitInfo::Condition::DIST) {
+		// Use board to check
 	}
 }
 
-void ObjCostume::spornNext()
+void ObjCostume::Exit()
 {
-}
-
-void ObjCostume::spornBy(ObjCharacter & parent)
-{
+//	if (nextObj) {
+//		nextObj->Inherit(*this, exitState);
+//		SceneGame::layerDefault.insert(nextObj);
+//	}
+	if (exitInfo.isKill)
+		SceneGame::layerDelete.insert(shared_from_derived<ObjCharacter>());
 }
