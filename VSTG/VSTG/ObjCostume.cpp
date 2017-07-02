@@ -1,21 +1,22 @@
 #include "ObjCostume.h"
 #include "SceneGame.hpp"
 
-ObjCostume::ObjCostume(const ObjCostume & parent, const ExitInfo & exitInfo, std::string nextObjName) : 
-	ObjCostume(parent.position, parent.velocity, parent.rotation, parent.rotSpeed, exitInfo, nextObjName)
+ObjCostume::ObjCostume(const ObjCostume & parent, const Behaviour & behaviour, const ExitInfo & exitInfo, std::string nextObjName) : 
+	ObjCostume(parent.position, parent.velocity, parent.rotation, parent.rotSpeed, behaviour, exitInfo, nextObjName)
 {
 }
 
-ObjCostume::ObjCostume(const sf::Vector2f & pos, const sf::Vector2f & vel, const float rot, const float rotSp, const ExitInfo & exitInfo, std::string nextObjName) :
+ObjCostume::ObjCostume(const sf::Vector2f & pos, const sf::Vector2f & vel, const float rot, const float rotSp, 
+	const Behaviour & behaviour, const ExitInfo & exitInfo, std::string nextObjName) :
 	ObjCharacter(),
-	exitInfo(exitInfo)
+	exitInfo(exitInfo),
+	behaviour(behaviour)
 {
 	position = pos;
 	velocity = vel;
 	rotation = rot;
 	rotSpeed = rotSp;
 	duration = 0.0f;
-	behaviour.type = Behaviour::NONE;
 }
 
 void ObjCostume::Inherit(const ObjCostume & parent, ExitInfo::Condition exitState)
@@ -88,3 +89,4 @@ void ObjCostume::Exit()
 	if (exitInfo.isKill)
 		SceneGame::layerDelete.insert(shared_from_derived<ObjCharacter>());
 }
+

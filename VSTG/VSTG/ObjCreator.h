@@ -5,6 +5,7 @@
 #include "Essential.hpp"
 #include "ObjEnemyBullet.h"
 #include "SoundPlayer.h"
+#include "ObjCostume.h"
 #include <memory>
 #include <SFML/System.hpp>
 #include <chrono>
@@ -33,4 +34,6 @@ namespace ObjCreator {
 	enum BulletType : uint32_t {BLUE, GREEN};
 	std::shared_ptr<ObjBullet> _CreateBullet(std::string Objname, float radius, sf::Vector2f pos, float speed, float rot);
 	std::shared_ptr<ObjBullet> CreateBullet(BulletType type, sf::Vector2f pos, float rot);
+
+	std::shared_ptr<ObjCostume> CreateCostume(std::string filename, sf::Vector2f pos);
 }

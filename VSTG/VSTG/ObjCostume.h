@@ -1,9 +1,8 @@
 #pragma once
 
 #include "ObjCharacter.h"
-#include "SceneGame.hpp"
 
-class ObjCostume : ObjCharacter {
+class ObjCostume : public ObjCharacter {
 public:
 	struct Behaviour {
 		enum Type {
@@ -36,10 +35,16 @@ public:
 		} status;
 		bool isKill;
 	};
+	struct File {
+		char objName[128];
+		char textureName[128];
+		ExitInfo exitInfo;
+		Behaviour behaviour;
+	};
 public:
-	ObjCostume(const ObjCostume & parent, const ExitInfo & exitInfo, std::string nextObjName);
+	ObjCostume(const ObjCostume & parent, const Behaviour & behaviour, const ExitInfo & exitInfo, std::string nextObjName);
 	ObjCostume(const sf::Vector2f & pos, const sf::Vector2f & vel, const float rot, const float rotSp, 
-		const ExitInfo & exitInfo, std::string nextObjName);
+		const Behaviour & behaviour, const ExitInfo & exitInfo, std::string nextObjName);
 	void Inherit(const ObjCostume &parent, ExitInfo::Condition exitState);
 	void Update(const float dt) override;
 	void Exit();

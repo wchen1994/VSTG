@@ -267,3 +267,14 @@ std::shared_ptr<ObjBullet> ObjCreator::CreateBullet(BulletType type, sf::Vector2
 
 	return pObject;
 }
+
+std::shared_ptr<ObjCostume> ObjCreator::CreateCostume(std::string filename, sf::Vector2f pos)
+{
+	std::shared_ptr<ObjCostume> pObject = nullptr;
+	auto pBlock = AssetManager::assetManager.GetBlock(filename, sizeof(ObjCostume::File));
+	assert(pBlock);
+	ObjCostume::File *data = reinterpret_cast<ObjCostume::File*>(pBlock->data());
+	pObject = std::make_shared<ObjCostume>(ObjCostume(pos, sf::Vector2f(0.0f, 0.0f), 0.0f, 0.0f, data->behaviour, data->exitInfo, ""));
+	AssignTexture(pObject, data->textureName);
+	return pObject;
+}
