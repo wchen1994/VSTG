@@ -10,7 +10,7 @@ namespace CommResMeth {
 
 	TextManager::TextManager()
 	{
-		csvfile.open("Resources/texts/zh_ch.csv");
+		csvfile.open("Resources/texts/en_us.csv");
 		std::wstring line;
 		std::wregex rgx(L"([^,]+),([^,]+)");
 		std::wsmatch match;

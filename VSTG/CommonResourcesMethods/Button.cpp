@@ -3,8 +3,8 @@
 
 namespace CommResMeth {
 
-	Button::Button()
-		: pTex(nullptr)
+	Button::Button(Scene* const parent)
+		: Scene(parent), pTex(nullptr)
 	{
 		state = ButtonState::Idle;
 	}
@@ -44,7 +44,7 @@ namespace CommResMeth {
 
 	void Button::Update()
 	{
-		sf::Vector2i vecI = sf::Mouse::getPosition(wnd);
+		sf::Vector2i vecI = sf::Mouse::getPosition(*wnd);
 		sf::Vector2f vecF = { float(vecI.x), float(vecI.y) };
 		vecF /= windowScale;
 		if (vecF.x > position.x && vecF.x < position.x + size.x &&

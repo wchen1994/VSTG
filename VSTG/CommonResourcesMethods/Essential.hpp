@@ -11,7 +11,7 @@
 #include "UDPSocket.h"
 
 namespace CommResMeth {
-		enum class GameState { MENU, GAME, EDITOR, LOBBY, POP, GAMEHOST, GAMECLIENT };
+		enum class GameState : uint32_t { MENU, GAME, EDITOR, LOBBY, POP, GAMEHOST, GAMECLIENT };
 
 		static constexpr int ScreenWidth = 800;
 		static constexpr int ScreenHeight = 600;
@@ -20,7 +20,7 @@ namespace CommResMeth {
 		static constexpr int CANVAS_WIDTH = 500;
 		static constexpr int CANVAS_HEIGHT = 550;
 
-		static sf::RenderWindow wnd(sf::VideoMode(ScreenWidth, ScreenHeight), "Game", sf::Style::Default);
+//		static sf::RenderWindow wnd(sf::VideoMode(ScreenWidth, ScreenHeight), "Game", sf::Style::Default);
 		static float windowScale = 1.0f;
 		static sf::IntRect GameCanvass(CANVAS_TOP, CANVAS_LEFT, CANVAS_WIDTH, CANVAS_HEIGHT);
 		static float textScale = 1.0;
@@ -39,7 +39,7 @@ namespace CommResMeth {
 		static std::chrono::time_point<std::chrono::steady_clock> timeStart;
 		static sf::Font textFont;
 
-		__VSTG_API void defHandleMsg(const sf::Event &eventType);
+		__VSTG_API void defHandleMsg(sf::Window &wnd, const sf::Event &eventType);
 		static bool inGamecanvas(const sf::Vector2f & pos);
 		static sf::Vector2i vec2f2i(const sf::Vector2f& vec);
 		static sf::Vector2i vec2f2i(const float x, const float y);

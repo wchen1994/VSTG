@@ -100,7 +100,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\wchen\Source\Repos\VSTG\VSTG\LibSceneBase;C:\Users\wchen\Source\Repos\VSTG\VSTG\CommonResourcesMethods;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\wchen\Source\Repos\VSTG\VSTG\CommonResourcesMethods;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>C:\Users\wchen\Source\Repos\VSTG\VSTG\x64\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -126,7 +126,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\wchen\Source\Repos\VSTG\VSTG\LibSceneBase;C:\Users\wchen\Source\Repos\VSTG\VSTG\CommonResourcesMethods;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\wchen\Source\Repos\VSTG\VSTG\CommonResourcesMethods;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>

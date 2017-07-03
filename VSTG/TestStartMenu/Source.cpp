@@ -1,13 +1,17 @@
+#include <iostream>
 #include <SceneStartMenu.hpp>
-#include <Essential.hpp>
 
-#pragma comment(lib, "DllSceneStartMenu")
 #pragma comment(lib, "CommonResourcesMethods")
+#pragma comment(lib, "DllSceneStartMenu")
 
 int main() {
-	sf::RenderWindow wnd(sf::VideoMode(CommResMeth::ScreenWidth, CommResMeth::ScreenHeight), "test");
-	DllSceneStartMenu::SceneStartMenu startMenu(&wnd);
-	startMenu.Exec();
-	wnd.close();
+	sf::RenderWindow wnd(sf::VideoMode(800, 600), "Game");
+	CommResMeth::Scene MainScene(&wnd);
+	DllSceneStartMenu::SceneStartMenu startMenu(&MainScene);
+	while (wnd.isOpen()) {
+		CommResMeth::GameState rc = startMenu.exec();
+		std::cout << int(rc) << std::endl;
+	}
+	system("pause");
 	return 0;
 }

@@ -4,7 +4,8 @@
 
 namespace CommResMeth {
 
-	Menu::Menu(sf::IntRect rect, sf::String title, uint32_t flag)
+	Menu::Menu(sf::IntRect rect, sf::String title, uint32_t flag, Scene* const parent) :
+		Scene(parent)
 	{
 		this->flag = flag;
 		pBG = AssetManager::assetManager.GetTexture("Resources/Textures/menu01.png");

@@ -2,12 +2,12 @@
 
 #include "Scene.hpp"
 #include "Button.h"
+#include "Scene.hpp"
 
-#pragma comment(lib, "LibSceneBase")
 #pragma comment(lib, "CommonResourcesMethods")
 
 namespace DllSceneStartMenu {
-	class __declspec(dllexport) SceneStartMenu : public Scene {
+	class __declspec(dllexport) SceneStartMenu : public CommResMeth::Scene {
 	private:
 		sf::Event event;
 		std::shared_ptr<sf::Texture> butTexture;
@@ -17,7 +17,7 @@ namespace DllSceneStartMenu {
 		CommResMeth::Button butExit;
 		bool isFocus;
 	public:
-		SceneStartMenu(sf::RenderWindow* const wnd);
+		SceneStartMenu(Scene* const parent = nullptr);
 		virtual ~SceneStartMenu() = default;
 		CommResMeth::GameState Exec() override;
 	};

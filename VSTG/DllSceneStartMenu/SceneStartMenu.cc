@@ -3,9 +3,10 @@
 
 namespace DllSceneStartMenu {
 
-	SceneStartMenu::SceneStartMenu(sf::RenderWindow* const wnd)
+	SceneStartMenu::SceneStartMenu(Scene* const parent)
 		:
-		Scene(wnd), isFocus(true)
+		Scene(parent), isFocus(true),
+		butStart(this), butOnline(this), butEdit(this), butExit(this)
 	{
 		CommResMeth::Button::SettingDefaultButton(butStart, CommResMeth::TextManager::getText(1), CommResMeth::Button::MEDIUM);
 		butStart.setPosition(sf::Vector2f(550.0, 280.0));
@@ -39,16 +40,16 @@ namespace DllSceneStartMenu {
 				case sf::Event::LostFocus:
 					isFocus = false;
 				default:
-					CommResMeth::defHandleMsg(event);
+					CommResMeth::defHandleMsg(*wnd, event);
 				}
 			}
 
 			if (isFocus) {
 				// Button Update
-				butStart.Update();
-				butOnline.Update();
-				butEdit.Update();
-				butExit.Update();
+				butStart.update();
+				butOnline.update();
+				butEdit.update();
+				butExit.update();
 
 				// Button Handle
 				if (butStart.getStatus() == CommResMeth::Button::ButtonState::Release) {

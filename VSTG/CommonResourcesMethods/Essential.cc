@@ -4,7 +4,7 @@
 
 namespace CommResMeth {
 
-	void CommResMeth::defHandleMsg(const sf::Event &event) {
+	void CommResMeth::defHandleMsg(sf::Window &wnd, const sf::Event &event) {
 		switch (event.type) {
 		case sf::Event::Closed:
 			wnd.close();

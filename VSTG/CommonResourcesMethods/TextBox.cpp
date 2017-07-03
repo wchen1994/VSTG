@@ -2,8 +2,8 @@
 
 namespace CommResMeth {
 
-	TextBox::TextBox(sf::Texture & texture, sf::IntRect & rectFocus, sf::IntRect & rectIdle) :
-		isFocus(false), flag(flagDEFAULT), size(12)
+	TextBox::TextBox(sf::Texture & texture, sf::IntRect & rectFocus, sf::IntRect & rectIdle, Scene* const parent) :
+		Scene(parent), isFocus(false), flag(flagDEFAULT), size(12)
 	{
 		bgIdle.setTexture(texture);
 		bgIdle.setTextureRect(rectIdle);
@@ -14,8 +14,8 @@ namespace CommResMeth {
 		rect = sf::FloatRect(0, 0, float(rectFocus.left), float(rectFocus.width));
 	}
 
-	TextBox::TextBox() :
-		isFocus(false), flag(flagDEFAULT), size(12)
+	TextBox::TextBox(Scene* const parent) :
+		Scene(parent), isFocus(false), flag(flagDEFAULT), size(12)
 	{
 		pTex = AssetManager::assetManager.GetTexture("Resources/Textures/TextBox01.png");
 		bgFocus.setTexture(*pTex);
@@ -31,7 +31,7 @@ namespace CommResMeth {
 	void TextBox::Update()
 	{
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-			const sf::Vector2i & pos = sf::Mouse::getPosition(wnd);
+			const sf::Vector2i & pos = sf::Mouse::getPosition(*wnd);
 			sf::Vector2f fpos = { float(pos.x), float(pos.y) };
 			fpos /= windowScale;
 			if (inRect(rect, fpos)) {

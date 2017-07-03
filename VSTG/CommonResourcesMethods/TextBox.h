@@ -7,10 +7,11 @@
 
 #include "Essential.hpp"
 #include "Defines.h"
+#include "Scene.hpp"
 
 namespace CommResMeth {
 
-	class __VSTG_API TextBox {
+	class __VSTG_API TextBox : public Scene {
 	public:
 		static constexpr int flagALPHABET = 1 << 0;
 		static constexpr int flagDIGIT = 1 << 1;
@@ -19,8 +20,8 @@ namespace CommResMeth {
 		static constexpr int flagDEFAULT = flagALPHABET | flagDIGIT | flagSIMBOL | flagSPACE;
 		int flag;
 	public:
-		TextBox(sf::Texture & texture, sf::IntRect & rectFocus, sf::IntRect & rectIdle);
-		TextBox();
+		TextBox(sf::Texture & texture, sf::IntRect & rectFocus, sf::IntRect & rectIdle, Scene* const parent = nullptr);
+		TextBox(Scene* const parent = nullptr);
 
 		void Update();
 		void Input(const sf::Event::KeyEvent& keyevent);

@@ -2,20 +2,22 @@
 
 #include <SFML/Graphics.hpp>
 #include <memory>
+
 #include "Defines.h"
+#include "Scene.hpp"
 
 namespace CommResMeth {
-	class __VSTG_API Button {
+	class __VSTG_API Button : public Scene {
 	public:
 		enum ButtonState { Idle, Push, Focus, Release, Count };
 	public:
-		Button();
+		explicit Button(Scene* const parent = nullptr);
 		void setTexture(sf::String tex) { textureName = tex; }
 		void setLable(sf::String s) { lable = s; }
 		void setSprites(const sf::Vector2i &ipos, const sf::Vector2i &ppos, const sf::Vector2i &fpos, const sf::Vector2i &size);
 		void setSprites(const sf::Vector2i pos[], const sf::Vector2i & size);
 		void setPosition(const sf::Vector2f & pos);
-		void Update();
+		void Update() override;
 		void Draw(sf::RenderTarget &gfx);
 		void setState(ButtonState s) { state = s; }
 		bool test = true;

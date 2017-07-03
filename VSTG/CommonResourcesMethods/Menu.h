@@ -3,13 +3,15 @@
 #include "Defines.h"
 #include "Button.h"
 
+#include "Scene.hpp"
+
 namespace CommResMeth {
 
-	class __VSTG_API Menu {
+	class __VSTG_API Menu : public Scene {
 	public:
 		enum MENUFLAG { OK_CANCEL, YES_NO, OK };
 	public:
-		Menu(sf::IntRect rect, sf::String title, uint32_t flag);
+		Menu(sf::IntRect rect, sf::String title, uint32_t flag, Scene* const parent = nullptr);
 		uint32_t MenuUpdate();
 		void Draw(sf::RenderTarget& gfx);
 		void SetTitle(sf::String title) { this->title = title; text.setString(title); }
