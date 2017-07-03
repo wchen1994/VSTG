@@ -8,16 +8,16 @@ namespace DllSceneStartMenu {
 		Scene(parent), isFocus(true),
 		butStart(this), butOnline(this), butEdit(this), butExit(this)
 	{
-		CommResMeth::Button::SettingDefaultButton(butStart, CommResMeth::TextManager::getText(1), CommResMeth::Button::MEDIUM);
+		butStart = CommResMeth::Button::createDefaultButton(CommResMeth::TextManager::getText(1), CommResMeth::Button::MEDIUM, this);
 		butStart.setPosition(sf::Vector2f(550.0, 280.0));
 
-		CommResMeth::Button::SettingDefaultButton(butOnline, "Start Online", CommResMeth::Button::MEDIUM);
+		butOnline = CommResMeth::Button::createDefaultButton("Start Online", CommResMeth::Button::MEDIUM, this);
 		butOnline.setPosition(sf::Vector2f(550.0, 340.0));
 
-		CommResMeth::Button::SettingDefaultButton(butEdit, CommResMeth::TextManager::getText(2), CommResMeth::Button::MEDIUM);
+		butEdit = CommResMeth::Button::createDefaultButton(CommResMeth::TextManager::getText(2), CommResMeth::Button::MEDIUM, this);
 		butEdit.setPosition(sf::Vector2f(550.0, 400.0));
 
-		CommResMeth::Button::SettingDefaultButton(butExit, CommResMeth::TextManager::getText(3), CommResMeth::Button::MEDIUM);
+		butExit = CommResMeth::Button::createDefaultButton(CommResMeth::TextManager::getText(3), CommResMeth::Button::MEDIUM, this);
 		butExit.setPosition(sf::Vector2f(550.0, 460.0));
 	}
 
@@ -65,12 +65,11 @@ namespace DllSceneStartMenu {
 					return CommResMeth::GameState::POP;
 				}
 			}
-
 			wnd->clear(sf::Color(100, 255, 255));
-			butStart.Draw(*wnd);
-			butOnline.Draw(*wnd);
-			butEdit.Draw(*wnd);
-			butExit.Draw(*wnd);
+			butStart.draw(*wnd);
+			butOnline.draw(*wnd);
+			butEdit.draw(*wnd);
+			butExit.draw(*wnd);
 			wnd->display();
 		}
 		return CommResMeth::GameState::POP;

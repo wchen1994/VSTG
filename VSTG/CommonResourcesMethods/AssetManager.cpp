@@ -2,7 +2,7 @@
 
 namespace CommResMeth {
 
-	AssetManager AssetManager::assetManager;
+	AssetManager AssetManager::m_instance;
 
 	AssetManager::AssetManager()
 	{
@@ -10,12 +10,12 @@ namespace CommResMeth {
 
 	std::shared_ptr<sf::Texture> AssetManager::GetTexture(std::string const& path)
 	{
-		auto pTexFound = m_pTexMap.find(path);
-		if (pTexFound != m_pTexMap.end()) {
+		auto pTexFound = m_instance.m_pTexMap.find(path);
+		if (pTexFound != m_instance.m_pTexMap.end()) {
 			return pTexFound->second;
 		}
 		else {
-			auto& pTex = m_pTexMap[path] = std::make_shared<sf::Texture>(sf::Texture());
+			auto& pTex = m_instance.m_pTexMap[path] = std::make_shared<sf::Texture>(sf::Texture());
 			pTex->loadFromFile(path);
 			return pTex;
 		}
@@ -23,11 +23,11 @@ namespace CommResMeth {
 
 	std::shared_ptr<sf::SoundBuffer> AssetManager::GetSoundBuffer(std::string const & path)
 	{
-		auto itSound = m_pSoundMap.find(path);
-		if (itSound == m_pSoundMap.end()) {
+		auto itSound = m_instance.m_pSoundMap.find(path);
+		if (itSound == m_instance.m_pSoundMap.end()) {
 			auto soundBuffer = std::make_shared<sf::SoundBuffer>(sf::SoundBuffer());
 			soundBuffer->loadFromFile(path);
-			m_pSoundMap[path] = soundBuffer;
+			m_instance.m_pSoundMap[path] = soundBuffer;
 			return soundBuffer;
 		}
 		else {
@@ -38,8 +38,8 @@ namespace CommResMeth {
 
 	std::shared_ptr<std::vector<char>> AssetManager::GetBlock(std::string const & path, size_t max_size)
 	{
-		auto itBlock = m_pBlock.find(path);
-		if (itBlock == m_pBlock.end()) {
+		auto itBlock = m_instance.m_pBlock.find(path);
+		if (itBlock == m_instance.m_pBlock.end()) {
 			std::ifstream in_file;
 			in_file.open(path, std::ios::binary | std::ios::in);
 			in_file.seekg(0, in_file.end);
@@ -49,11 +49,26 @@ namespace CommResMeth {
 			in_file.seekg(0, in_file.beg);
 			std::shared_ptr<std::vector<char>> pBlock = std::make_shared<std::vector<char>>(std::vector<char>(size));
 			in_file.read(pBlock->data(), size);
-			m_pBlock[path] = pBlock;
+			m_instance.m_pBlock[path] = pBlock;
 			return pBlock;
 		}
 		else {
 			return itBlock->second;
+		}
+		return nullptr;
+	}
+
+	std::shared_ptr<sf::Font> AssetManager::GetFont(std::string const & path)
+	{
+		auto &itFont = m_instance.m_pFont.find(path);
+		if (itFont == m_instance.m_pFont.end()) {
+			std::shared_ptr<sf::Font> pFont = std::make_shared<sf::Font>(sf::Font());
+			pFont->loadFromFile(path);
+			m_instance.m_pFont[path] = pFont;
+			return pFont;
+		}
+		else {
+			return itFont->second;
 		}
 		return nullptr;
 	}

@@ -48,6 +48,7 @@ namespace CommResMeth {
 		std::string input;
 		std::string prompt;
 		std::shared_ptr<sf::Texture> pTex;
+		std::shared_ptr<sf::Font> pFont;
 	public:
 		void SetMaxSize(const int s) { size = s; }
 		int GetMaxSize() const { return size; }
@@ -57,7 +58,5 @@ namespace CommResMeth {
 
 		void SetPrompt(const std::string & s) { prompt = s; UpdateText(); }
 		std::string GetPrompt() const { return prompt; }
-
-
 	};
 }

@@ -13,8 +13,8 @@ namespace CommResMeth {
 	public:
 		Menu(sf::IntRect rect, sf::String title, uint32_t flag, Scene* const parent = nullptr);
 		uint32_t MenuUpdate();
-		void Draw(sf::RenderTarget& gfx);
-		void SetTitle(sf::String title) { this->title = title; text.setString(title); }
+		void draw(sf::RenderTarget& gfx);
+		void setTitle(sf::String title) { this->title = title; text.setString(title); }
 	private:
 		uint32_t flag;
 
@@ -31,6 +31,7 @@ namespace CommResMeth {
 		Button but3;
 		static constexpr int padding = 10;
 		std::shared_ptr<sf::Texture> pBG;
+		std::shared_ptr<sf::Font> pFont;
 	};
 
 }

@@ -37,7 +37,6 @@ namespace CommResMeth {
 		static GameState gameState = GameState::MENU;
 
 		static std::chrono::time_point<std::chrono::steady_clock> timeStart;
-		static sf::Font textFont;
 
 		__VSTG_API void defHandleMsg(sf::Window &wnd, const sf::Event &eventType);
 		static bool inGamecanvas(const sf::Vector2f & pos);

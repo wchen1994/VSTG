@@ -8,7 +8,7 @@ namespace CommResMeth {
 		Scene(parent)
 	{
 		this->flag = flag;
-		pBG = AssetManager::assetManager.GetTexture("Resources/Textures/menu01.png");
+		pBG = AssetManager::GetTexture("Resources/Textures/menu01.png");
 
 		bg.setTexture(*pBG);
 		bg.setTextureRect(sf::IntRect(padding, padding, rect.width, rect.height));
@@ -31,29 +31,30 @@ namespace CommResMeth {
 
 
 		this->title = title;
+		pFont = AssetManager::GetFont("Resources/Fonts/msyh.ttf");
 		text.setString(title);
 		text.setPosition(float(rect.left), float(rect.top));
-		text.setFont(textFont);
+		text.setFont(*pFont);
 
 		this->rect = rect;
 
 		switch (flag) {
 		case MENUFLAG::OK:
-			Button::SettingDefaultButton(but1, TextManager::getText(7), Button::SMALL);
+			but1 = Button::createDefaultButton(TextManager::getText(7), Button::SMALL, this);
 			but1.setPosition(sf::Vector2f(float(rect.left + rect.width / 2), float(rect.top + rect.height / 2)));
 			break;
 		case MENUFLAG::OK_CANCEL:
-			Button::SettingDefaultButton(but1, TextManager::getText(7), Button::SMALL);
+			but1 = Button::createDefaultButton(TextManager::getText(7), Button::SMALL, this);
 			but1.setPosition(sf::Vector2f(float(rect.left), float(rect.top + rect.height / 2)));
 
-			Button::SettingDefaultButton(but2, TextManager::getText(8), Button::SMALL);
+			but2 = Button::createDefaultButton(TextManager::getText(8), Button::SMALL, this);
 			but2.setPosition(sf::Vector2f(float(rect.left + rect.width / 2), float(rect.top + rect.height / 2)));
 			break;
 		case MENUFLAG::YES_NO:
-			Button::SettingDefaultButton(but1, TextManager::getText(5), Button::SMALL);
+			but1 = Button::createDefaultButton(TextManager::getText(5), Button::SMALL, this);
 			but1.setPosition(sf::Vector2f(float(rect.left), float(rect.top + rect.height / 2)));
 
-			Button::SettingDefaultButton(but2, TextManager::getText(6), Button::SMALL);
+			but2 = Button::createDefaultButton(TextManager::getText(6), Button::SMALL, this);
 			but2.setPosition(sf::Vector2f(float(rect.left + rect.width / 2), float(rect.top + rect.height / 2)));
 			break;
 		}
@@ -80,7 +81,7 @@ namespace CommResMeth {
 		return 0;
 	}
 
-	void Menu::Draw(sf::RenderTarget & gfx)
+	void Menu::draw(sf::RenderTarget & gfx)
 	{
 		gfx.draw(bg);
 
@@ -106,12 +107,12 @@ namespace CommResMeth {
 		gfx.draw(text);
 		switch (flag) {
 		case MENUFLAG::OK:
-			but1.Draw(gfx);
+			but1.draw(gfx);
 			break;
 		case MENUFLAG::OK_CANCEL:
 		case MENUFLAG::YES_NO:
-			but1.Draw(gfx);
-			but2.Draw(gfx);
+			but1.draw(gfx);
+			but2.draw(gfx);
 			break;
 		}
 	}

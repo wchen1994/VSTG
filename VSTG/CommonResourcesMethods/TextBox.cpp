@@ -17,15 +17,16 @@ namespace CommResMeth {
 	TextBox::TextBox(Scene* const parent) :
 		Scene(parent), isFocus(false), flag(flagDEFAULT), size(12)
 	{
-		pTex = AssetManager::assetManager.GetTexture("Resources/Textures/TextBox01.png");
+		pTex = AssetManager::GetTexture("Resources/Textures/TextBox01.png");
 		bgFocus.setTexture(*pTex);
 		bgFocus.setTextureRect(sf::IntRect(0, 0, 300, 40));
 		bgIdle.setTexture(*pTex);
 		bgIdle.setTextureRect(sf::IntRect(0, 90, 300, 40));
 		rect = sf::FloatRect(0, 0, 300, 40);
 
+		pFont = AssetManager::GetFont("Resurces/Fonts/msyh.ttf");
 		text.setString(prompt);
-		text.setFont(textFont);
+		text.setFont(*pFont);
 	}
 
 	void TextBox::Update()
