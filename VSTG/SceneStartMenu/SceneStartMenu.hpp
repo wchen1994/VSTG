@@ -2,7 +2,6 @@
 
 #include "Scene.hpp"
 #include "Button.h"
-#include "Scene.hpp"
 
 #pragma comment(lib, "CommonResourcesMethods")
 

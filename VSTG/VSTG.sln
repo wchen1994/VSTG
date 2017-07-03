@@ -5,24 +5,19 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "VSTG", "VSTG\VSTG.vcxproj", "{C7A8D550-3C9D-452C-A0FA-1468E2ED62D9}"
 	ProjectSection(ProjectDependencies) = postProject
-		{7005C103-10B2-42CF-B5DB-1693F6C9A283} = {7005C103-10B2-42CF-B5DB-1693F6C9A283}
 		{5D94880B-C99D-887C-5219-9F7CBE21947C} = {5D94880B-C99D-887C-5219-9F7CBE21947C}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "nfd", "..\..\nativefiledialog\build\vs2010\nfd.vcxproj", "{5D94880B-C99D-887C-5219-9F7CBE21947C}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DllSceneStartMenu", "DllSceneStartMenu\DllSceneStartMenu.vcxproj", "{7005C103-10B2-42CF-B5DB-1693F6C9A283}"
-	ProjectSection(ProjectDependencies) = postProject
-		{9957C4DC-CD82-4F34-96DC-30164EF259DD} = {9957C4DC-CD82-4F34-96DC-30164EF259DD}
-	EndProjectSection
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CommonResourcesMethods", "CommonResourcesMethods\CommonResourcesMethods.vcxproj", "{9957C4DC-CD82-4F34-96DC-30164EF259DD}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestStartMenu", "TestStartMenu\TestStartMenu.vcxproj", "{08AE3F3B-BEFD-4224-B7A7-F6694F5EB12E}"
 	ProjectSection(ProjectDependencies) = postProject
-		{7005C103-10B2-42CF-B5DB-1693F6C9A283} = {7005C103-10B2-42CF-B5DB-1693F6C9A283}
 		{9957C4DC-CD82-4F34-96DC-30164EF259DD} = {9957C4DC-CD82-4F34-96DC-30164EF259DD}
 	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SceneStartMenu", "SceneStartMenu\SceneStartMenu.vcxproj", "{53912A1D-8B46-4CA4-A86F-1869220811AD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -48,14 +43,6 @@ Global
 		{5D94880B-C99D-887C-5219-9F7CBE21947C}.Release|x64.Build.0 = Release|x64
 		{5D94880B-C99D-887C-5219-9F7CBE21947C}.Release|x86.ActiveCfg = Release|Win32
 		{5D94880B-C99D-887C-5219-9F7CBE21947C}.Release|x86.Build.0 = Release|Win32
-		{7005C103-10B2-42CF-B5DB-1693F6C9A283}.Debug|x64.ActiveCfg = Debug|x64
-		{7005C103-10B2-42CF-B5DB-1693F6C9A283}.Debug|x64.Build.0 = Debug|x64
-		{7005C103-10B2-42CF-B5DB-1693F6C9A283}.Debug|x86.ActiveCfg = Debug|Win32
-		{7005C103-10B2-42CF-B5DB-1693F6C9A283}.Debug|x86.Build.0 = Debug|Win32
-		{7005C103-10B2-42CF-B5DB-1693F6C9A283}.Release|x64.ActiveCfg = Release|x64
-		{7005C103-10B2-42CF-B5DB-1693F6C9A283}.Release|x64.Build.0 = Release|x64
-		{7005C103-10B2-42CF-B5DB-1693F6C9A283}.Release|x86.ActiveCfg = Release|Win32
-		{7005C103-10B2-42CF-B5DB-1693F6C9A283}.Release|x86.Build.0 = Release|Win32
 		{9957C4DC-CD82-4F34-96DC-30164EF259DD}.Debug|x64.ActiveCfg = Debug|x64
 		{9957C4DC-CD82-4F34-96DC-30164EF259DD}.Debug|x64.Build.0 = Debug|x64
 		{9957C4DC-CD82-4F34-96DC-30164EF259DD}.Debug|x86.ActiveCfg = Debug|Win32
@@ -72,6 +59,14 @@ Global
 		{08AE3F3B-BEFD-4224-B7A7-F6694F5EB12E}.Release|x64.Build.0 = Release|x64
 		{08AE3F3B-BEFD-4224-B7A7-F6694F5EB12E}.Release|x86.ActiveCfg = Release|Win32
 		{08AE3F3B-BEFD-4224-B7A7-F6694F5EB12E}.Release|x86.Build.0 = Release|Win32
+		{53912A1D-8B46-4CA4-A86F-1869220811AD}.Debug|x64.ActiveCfg = Debug|x64
+		{53912A1D-8B46-4CA4-A86F-1869220811AD}.Debug|x64.Build.0 = Debug|x64
+		{53912A1D-8B46-4CA4-A86F-1869220811AD}.Debug|x86.ActiveCfg = Debug|Win32
+		{53912A1D-8B46-4CA4-A86F-1869220811AD}.Debug|x86.Build.0 = Debug|Win32
+		{53912A1D-8B46-4CA4-A86F-1869220811AD}.Release|x64.ActiveCfg = Release|x64
+		{53912A1D-8B46-4CA4-A86F-1869220811AD}.Release|x64.Build.0 = Release|x64
+		{53912A1D-8B46-4CA4-A86F-1869220811AD}.Release|x86.ActiveCfg = Release|Win32
+		{53912A1D-8B46-4CA4-A86F-1869220811AD}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

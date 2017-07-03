@@ -2,7 +2,7 @@
 #include <SceneStartMenu.hpp>
 
 #pragma comment(lib, "CommonResourcesMethods")
-#pragma comment(lib, "DllSceneStartMenu")
+#pragma comment(lib, "SceneStartMenu")
 
 int main() {
 	sf::RenderWindow wnd(sf::VideoMode(800, 600), "Game");

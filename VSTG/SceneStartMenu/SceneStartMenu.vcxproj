@@ -19,8 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{7005C103-10B2-42CF-B5DB-1693F6C9A283}</ProjectGuid>
-    <RootNamespace>DllSceneStartMenu</RootNamespace>
+    <ProjectGuid>{53912A1D-8B46-4CA4-A86F-1869220811AD}</ProjectGuid>
+    <RootNamespace>SceneStartMenu</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -68,26 +68,7 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\SFML-2.4.2-32\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\SFML-2.4.2-32\lib;$(LibraryPath)</LibraryPath>
-    <ExecutablePath>C:\SFML-2.4.2-32\bin;$(ExecutablePath)</ExecutablePath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>C:\SFML-2.4.2-32\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\SFML-2.4.2-32\lib;$(LibraryPath)</LibraryPath>
-    <ExecutablePath>C:\SFML-2.4.2-32\bin;$(ExecutablePath)</ExecutablePath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <ExecutablePath>C:\SFML-2.4.2\bin;$(ExecutablePath)</ExecutablePath>
-    <IncludePath>C:\SFML-2.4.2\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\SFML-2.4.2\lib;$(LibraryPath)</LibraryPath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <ExecutablePath>C:\SFML-2.4.2\bin;$(ExecutablePath)</ExecutablePath>
-    <IncludePath>C:\SFML-2.4.2\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\SFML-2.4.2\lib;$(LibraryPath)</LibraryPath>
-  </PropertyGroup>
+  <PropertyGroup />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -100,10 +81,10 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\wchen\Source\Repos\VSTG\VSTG\CommonResourcesMethods;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\SFML-2.4.2\include;C:\Users\wchen\Source\Repos\VSTG\VSTG\CommonResourcesMethods;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>C:\Users\wchen\Source\Repos\VSTG\VSTG\x64\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\SFML-2.4.2\lib;C:\Users\wchen\Source\Repos\VSTG\VSTG\x64\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -126,12 +107,12 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\wchen\Source\Repos\VSTG\VSTG\CommonResourcesMethods;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\SFML-2.4.2\include;C:\Users\wchen\Source\Repos\VSTG\VSTG\CommonResourcesMethods;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>C:\Users\wchen\Source\Repos\VSTG\VSTG\x64\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\SFML-2.4.2\lib;C:\Users\wchen\Source\Repos\VSTG\VSTG\x64\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
