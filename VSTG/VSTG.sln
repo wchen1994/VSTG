@@ -20,6 +20,12 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LibSceneBase", "LibSceneBas
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CommonResourcesMethods", "CommonResourcesMethods\CommonResourcesMethods.vcxproj", "{9957C4DC-CD82-4F34-96DC-30164EF259DD}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestStartMenu", "TestStartMenu\TestStartMenu.vcxproj", "{08AE3F3B-BEFD-4224-B7A7-F6694F5EB12E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7005C103-10B2-42CF-B5DB-1693F6C9A283} = {7005C103-10B2-42CF-B5DB-1693F6C9A283}
+		{9768A3A7-F213-44B0-AEA8-DFE2BA1F1A2F} = {9768A3A7-F213-44B0-AEA8-DFE2BA1F1A2F}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -68,6 +74,14 @@ Global
 		{9957C4DC-CD82-4F34-96DC-30164EF259DD}.Release|x64.Build.0 = Release|x64
 		{9957C4DC-CD82-4F34-96DC-30164EF259DD}.Release|x86.ActiveCfg = Release|Win32
 		{9957C4DC-CD82-4F34-96DC-30164EF259DD}.Release|x86.Build.0 = Release|Win32
+		{08AE3F3B-BEFD-4224-B7A7-F6694F5EB12E}.Debug|x64.ActiveCfg = Debug|x64
+		{08AE3F3B-BEFD-4224-B7A7-F6694F5EB12E}.Debug|x64.Build.0 = Debug|x64
+		{08AE3F3B-BEFD-4224-B7A7-F6694F5EB12E}.Debug|x86.ActiveCfg = Debug|Win32
+		{08AE3F3B-BEFD-4224-B7A7-F6694F5EB12E}.Debug|x86.Build.0 = Debug|Win32
+		{08AE3F3B-BEFD-4224-B7A7-F6694F5EB12E}.Release|x64.ActiveCfg = Release|x64
+		{08AE3F3B-BEFD-4224-B7A7-F6694F5EB12E}.Release|x64.Build.0 = Release|x64
+		{08AE3F3B-BEFD-4224-B7A7-F6694F5EB12E}.Release|x86.ActiveCfg = Release|Win32
+		{08AE3F3B-BEFD-4224-B7A7-F6694F5EB12E}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
