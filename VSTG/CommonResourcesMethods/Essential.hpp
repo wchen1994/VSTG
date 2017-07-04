@@ -20,7 +20,6 @@ namespace CommResMeth {
 		static constexpr int CANVAS_WIDTH = 500;
 		static constexpr int CANVAS_HEIGHT = 550;
 
-//		static sf::RenderWindow wnd(sf::VideoMode(ScreenWidth, ScreenHeight), "Game", sf::Style::Default);
 		static float windowScale = 1.0f;
 		static sf::IntRect GameCanvass(CANVAS_TOP, CANVAS_LEFT, CANVAS_WIDTH, CANVAS_HEIGHT);
 		static float textScale = 1.0;
@@ -39,12 +38,12 @@ namespace CommResMeth {
 		static std::chrono::time_point<std::chrono::steady_clock> timeStart;
 
 		__VSTG_API void defHandleMsg(sf::Window &wnd, const sf::Event &eventType);
-		static bool inGamecanvas(const sf::Vector2f & pos);
-		static sf::Vector2i vec2f2i(const sf::Vector2f& vec);
-		static sf::Vector2i vec2f2i(const float x, const float y);
-		static sf::Vector2f vec2i2f(const sf::Vector2i& vec);
-		static sf::Vector2f vec2i2f(const int x, const int y);
-		static sf::Vector2f normalize(const sf::Vector2f& vec);
+		__VSTG_API bool inGamecanvas(const sf::Vector2f & pos);
+		__VSTG_API sf::Vector2i vec2f2i(const sf::Vector2f& vec);
+		__VSTG_API sf::Vector2i vec2f2i(const float x, const float y);
+		__VSTG_API sf::Vector2f vec2i2f(const sf::Vector2i& vec);
+		__VSTG_API sf::Vector2f vec2i2f(const int x, const int y);
+		__VSTG_API sf::Vector2f normalize(const sf::Vector2f& vec);
 
 		template<class T>
 		struct vec2Compare {

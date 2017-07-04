@@ -2,7 +2,7 @@
 #include "ObjBullet.hpp"
 #include "ObjEnemy.hpp"
 #include "Essential.hpp"
-#include "SceneGame.hpp"
+#include "SceneBulletHell.hpp"
 #include "ObjCreator.h"
 
 
@@ -46,14 +46,14 @@ void ObjPlayer::Update(const float dt){
 	if (cooldown > 0) {
 		cooldown -= dt;
 	}
-	else if (fire && !Essential::isClient) {
+	else if (fire && !CommResMeth::UDPSocket::isClient()) {
 //		const std::shared_ptr<ObjBullet> pBullet = std::make_shared<ObjBullet>(ObjBullet(position));
 		const std::shared_ptr<ObjBullet> pBullet1 = ObjCreator::CreateBullet(ObjCreator::BulletType::BLUE, position, 0.0f);
-		SceneGame::layerDefault.insert(pBullet1);
+		SceneBulletHell::layerDefault.insert(pBullet1);
 		const std::shared_ptr<ObjBullet> pBullet2 = ObjCreator::CreateBullet(ObjCreator::BulletType::GREEN, position, 30.0f);
-		SceneGame::layerDefault.insert(pBullet2);
+		SceneBulletHell::layerDefault.insert(pBullet2);
 		const std::shared_ptr<ObjBullet> pBullet3 = ObjCreator::CreateBullet(ObjCreator::BulletType::GREEN, position, -30.0f);
-		SceneGame::layerDefault.insert(pBullet3);
+		SceneBulletHell::layerDefault.insert(pBullet3);
 		cooldown = cooldownDuration;
 	}
 }
@@ -146,10 +146,10 @@ void ObjPlayer::FixedUpdateInv(const float dt)
 void ObjPlayer::LateUpdate()
 {
 	static float boundary[] = {
-		float(Essential::GameCanvas.left),
-		float(Essential::GameCanvas.left + Essential::GameCanvas.width - 1),
-		float(Essential::GameCanvas.top),
-		float(Essential::GameCanvas.top + Essential::GameCanvas.height - 1),
+		float(CommResMeth::CANVAS_LEFT),
+		float(CommResMeth::CANVAS_LEFT + CommResMeth::CANVAS_WIDTH - 1),
+		float(CommResMeth::CANVAS_TOP),
+		float(CommResMeth::CANVAS_TOP + CommResMeth::CANVAS_HEIGHT - 1),
 	};
 
 	if (position.x < boundary[0])
@@ -169,7 +169,7 @@ void ObjPlayer::LateUpdate()
 void ObjPlayer::OnCollisionEnter(std::shared_ptr<ObjCharacter> pOther){
 	GameObjectType type = pOther->GetType();
 	if ( type == GameObject::ENEMY || type == GameObject::ENEMYNOTDEAD){
-		SceneGame::layerDelete.insert(pOther);
+		SceneBulletHell::layerDelete.insert(pOther);
 		hp -= pOther->GetDamage();
 		if (Essential::isHost) {
 			sf::Packet packet_out;
@@ -177,7 +177,7 @@ void ObjPlayer::OnCollisionEnter(std::shared_ptr<ObjCharacter> pOther){
 			Essential::socket.SendPacket(packet_out);
 		}
 		if (hp < 0) {
-			SceneGame::layerDelete.insert(shared_from_derived<ObjPlayer>());
+			SceneBulletHell::layerDelete.insert(shared_from_derived<ObjPlayer>());
 		}
 	}
 }

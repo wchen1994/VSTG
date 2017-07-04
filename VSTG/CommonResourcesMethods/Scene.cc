@@ -2,35 +2,49 @@
 
 namespace CommResMeth {
 
-	Scene::Scene(Scene* const parent) : isCreator(false)
+	Scene::Scene(Scene* const parent) : isCreator(false), parent(parent)
 	{
 		if (parent) {
 			wnd = parent->wnd;
-			wndSize = wnd->getSize();
+			parent->childs.push_back(this);
+			top = 0;
+			left = 0;
+			width = wnd->getSize().x;
+			height = wnd->getSize().y;
 		}
 		else {
-			wndSize = { 0,0 };
-			wnd = new sf::RenderWindow(sf::VideoMode(wndSize.x, wndSize.y), "unnamed");
+			top = 0;
+			left = 0;
+			width = 0;
+			height = 0;
+			wnd = new sf::RenderWindow(sf::VideoMode(0, 0), "unnamed");
 			isCreator = true;
 		}
 	}
 
-	Scene::Scene(sf::RenderWindow * const wnd_in) : isCreator(false)
+	Scene::Scene(sf::RenderWindow* const wnd) : isCreator(false), parent(nullptr), wnd(wnd)
 	{
-		if (wnd_in) {
-			wnd = wnd_in;
-			wndSize = wnd->getSize();
-		}
-		else {
-			wndSize = { 0,0 };
-			wnd = new sf::RenderWindow(sf::VideoMode(wndSize.x, wndSize.y), "unnamed");
-			isCreator = true;
-		}
+		top = 0;
+		left = 0;
+		width = wnd->getSize().x;
+		height = wnd->getSize().y;
 	}
+
 
 	Scene::~Scene() {
-		if (isCreator)
+		for (auto itPChild = parent->childs.begin(); itPChild != parent->childs.end();) {
+			if (*itPChild == this) {
+				itPChild = parent->childs.erase(itPChild);
+			}
+			else {
+				itPChild++;
+			}
+		}
+		for (auto pChild : childs)
+			delete pChild;
+		if (isCreator) {
 			delete wnd;
+		}
 	}
 
 	CommResMeth::GameState Scene::exec()
@@ -51,6 +65,35 @@ namespace CommResMeth {
 	void Scene::update()
 	{
 		Update();
+	}
+
+	void Scene::move(int x, int y)
+	{
+		left += x;
+		top += y;
+		for (auto pChild : childs)
+			pChild->move(x, y);
+	}
+
+	void Scene::setPosition(int x, int y)
+	{
+		int dx, dy;
+		if (parent) {
+			dx = parent->left + x - left;
+			dy = parent->top + y - top;
+		}
+		else {
+			dx = x - left;
+			dy = y - top;
+		}
+
+		move(dx, dy);
+	}
+
+	void Scene::setSize(int w, int h)
+	{
+		width = w; 
+		height = h;
 	}
 
 	void Scene::Update(const float dt)

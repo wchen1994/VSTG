@@ -1,6 +1,6 @@
 #include "ObjBullet.hpp"
 #include "ObjEnemy.hpp"
-#include "SceneGame.hpp"
+#include "SceneBulletHell.hpp"
 
 ObjBullet::ObjBullet(sf::Vector2f pos, sf::Vector2f vel) :
 	ObjCharacter(pos, vel, 0.0f, 0.0f)
@@ -20,7 +20,7 @@ ObjBullet::ObjBullet(sf::Vector2f pos, sf::Vector2f vel) :
 void ObjBullet::Update(const float dt)
 {
 	if (!Essential::inGamecanvas(position)) {
-		SceneGame::layerDelete.insert(shared_from_derived<ObjBullet>());
+		SceneBulletHell::layerDelete.insert(shared_from_derived<ObjBullet>());
 	}
 }
 

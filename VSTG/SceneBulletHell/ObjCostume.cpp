@@ -1,5 +1,5 @@
 #include "ObjCostume.h"
-#include "SceneGame.hpp"
+#include "SceneBulletHell.hpp"
 
 ObjCostume::ObjCostume(const ObjCostume & parent, const Behaviour & behaviour, const ExitInfo & exitInfo, std::string nextObjName) : 
 	ObjCostume(parent.position, parent.velocity, parent.rotation, parent.rotSpeed, behaviour, exitInfo, nextObjName)
@@ -52,7 +52,7 @@ void ObjCostume::Update(float dt)
 			velocity = { 0.0f, 0.0f };
 		}
 		else {
-			velocity = Essential::normalize(diffPos) * speed;
+			velocity = CommResMeth::normalize(diffPos) * speed;
 		}
 		break;
 	}
@@ -87,6 +87,6 @@ void ObjCostume::Exit()
 //		SceneGame::layerDefault.insert(nextObj);
 //	}
 	if (exitInfo.isKill)
-		SceneGame::layerDelete.insert(shared_from_derived<ObjCharacter>());
+		SceneBulletHell::layerDelete.insert(shared_from_derived<ObjCharacter>());
 }
 

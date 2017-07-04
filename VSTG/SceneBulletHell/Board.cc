@@ -47,7 +47,7 @@ Board::Board(const int boardWidth_in, const int boardHeight_in, const int tileWi
 }
 
 
-Essential::setVecInt& Board::GetPotentialPos(const int id_x, const int id_y)
+CommResMeth::setVecInt& Board::GetPotentialPos(const int id_x, const int id_y)
 {
 	sHLPos.clear();
 	for (int y = std::max(0, id_y - 1); y <= std::min(nRow - 1, id_y + 1); y++) {
@@ -67,7 +67,7 @@ std::set<std::shared_ptr<Board::Tile>>& Board::GetPotentialTile(const int id_x, 
 #ifdef _DEBUG
 			for (auto & pObj : tile->GetLayer()) {
 				sf::Vector2f pos = pObj->getPosition();
-				if (pos.x >= 0 && pos.x < Essential::ScreenWidth && pos.y >= 0 && pos.y < Essential::ScreenHeight) {
+				if (pos.x >= 0 && pos.x < CommResMeth::ScreenWidth && pos.y >= 0 && pos.y < CommResMeth::ScreenHeight) {
 					assert(pos.x >= x*tileWidth && pos.x < (x + 1) *tileWidth);
 					assert(pos.y >= y*tileHeight && pos.y < (y + 1) *tileHeight);
 				}
@@ -225,7 +225,7 @@ sf::Vector2i Board::UpdateObjectPos(std::shared_ptr<ObjCharacter> pObj)
 	const auto& position = pObj->getPosition();
 	const auto& brdPos = pObj->GetBrdPos();
 	sf::Vector2i newBrdPos;
-	if (position.x >= 0 && position.x < Essential::ScreenWidth && position.y >= 0 && position.y < Essential::ScreenHeight) {
+	if (position.x >= 0 && position.x < CommResMeth::ScreenWidth && position.y >= 0 && position.y < CommResMeth::ScreenHeight) {
 		newBrdPos = sf::Vector2i(int(position.x / tileWidth), int(position.y / tileHeight));
 	}
 	else {

@@ -5,7 +5,7 @@ namespace CommResMeth {
 	UDPSocket::UDPSocket()
 	{
 		socket.setBlocking(false);
-		mode = COUNT;
+		mode = OFFLINE;
 	}
 
 	bool UDPSocket::Host(const unsigned short port)

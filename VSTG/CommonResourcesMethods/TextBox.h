@@ -20,8 +20,8 @@ namespace CommResMeth {
 		static constexpr int flagDEFAULT = flagALPHABET | flagDIGIT | flagSIMBOL | flagSPACE;
 		int flag;
 	public:
-		TextBox(sf::Texture & texture, sf::IntRect & rectFocus, sf::IntRect & rectIdle, Scene* const parent = nullptr);
-		TextBox(Scene* const parent = nullptr);
+		TextBox(Scene* const parent, sf::Texture & texture, sf::IntRect & rectFocus, sf::IntRect & rectIdle);
+		TextBox(Scene* const parent);
 
 		void Update();
 		void Input(const sf::Event::KeyEvent& keyevent);

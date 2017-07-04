@@ -1,5 +1,5 @@
 #include "ObjCharacter.h"
-#include "SceneGame.hpp"
+#include "SceneBulletHell.hpp"
 
 ObjCharacter::ObjCharacter():
 	ObjCharacter(sf::Vector2f(0.0f,0.0f), sf::Vector2f(0.0f,0.0f), 0.0f, 0.0f)

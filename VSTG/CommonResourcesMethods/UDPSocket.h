@@ -13,9 +13,7 @@ namespace CommResMeth {
 
 	class __VSTG_API UDPSocket {
 	public:
-		static UDPSocket udpSocket;
-	public:
-		enum Mode { HOST, JOIN, COUNT };
+		enum Mode { HOST, JOIN, OFFLINE };
 		enum class PacketType : int { ADD, REMOVE, SIGNAL, SIGNAL_SIZE, CHANGE, ADD_T, CHANGE_T, CHANGE_POS, CHANGE_HP, COUNT };
 		static constexpr unsigned short DEFAULT_HOST_PORT = 55009;
 		static constexpr unsigned short DEFAULT_CLIENT_PORT = 55010;
@@ -29,6 +27,8 @@ namespace CommResMeth {
 		bool SendPacket(sf::Packet & packet);
 		std::queue<sf::Packet> & GetPacket();
 		void FlushPacketQueue();
+		bool isClient() { return mode == Mode::JOIN; }
+		bool isHost() { return mode == Mode::HOST; }
 	private:
 		sf::UdpSocket socket;
 		sf::IpAddress serverIp;
@@ -43,5 +43,6 @@ namespace CommResMeth {
 		size_t GetClinetNumb() const { return clientInfo.size(); }
 		const auto GetClient() const { return clientInfo; }
 		const Mode getMode() const { return mode; }
+		void setMode(const Mode m) { mode = m; }
 	};
 }

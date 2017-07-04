@@ -11,17 +11,19 @@
 #include "FrameTimer.h"
 #include "Board.hpp"
 #include "Map.h"
-#include "ObjMenu.h"
+#include "Menu.h"
 #include "ObjCreator.h"
+#include <Scene.hpp>
+
+#pragma comment(lib, "CommonResourcesMethods")
 
 #define _DEBUG_BOARD
 #define _DEBUG_LOG
 
-class SceneGame : public Scene{
+class SceneBulletHell : public CommResMeth::Scene{
 private:
 	sf::Event event;
-	sf::RenderWindow& wnd;
-	FrameTimer ft;
+	CommResMeth::FrameTimer ft;
 	float dt;//Delta time
 	float culDt = 0.0f;//Culmulative delta time
 	float logTimer = 0.0f;
@@ -35,8 +37,13 @@ private:
 	Map map;
 	int levelCount;
 	std::string levelFileName;
-	ObjMenu escMenu;
+	CommResMeth::Menu escMenu;
 	sf::RectangleShape background; 
+	CommResMeth::UDPSocket socket;
+	std::chrono::steady_clock::time_point timeStart;
+	bool isGameStart;
+	int totalNumbPlayer;
+	int playerNumber;
 
 	// UI
 	sf::Text playerHP;
@@ -46,9 +53,9 @@ private:
 	static constexpr float synCooldown = 1.0f;
 	float synTimer;
 public:
-	SceneGame(sf::RenderWindow& wnd);
-	~SceneGame();
-	Essential::GameState Run();
+	SceneBulletHell(Scene* const parent);
+	~SceneBulletHell();
+	CommResMeth::GameState Exec();
 	void Reset();
 	void Update();
 	void DrawScene();

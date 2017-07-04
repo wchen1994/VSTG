@@ -1,7 +1,7 @@
 #include "ObjEnemy.hpp"
 #include "ObjBullet.hpp"
 #include "ObjPlayer.hpp"
-#include "SceneGame.hpp"
+#include "SceneBulletHell.hpp"
 #include <cmath>
 
 ObjEnemy::ObjEnemy(sf::Vector2f pos, sf::Vector2f vel, float rot, float rotSpeed) :
@@ -16,18 +16,18 @@ ObjEnemy::ObjEnemy(sf::Vector2f pos, sf::Vector2f vel, float rot, float rotSpeed
 
 void ObjEnemy::Update(const float dt){
 	if (isDelete) {
-		SceneGame::layerDelete.insert(shared_from_derived<ObjEnemy>());
-	} else if (position.x < Essential::GameCanvas.left-colliderSize || 
-		position.x > Essential::GameCanvas.left + Essential::GameCanvas.width + colliderSize || 
-		position.y > Essential::GameCanvas.top + Essential::GameCanvas.height + colliderSize) {
-		SceneGame::layerDelete.insert(shared_from_derived<ObjEnemy>());
+		SceneBulletHell::layerDelete.insert(shared_from_derived<ObjEnemy>());
+	} else if (position.x < CommResMeth::GameCanvas.left-colliderSize || 
+		position.x > CommResMeth::GameCanvas.left + CommResMeth::GameCanvas.width + colliderSize || 
+		position.y > CommResMeth::GameCanvas.top + CommResMeth::GameCanvas.height + colliderSize) {
+		SceneBulletHell::layerDelete.insert(shared_from_derived<ObjEnemy>());
 	}
 }
 
 void ObjEnemy::OnCollisionEnter(std::shared_ptr<ObjCharacter> pOther){
 	GameObjectType type = pOther->GetType();
 	if (type == GameObject::BULLET){
-		SceneGame::layerDelete.insert(pOther);
+		SceneBulletHell::layerDelete.insert(pOther);
 		hp -= pOther->GetDamage();
 		if (hp < 0) {
 			isDelete = true;

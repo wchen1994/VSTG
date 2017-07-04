@@ -29,11 +29,11 @@ public:
 	Board(const int boardWidth_in, const int boardHeight_in, const int tileWidth_in, const int tileHeight_in);
 	~Board() { clear(); }
 
-	Essential::setVecInt& GetPotentialPos(const int id_x, const int id_y);
-	Essential::setVecInt& GetPotentialPos(const float pos_x, const float pos_y) {
+	CommResMeth::setVecInt& GetPotentialPos(const int id_x, const int id_y);
+	CommResMeth::setVecInt& GetPotentialPos(const float pos_x, const float pos_y) {
 		return GetPotentialPos(int(pos_x / tileWidth), int(pos_y / tileHeight));
 	}
-	Essential::setVecInt& GetPotentialPos(const std::shared_ptr<ObjCharacter> pObject) {
+	CommResMeth::setVecInt& GetPotentialPos(const std::shared_ptr<ObjCharacter> pObject) {
 		const sf::Vector2f pos = pObject->getPosition();
 		return GetPotentialPos(pos.x, pos.y);
 	}
@@ -68,6 +68,6 @@ private:
 	int nRow;
 	int nCol;
 	std::vector<std::shared_ptr<Tile>> tiles;
-	Essential::setVecInt sHLPos;
+	CommResMeth::setVecInt sHLPos;
 	std::set<std::shared_ptr<Board::Tile>> sTile;
 };

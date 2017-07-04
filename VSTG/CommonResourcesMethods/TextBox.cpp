@@ -2,7 +2,7 @@
 
 namespace CommResMeth {
 
-	TextBox::TextBox(sf::Texture & texture, sf::IntRect & rectFocus, sf::IntRect & rectIdle, Scene* const parent) :
+	TextBox::TextBox(Scene* const parent, sf::Texture & texture, sf::IntRect & rectFocus, sf::IntRect & rectIdle) :
 		Scene(parent), isFocus(false), flag(flagDEFAULT), size(12)
 	{
 		bgIdle.setTexture(texture);

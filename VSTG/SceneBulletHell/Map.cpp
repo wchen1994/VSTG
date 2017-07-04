@@ -1,5 +1,5 @@
 #include "Map.h"
-#include "SceneGame.hpp"
+#include "SceneBulletHell.hpp"
 #include "ObjCreator.h"
 
 #include <regex>
@@ -26,7 +26,7 @@ bool Map::Update(const float dt)
 			objQueue.pop();
 			vec.y = float(Essential::GameCanvas.top) - 10.0f;
 			pObject->setPosition(vec);
-			SceneGame::layerDefault.insert(pObject);
+			SceneBulletHell::layerDefault.insert(pObject);
 		}
 		return true;
 	}
@@ -152,9 +152,9 @@ void Map::AddObjectByPacket(sf::Packet & packet_in, std::set<std::shared_ptr<Obj
 		sorted_set_out.insert(ObjCreator::CreateEnemy(ObjCreator::EnemyType(OID), pos, vel, rotation, rotSpeed));
 	}
 	else if (type == GameObject::PLAYER) {
-		const auto & pPlayer = ObjCreator::CreatePlayer(ObjCreator::PlayerType(OID), pos, int(SceneGame::layerPlayer.size()));
-		SceneGame::layerDefault.insert(pPlayer);
-		SceneGame::layerPlayer.push_back(pPlayer);
+		const auto & pPlayer = ObjCreator::CreatePlayer(ObjCreator::PlayerType(OID), pos, int(SceneBulletHell::layerPlayer.size()));
+		SceneBulletHell::layerDefault.insert(pPlayer);
+		SceneBulletHell::layerPlayer.push_back(pPlayer);
 	}
 	else {
 		assert(false);
