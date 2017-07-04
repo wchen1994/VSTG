@@ -14,9 +14,9 @@ namespace CommResMeth {
 		void update();
 		void move(int x, int y);
 		void move(sf::Vector2i & dpos) { move(dpos.x, dpos.y); }
-		void setPosition(int x, int y);
+		virtual void setPosition(int x, int y);
 		void setPosition(const sf::Vector2i & pos) { setPosition(pos.x, pos.y); }
-		void setSize(int w, int h);
+		virtual void setSize(int w, int h);
 		void setSize(const sf::Vector2i & size) { setSize(size.x, size.y); }
 	private:
 		virtual GameState Exec();

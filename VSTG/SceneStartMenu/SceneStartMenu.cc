@@ -8,17 +8,17 @@ namespace DllSceneStartMenu {
 		Scene(parent), isFocus(true),
 		butStart(this), butOnline(this), butEdit(this), butExit(this)
 	{
-		butStart = CommResMeth::Button::createDefaultButton(CommResMeth::TextManager::getText(1), CommResMeth::Button::MEDIUM, this);
-		butStart.setPosition(sf::Vector2f(550.0, 280.0));
+		CommResMeth::Button::processDefaultButton(&butStart, CommResMeth::TextManager::getText(1), CommResMeth::Button::MEDIUM);
+		butStart.setPosition(550, 280);
 
-		butOnline = CommResMeth::Button::createDefaultButton("Start Online", CommResMeth::Button::MEDIUM, this);
-		butOnline.setPosition(sf::Vector2f(550.0, 340.0));
+		CommResMeth::Button::processDefaultButton(&butOnline, "Start Online", CommResMeth::Button::MEDIUM);
+		butOnline.setPosition(550, 340);
 
-		butEdit = CommResMeth::Button::createDefaultButton(CommResMeth::TextManager::getText(2), CommResMeth::Button::MEDIUM, this);
-		butEdit.setPosition(sf::Vector2f(550.0, 400.0));
+		CommResMeth::Button::processDefaultButton(&butEdit, CommResMeth::TextManager::getText(2), CommResMeth::Button::MEDIUM);
+		butEdit.setPosition(550, 400);
 
-		butExit = CommResMeth::Button::createDefaultButton(CommResMeth::TextManager::getText(3), CommResMeth::Button::MEDIUM, this);
-		butExit.setPosition(sf::Vector2f(550.0, 460.0));
+		CommResMeth::Button::processDefaultButton(&butExit, CommResMeth::TextManager::getText(3), CommResMeth::Button::MEDIUM);
+		butExit.setPosition(550, 460);
 	}
 
 	CommResMeth::GameState SceneStartMenu::Exec() {

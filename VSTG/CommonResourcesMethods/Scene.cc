@@ -32,12 +32,14 @@ namespace CommResMeth {
 
 
 	Scene::~Scene() {
-		for (auto itPChild = parent->childs.begin(); itPChild != parent->childs.end();) {
-			if (*itPChild == this) {
-				itPChild = parent->childs.erase(itPChild);
-			}
-			else {
-				itPChild++;
+		if (parent) {
+			for (auto itPChild = parent->childs.begin(); itPChild != parent->childs.end();) {
+				if (*itPChild == this) {
+					itPChild = parent->childs.erase(itPChild);
+				}
+				else {
+					itPChild++;
+				}
 			}
 		}
 		for (auto pChild : childs)

@@ -5,7 +5,7 @@
 namespace CommResMeth {
 
 	Menu::Menu(sf::IntRect rect, sf::String title, uint32_t flag, Scene* const parent) :
-		Scene(parent)
+		Scene(parent), but1(this), but2(this), but3(this)
 	{
 		this->flag = flag;
 		pBG = AssetManager::GetTexture("Resources/Textures/menu01.png");
@@ -40,22 +40,22 @@ namespace CommResMeth {
 
 		switch (flag) {
 		case MENUFLAG::OK:
-			but1 = Button::createDefaultButton(TextManager::getText(7), Button::SMALL, this);
-			but1.setPosition(sf::Vector2f(float(rect.left + rect.width / 2), float(rect.top + rect.height / 2)));
+			Button::processDefaultButton(&but1, TextManager::getText(7), Button::SMALL);
+			but1.setPosition(rect.left + rect.width / 2, rect.top + rect.height / 2);
 			break;
 		case MENUFLAG::OK_CANCEL:
-			but1 = Button::createDefaultButton(TextManager::getText(7), Button::SMALL, this);
-			but1.setPosition(sf::Vector2f(float(rect.left), float(rect.top + rect.height / 2)));
+			Button::processDefaultButton(&but1, TextManager::getText(7), Button::SMALL);
+			but1.setPosition(rect.left, rect.top + rect.height / 2);
 
-			but2 = Button::createDefaultButton(TextManager::getText(8), Button::SMALL, this);
-			but2.setPosition(sf::Vector2f(float(rect.left + rect.width / 2), float(rect.top + rect.height / 2)));
+			Button::processDefaultButton(&but2, TextManager::getText(8), Button::SMALL);
+			but2.setPosition(rect.left + rect.width / 2, rect.top + rect.height / 2);
 			break;
 		case MENUFLAG::YES_NO:
-			but1 = Button::createDefaultButton(TextManager::getText(5), Button::SMALL, this);
-			but1.setPosition(sf::Vector2f(float(rect.left), float(rect.top + rect.height / 2)));
+			Button::processDefaultButton(&but1, TextManager::getText(5), Button::SMALL);
+			but1.setPosition(rect.left, rect.top + rect.height / 2);
 
-			but2 = Button::createDefaultButton(TextManager::getText(6), Button::SMALL, this);
-			but2.setPosition(sf::Vector2f(float(rect.left + rect.width / 2), float(rect.top + rect.height / 2)));
+			Button::processDefaultButton(&but2, TextManager::getText(6), Button::SMALL);
+			but2.setPosition(rect.left + rect.width / 2, rect.top + rect.height / 2);
 			break;
 		}
 	}
