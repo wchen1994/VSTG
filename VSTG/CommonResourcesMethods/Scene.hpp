@@ -13,6 +13,7 @@ namespace CommResMeth {
 		void update(const float dt);
 		void update();
 		void move(int x, int y);
+		void move(sf::Vector2i & dpos) { move(dpos.x, dpos.y); }
 		void setPosition(int x, int y);
 		void setPosition(const sf::Vector2i & pos) { setPosition(pos.x, pos.y); }
 		void setSize(int w, int h);

@@ -1,4 +1,5 @@
 #include <Scene.hpp>
+#include <FrameTimer.h>
 
 #pragma comment(lib, "CommonResourcesMethods")
 
@@ -13,8 +14,10 @@
 
 
 int main() {
-
 	sf::RenderWindow wnd(sf::VideoMode(300, 300), "Main");
+	CommResMeth::FrameTimer ft;
+	ft.Mark();
+	float time = 0;
 
 	CommResMeth::Scene *s1 = new CommResMeth::Scene(&wnd);
 	CommResMeth::Scene *s2 = new CommResMeth::Scene(s1);
@@ -22,6 +25,7 @@ int main() {
 	s2->setPosition(30, 30);
 
 	s1->setPosition(30, 30);
+	s2->move(0, 30);
 
 	sf::RectangleShape rect1;
 	sf::RectangleShape rect2;
@@ -37,6 +41,12 @@ int main() {
 				break;
 			}
 		}
+		if (time > 0.1) {
+			s1->move(sf::Vector2i(0, 1));
+			s2->move(-1, 0);
+			time = 0.0f;
+		}
+		time += ft.Mark();
 
 		rect1.setPosition(s1->left, s1->top);
 		rect1.setSize(sf::Vector2f(s1->width, s1->height));
