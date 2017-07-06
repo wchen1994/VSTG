@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GameObject.hpp"
+#include "GameObject.h"
 #include "Essential.hpp"
 //#define _DEBUG_COLLIDER
 

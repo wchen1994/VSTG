@@ -5,11 +5,11 @@
 #include <set>
 #include <iostream>
 
-#include "GameObject.hpp"
+#include "GameObject.h"
 #include "Scene.hpp"
 #include "Essential.hpp"
 #include "FrameTimer.h"
-#include "Board.hpp"
+#include "Board.h"
 #include "Map.h"
 #include "Menu.h"
 #include "ObjCreator.h"
@@ -20,7 +20,27 @@
 #define _DEBUG_BOARD
 #define _DEBUG_LOG
 
+class SceneGame : public CommResMeth::Scene {
+public:
+	SceneGame(CommResMeth::Scene* const parent);
+	void Update(float dt) override;
+};
+
 class SceneBulletHell : public CommResMeth::Scene{
+public:
+	SceneBulletHell(Scene* const parent);
+	~SceneBulletHell();
+	CommResMeth::GameState Exec() override;
+	void Reset();
+	void DrawScene();
+public:
+	static std::vector<std::shared_ptr<ObjPlayer>> layerPlayer;
+	static Board brd;
+
+	// Changing the tile size require to rebuild the soluction
+	static constexpr int tileWidth = 50;
+	static constexpr int tileHeight = 50;
+
 private:
 	sf::Event event;
 	CommResMeth::FrameTimer ft;
@@ -38,7 +58,7 @@ private:
 	int levelCount;
 	std::string levelFileName;
 	CommResMeth::Menu escMenu;
-	sf::RectangleShape background; 
+	sf::RectangleShape background;
 	CommResMeth::UDPSocket socket;
 	std::chrono::steady_clock::time_point timeStart;
 	bool isGameStart;
@@ -52,20 +72,4 @@ private:
 	float onlineLatency;
 	static constexpr float synCooldown = 1.0f;
 	float synTimer;
-public:
-	SceneBulletHell(Scene* const parent);
-	~SceneBulletHell();
-	CommResMeth::GameState Exec();
-	void Reset();
-	void Update();
-	void DrawScene();
-public:
-	static std::set<std::shared_ptr<ObjCharacter>> layerDefault;
-	static std::vector<std::shared_ptr<ObjPlayer>> layerPlayer;
-	static std::set<std::shared_ptr<ObjCharacter>> layerDelete;
-	static Board brd;
-
-	// Changing the tile size require to rebuild the soluction
-	static constexpr int tileWidth = 50;
-	static constexpr int tileHeight = 50;
 };

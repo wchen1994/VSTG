@@ -1,12 +1,13 @@
 #pragma once
 
 #include "Essential.hpp"
+#include "Defines.h"
 
 namespace CommResMeth {
 
-	class __declspec(dllexport) Scene : public sf::IntRect{
+	class __VSTG_API Scene : public sf::IntRect{
 	public:
-		Scene(Scene* const parent);
+		Scene(Scene* const parent, sf::IntRect rect = sf::IntRect());
 		Scene(sf::RenderWindow* const wnd);
 		~Scene();
 		GameState exec();

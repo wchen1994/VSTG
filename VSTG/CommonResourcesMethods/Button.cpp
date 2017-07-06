@@ -39,9 +39,9 @@ namespace CommResMeth {
 	void Button::setPosition(int x, int y)
 	{
 		for (auto &sprite : sprites) {
-			sprite.setPosition(x, y);
+			sprite.setPosition(float(x), float(y));
 		}
-		text.setPosition(x, y);
+		text.setPosition(float(x), float(y));
 		Scene::setPosition(x, y);
 	}
 

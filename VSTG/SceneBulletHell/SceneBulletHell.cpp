@@ -10,9 +10,7 @@
 #include "ObjCharacter.h"
 
 
-std::set<std::shared_ptr<ObjCharacter>> SceneBulletHell::layerDefault;
 std::vector<std::shared_ptr<ObjPlayer>> SceneBulletHell::layerPlayer;
-std::set<std::shared_ptr<ObjCharacter>> SceneBulletHell::layerDelete;
 Board SceneBulletHell::brd(CommResMeth::ScreenWidth, CommResMeth::ScreenHeight, tileWidth, tileHeight);
 
 
@@ -35,9 +33,7 @@ SceneBulletHell::SceneBulletHell(Scene* const parent) :
 
 
 SceneBulletHell::~SceneBulletHell(){
-	layerDefault.clear();
 	layerPlayer.clear();
-	layerDelete.clear();
 	brd.clear();
 }
 
@@ -130,7 +126,7 @@ void SceneBulletHell::Reset()
 	wnd->draw(loadingText);
 	wnd->display();
 
-	layerDefault.clear();
+	GameObject::clearObjects;
 	brd.clear();
 
 
@@ -154,7 +150,7 @@ void SceneBulletHell::Reset()
 	for (auto &ptrPlayer : layerPlayer) {
 		if (ptrPlayer != NULL) {
 			ptrPlayer->setPosition(playerPos);
-			layerDefault.insert(ptrPlayer);
+//			layerDefault.insert(ptrPlayer);  // new instance insert automatically
 		}
 		playerPos.x += xDiff;
 	}
@@ -206,7 +202,7 @@ void SceneBulletHell::Update() {
 		if (pPlayer)
 			playerAliveNumb++;
 	}
-	if (!isEnemy && layerDefault.size() == playerAliveNumb && !socket.isClient()) {
+	if (!isEnemy && GameObject::getObjectsNumb() == playerAliveNumb && !socket.isClient()) {
 		if (socket.isHost()) {
 			sf::Packet packet_out;
 			packet_out << int(CommResMeth::UDPSocket::PacketType::SIGNAL);
@@ -243,12 +239,12 @@ void SceneBulletHell::Update() {
 			if (objType == GameObject::ENEMYNOTDEAD) {
 				auto pBullet = ObjCreator::CreateEnemyBullet(ObjCreator::EnemyBulletType(OID), pos, vel);
 				pBullet->FixedUpdate(dt);
-				layerDefault.insert(pBullet);
+//				layerDefault.insert(pBullet);
 			} 
 			else if (objType == GameObject::BULLET) {
 				auto pBullet = ObjCreator::CreateBullet(ObjCreator::BulletType(OID), pos, rotation);
 				pBullet->FixedUpdate(dt);
-				layerDefault.insert(pBullet);
+//				layerDefault.insert(pBullet);
 			}
 			else {
 				assert(1 != 1);
@@ -262,11 +258,7 @@ void SceneBulletHell::Update() {
 			uint32_t uni_id;
 			packet >> uni_id;
 			assert(packet.endOfPacket());
-			for (auto & pObject : layerDefault) {
-				if (pObject->GetUniId() == uni_id) {
-					layerDelete.insert(pObject);
-				}
-			}
+			GameObject::delObject(uni_id);
 			break;
 		}
 		case CommResMeth::UDPSocket::PacketType::CHANGE_T:
@@ -457,7 +449,7 @@ void SceneBulletHell::Update() {
 			socket.SendPacket(packet_out);
 		}
 	}
-	layerDelete.clear();
+	GameObject::processDelete();
 }
 
 void SceneBulletHell::DrawScene()
@@ -473,11 +465,20 @@ void SceneBulletHell::DrawScene()
 	brd.View(*wnd);
 #endif
 
-	for (auto it = layerDefault.begin(); it != layerDefault.end(); it++) {
-		(*it)->Draw(*wnd);
-	}
+	GameObject::draw(*wnd);
+
 	if (isMenuTriger) {
 		escMenu.draw(*wnd);
 	}
 	wnd->display();
+}
+
+SceneGame::SceneGame(CommResMeth::Scene * const parent) : CommResMeth::Scene(parent)
+{
+	setPosition(50, 50);
+	setSize(500, 550);
+}
+
+void SceneGame::Update(float dt)
+{
 }

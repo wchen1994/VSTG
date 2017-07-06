@@ -116,31 +116,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Board.cc" />
-    <ClCompile Include="GameObject.cc" />
-    <ClCompile Include="Map.cpp" />
-    <ClCompile Include="Moveable.cc" />
-    <ClCompile Include="ObjBullet.cc" />
-    <ClCompile Include="ObjCharacter.cpp" />
-    <ClCompile Include="ObjCostume.cpp" />
-    <ClCompile Include="ObjCreator.cpp" />
-    <ClCompile Include="ObjEnemy.cc" />
-    <ClCompile Include="ObjEnemyBullet.cpp" />
-    <ClCompile Include="ObjPlayer.cc" />
-    <ClCompile Include="SceneBulletHell.cc" />
+    <ClCompile Include="Board.cpp" />
+    <ClCompile Include="Collider.cpp" />
+    <ClCompile Include="GameObject.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Board.hpp" />
-    <ClInclude Include="GameObject.hpp" />
-    <ClInclude Include="Map.h" />
-    <ClInclude Include="ObjBullet.hpp" />
-    <ClInclude Include="ObjCharacter.h" />
-    <ClInclude Include="ObjCostume.h" />
-    <ClInclude Include="ObjCreator.h" />
-    <ClInclude Include="ObjEnemy.hpp" />
-    <ClInclude Include="ObjEnemyBullet.h" />
-    <ClInclude Include="ObjPlayer.hpp" />
-    <ClInclude Include="SceneBulletHell.hpp" />
+    <ClInclude Include="Board.h" />
+    <ClInclude Include="Collider.h" />
+    <ClInclude Include="Defines.h" />
+    <ClInclude Include="GameObject.h" />
+    <ClInclude Include="Moveable.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

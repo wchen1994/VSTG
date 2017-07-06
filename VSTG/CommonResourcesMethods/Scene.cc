@@ -2,22 +2,14 @@
 
 namespace CommResMeth {
 
-	Scene::Scene(Scene* const parent) : isCreator(false), parent(parent)
+	Scene::Scene(Scene* const parent, sf::IntRect rect) : sf::IntRect(rect), isCreator(false), parent(parent)
 	{
 		if (parent) {
 			wnd = parent->wnd;
 			parent->childs.push_back(this);
-			top = 0;
-			left = 0;
-			width = wnd->getSize().x;
-			height = wnd->getSize().y;
 		}
 		else {
-			top = 0;
-			left = 0;
-			width = 0;
-			height = 0;
-			wnd = new sf::RenderWindow(sf::VideoMode(0, 0), "unnamed");
+			wnd = new sf::RenderWindow(sf::VideoMode(width, height), "unnamed");
 			isCreator = true;
 		}
 	}

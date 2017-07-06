@@ -21,6 +21,9 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SceneStartMenu", "SceneStartMenu\SceneStartMenu.vcxproj", "{53912A1D-8B46-4CA4-A86F-1869220811AD}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SceneBulletHell", "SceneBulletHell\SceneBulletHell.vcxproj", "{42B6B958-AF51-484D-A725-B7F3C6E69686}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9957C4DC-CD82-4F34-96DC-30164EF259DD} = {9957C4DC-CD82-4F34-96DC-30164EF259DD}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestScene", "TestScene\TestScene.vcxproj", "{A3EE4016-7D2D-4E2E-81E0-8CC41B7B6ADE}"
 	ProjectSection(ProjectDependencies) = postProject
