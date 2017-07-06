@@ -1,7 +1,9 @@
 #pragma once
 
-#include "Scene.hpp"
+#include "Scene.h"
 #include "Button.h"
+#include "TextManager.h"
+#include "Defines.h"
 
 #pragma comment(lib, "CommonResourcesMethods")
 
@@ -18,6 +20,6 @@ namespace DllSceneStartMenu {
 	public:
 		SceneStartMenu(Scene* const parent = nullptr);
 		virtual ~SceneStartMenu() = default;
-		CommResMeth::GameState Exec() override;
+		int Exec() override;
 	};
 }

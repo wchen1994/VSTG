@@ -116,10 +116,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="SceneStartMenu.cc" />
+    <ClCompile Include="SceneStartMenu.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="SceneStartMenu.hpp" />
+    <ClInclude Include="Defines.h" />
+    <ClInclude Include="SceneStartMenu.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Scene.hpp"
+#include "Scene.h"
 #include "Collider.h"
-#include "Essential.hpp"
+#include "Methods.h"
 
 #include <SFML/Graphics.hpp>
 #include <memory>

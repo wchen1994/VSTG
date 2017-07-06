@@ -2,8 +2,10 @@
 
 #include "Defines.h"
 #include "Button.h"
+#include "Methods.h"
+#include "TextManager.h"
 
-#include "Scene.hpp"
+#include "Scene.h"
 
 namespace CommResMeth {
 

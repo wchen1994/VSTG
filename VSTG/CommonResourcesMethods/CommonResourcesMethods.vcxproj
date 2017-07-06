@@ -119,10 +119,10 @@
     <ClCompile Include="Angle.cpp" />
     <ClCompile Include="AssetManager.cpp" />
     <ClCompile Include="Button.cpp" />
-    <ClCompile Include="Essential.cc" />
+    <ClCompile Include="Methods.cpp" />
     <ClCompile Include="FrameTimer.cpp" />
     <ClCompile Include="Menu.cpp" />
-    <ClCompile Include="Scene.cc" />
+    <ClCompile Include="Scene.cpp" />
     <ClCompile Include="TextBox.cpp" />
     <ClCompile Include="TextManager.cpp" />
     <ClCompile Include="UDPSocket.cpp" />
@@ -132,10 +132,10 @@
     <ClInclude Include="AssetManager.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="Defines.h" />
-    <ClInclude Include="Essential.hpp" />
+    <ClInclude Include="Methods.h" />
     <ClInclude Include="FrameTimer.h" />
     <ClInclude Include="Menu.h" />
-    <ClInclude Include="Scene.hpp" />
+    <ClInclude Include="Scene.h" />
     <ClInclude Include="TextBox.h" />
     <ClInclude Include="TextManager.h" />
     <ClInclude Include="UDPSocket.h" />

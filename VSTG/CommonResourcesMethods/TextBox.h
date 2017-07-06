@@ -5,9 +5,10 @@
 #include <thread>
 #include <cstring>
 
-#include "Essential.hpp"
+#include "Methods.h"
 #include "Defines.h"
-#include "Scene.hpp"
+#include "Scene.h"
+#include "AssetManager.h"
 
 namespace CommResMeth {
 

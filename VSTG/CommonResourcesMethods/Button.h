@@ -4,7 +4,9 @@
 #include <memory>
 
 #include "Defines.h"
-#include "Scene.hpp"
+#include "Scene.h"
+#include "AssetManager.h"
+#include "Methods.h"
 
 namespace CommResMeth {
 	class __VSTG_API Button : public Scene {

@@ -6,9 +6,7 @@
 #include <random>
 #include <chrono>
 
-#include "TextManager.h"
-#include "AssetManager.h"
-#include "UDPSocket.h"
+#include "Defines.h"
 
 namespace CommResMeth {
 		enum class GameState : uint32_t { MENU, GAME, EDITOR, LOBBY, POP, GAMEHOST, GAMECLIENT };

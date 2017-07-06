@@ -1,6 +1,4 @@
 #include "Menu.h"
-#include "Essential.hpp"
-#include "TextManager.h"
 
 namespace CommResMeth {
 

@@ -1,4 +1,4 @@
-#include <Scene.hpp>
+#include <Scene.h>
 #include <FrameTimer.h>
 
 #pragma comment(lib, "CommonResourcesMethods")

@@ -1,4 +1,4 @@
-#include "SceneStartMenu.hpp"
+#include "SceneStartMenu.h"
 #include <assert.h>
 
 namespace DllSceneStartMenu {
@@ -21,17 +21,17 @@ namespace DllSceneStartMenu {
 		butExit.setPosition(550, 460);
 	}
 
-	CommResMeth::GameState SceneStartMenu::Exec() {
+	int SceneStartMenu::Exec() {
 
 		while (wnd->isOpen()) {
 			while (wnd->pollEvent(event)) {
 				switch (event.type) {
 				case sf::Event::KeyPressed:
 					if (event.key.code == sf::Keyboard::Return) {
-						return CommResMeth::GameState::GAME;
+						return GAMESTATE_GAME_OFFLINE;
 					}
 					if (event.key.code == sf::Keyboard::E) {
-						return CommResMeth::GameState::EDITOR;
+						return GAMESTATE_EDITOR;
 					}
 					break;
 				case sf::Event::GainedFocus:
@@ -53,16 +53,16 @@ namespace DllSceneStartMenu {
 
 				// Button Handle
 				if (butStart.getStatus() == CommResMeth::Button::ButtonState::Release) {
-					return CommResMeth::GameState::GAME;
+					return GAMESTATE_GAME_OFFLINE;
 				}
 				if (butOnline.getStatus() == CommResMeth::Button::ButtonState::Release) {
-					return CommResMeth::GameState::LOBBY;
+					return GAMESTATE_LOBBY;
 				}
 				if (butEdit.getStatus() == CommResMeth::Button::ButtonState::Release) {
-					return CommResMeth::GameState::EDITOR;
+					return GAMESTATE_EDITOR;
 				}
 				if (butExit.getStatus() == CommResMeth::Button::ButtonState::Release) {
-					return CommResMeth::GameState::POP;
+					return GAMESTATE_POP;
 				}
 			}
 			wnd->clear(sf::Color(100, 255, 255));
@@ -72,6 +72,6 @@ namespace DllSceneStartMenu {
 			butExit.draw(*wnd);
 			wnd->display();
 		}
-		return CommResMeth::GameState::POP;
+		return GAMESTATE_POP;
 	}
 }
