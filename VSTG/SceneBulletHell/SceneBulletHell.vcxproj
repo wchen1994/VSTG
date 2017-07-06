@@ -119,6 +119,7 @@
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="Renderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Board.h" />
@@ -126,6 +127,7 @@
     <ClInclude Include="Defines.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Moveable.h" />
+    <ClInclude Include="Renderer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

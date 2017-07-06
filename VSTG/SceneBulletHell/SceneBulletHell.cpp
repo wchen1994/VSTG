@@ -2,12 +2,20 @@
 #include <iomanip>
 #include <thread>
 
-#include "Essential.hpp"
-#include "SceneBulletHell.hpp"
-#include "Board.hpp" 
-#include "ObjPlayer.hpp" 
-#include "ObjEnemy.hpp"
-#include "ObjCharacter.h"
+#include "SceneBulletHell.h"
+
+
+SceneGame::SceneGame(CommResMeth::Scene * const parent) : 
+	CommResMeth::Scene(parent, sf::IntRect(50,50, 500,550)), brd(this, sf::Vector2i(100, 100))
+{
+}
+
+void SceneGame::Update(float dt)
+{
+	GameObject::update(dt);
+	brd.processCollision();
+	GameObject::processDelete();
+}
 
 
 std::vector<std::shared_ptr<ObjPlayer>> SceneBulletHell::layerPlayer;
@@ -471,14 +479,4 @@ void SceneBulletHell::DrawScene()
 		escMenu.draw(*wnd);
 	}
 	wnd->display();
-}
-
-SceneGame::SceneGame(CommResMeth::Scene * const parent) : CommResMeth::Scene(parent)
-{
-	setPosition(50, 50);
-	setSize(500, 550);
-}
-
-void SceneGame::Update(float dt)
-{
 }

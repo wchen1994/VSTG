@@ -24,13 +24,15 @@ class SceneGame : public CommResMeth::Scene {
 public:
 	SceneGame(CommResMeth::Scene* const parent);
 	void Update(float dt) override;
+private:
+	Board brd;
 };
 
 class SceneBulletHell : public CommResMeth::Scene{
 public:
 	SceneBulletHell(Scene* const parent);
 	~SceneBulletHell();
-	CommResMeth::GameState Exec() override;
+	int Exec() override;
 	void Reset();
 	void DrawScene();
 public:

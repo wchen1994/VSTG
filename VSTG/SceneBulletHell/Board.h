@@ -2,8 +2,11 @@
 
 #include "Scene.hpp"
 #include "Collider.h"
+#include "Essential.hpp"
 
 #include <SFML/Graphics.hpp>
+#include <memory>
+#include <deque>
 #include <set>
 #include <vector>
 
