@@ -9,7 +9,7 @@ namespace CommResMeth {
 			parent->childs.push_back(this);
 		}
 		else {
-			wnd = new sf::RenderWindow(sf::VideoMode(width, height), "unnamed");
+			wnd = new sf::RenderWindow(sf::VideoMode(left + width, top + height), "unnamed");
 			isCreator = true;
 		}
 	}
@@ -41,14 +41,14 @@ namespace CommResMeth {
 		}
 	}
 
-	CommResMeth::GameState Scene::exec()
+	int Scene::exec()
 	{
 		return Exec();
 	}
 
-	CommResMeth::GameState Scene::Exec()
+	int Scene::Exec()
 	{
-		return CommResMeth::GameState::POP;
+		return 0;
 	}
 
 	void Scene::update(const float dt)

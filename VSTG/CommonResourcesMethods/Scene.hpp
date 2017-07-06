@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Essential.hpp"
 #include "Defines.h"
+#include <SFML/Graphics.hpp>
 
 namespace CommResMeth {
 
@@ -10,7 +10,7 @@ namespace CommResMeth {
 		Scene(Scene* const parent, sf::IntRect rect = sf::IntRect());
 		Scene(sf::RenderWindow* const wnd);
 		~Scene();
-		GameState exec();
+		int exec();
 		void update(const float dt);
 		void update();
 		void move(int x, int y);
@@ -20,7 +20,7 @@ namespace CommResMeth {
 		virtual void setSize(int w, int h);
 		void setSize(const sf::Vector2i & size) { setSize(size.x, size.y); }
 	private:
-		virtual GameState Exec();
+		virtual int Exec();
 		virtual void Update(const float dt);
 		virtual void Update();
 	protected:
