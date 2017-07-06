@@ -19,6 +19,11 @@ namespace CommResMeth {
 		void setPosition(const sf::Vector2i & pos) { setPosition(pos.x, pos.y); }
 		virtual void setSize(int w, int h);
 		void setSize(const sf::Vector2i & size) { setSize(size.x, size.y); }
+	public: // static func
+		inline const sf::Vector2f TopLeftCoord2Window(const sf::Vector2f& vec2);
+		inline const sf::Vector2f BottomLeftCoord2Window(const sf::Vector2f& vec2);
+		inline const sf::Vector2f Window2TopLeftCoord(const sf::Vector2f& vec2);
+		inline const sf::Vector2f Window2BottomLeftCoord(const sf::Vector2f& vec2);
 	private:
 		virtual int Exec();
 		virtual void Update(const float dt);

@@ -2,13 +2,27 @@
 
 // Static start
 std::set<std::shared_ptr<Renderer>> Renderer::setDrawObjects;
+std::list<Canvas*> Renderer::listCanvas;
 // Static end
 
 void Renderer::draw(sf::RenderTarget & gfx)
 {
+	// Draw Canvas Background first
+	for (auto pCanvas : listCanvas) {
+		if (pCanvas->pTex)
+			gfx.draw(pCanvas->sprite);
+	}
+
+	// Draw objects
 	for (auto pRender : setDrawObjects) {
-		pRender->sprite.setPosition(pRender->position);
-		gfx.draw(pRender->sprite);
+		for (auto pCanvas : listCanvas) {
+			auto& worldRect = pCanvas->worldRect; // Maybe add a register signiture
+			if (worldRect.contains(sf::Vector2i((int)pRender->position.x, (int)pRender->position.y))) {
+				const sf::Vector2f canvasPos = pRender->position - sf::Vector2f((float)worldRect.left, (float)worldRect.top - worldRect.height);
+				pRender->sprite.setPosition(pCanvas->BottomLeftCoord2Window(canvasPos));
+				gfx.draw(pRender->sprite);
+			}
+		}
 	}
 }
 
@@ -43,4 +57,37 @@ Renderer::Renderer(const sf::IntRect & rect, std::shared_ptr<sf::Texture> pTex, 
 Renderer::~Renderer()
 {
 	setDrawObjects.erase(shared_from_this());
+}
+
+Canvas::Canvas(Scene * const parent, sf::IntRect windowRect, sf::IntRect worldRect) :
+	Scene(parent, windowRect), worldRect(worldRect), pTex(nullptr)
+{
+	Renderer::listCanvas.push_back(this);
+}
+
+Canvas::~Canvas()
+{
+	for (auto itCanvas = Renderer::listCanvas.begin(); itCanvas != Renderer::listCanvas.end();) {
+		if (*itCanvas == this) {
+			itCanvas = Renderer::listCanvas.erase(itCanvas);
+		}
+		else {
+			++itCanvas;
+		}
+	}
+}
+
+void Canvas::setBackground(std::shared_ptr<sf::Texture> pTexture, sf::IntRect rect)
+{
+	pTex = pTexture;
+	sprite.setTexture(*pTexture);
+	sprite.setTextureRect(rect);
+	sf::Vector2f scale = { (float)rect.width / width, (float)rect.height / height };
+	sprite.setScale(scale);
+}
+
+void Canvas::setBackground(std::shared_ptr<sf::Texture> pTexture)
+{
+	const sf::IntRect rect = { 0,0,(int)pTexture->getSize().x,(int)pTexture->getSize().y };
+	setBackground(pTexture, rect);
 }

@@ -90,6 +90,26 @@ namespace CommResMeth {
 		height = h;
 	}
 
+	inline const sf::Vector2f Scene::TopLeftCoord2Window(const sf::Vector2f & vec2)
+	{
+		return sf::Vector2f(left + vec2.x, top + vec2.y);
+	}
+
+	inline const sf::Vector2f Scene::BottomLeftCoord2Window(const sf::Vector2f & vec2)
+	{
+		return sf::Vector2f(left + vec2.x, top + height - vec2.y);
+	}
+
+	inline const sf::Vector2f Scene::Window2TopLeftCoord(const sf::Vector2f & vec2)
+	{
+		return sf::Vector2f(vec2.x - left, vec2.y - top);
+	}
+
+	const sf::Vector2f Scene::Window2BottomLeftCoord(const sf::Vector2f & vec2)
+	{
+		return sf::Vector2f(vec2.x - left, height - vec2.y + top);
+	}
+
 	void Scene::Update(const float dt)
 	{
 	}
