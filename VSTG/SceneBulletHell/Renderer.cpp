@@ -82,7 +82,7 @@ void Canvas::setBackground(std::shared_ptr<sf::Texture> pTexture, sf::IntRect re
 	pTex = pTexture;
 	sprite.setTexture(*pTexture);
 	sprite.setTextureRect(rect);
-	sf::Vector2f scale = { (float)rect.width / width, (float)rect.height / height };
+	sf::Vector2f scale = { width / (float)rect.width, height / (float)rect.height };
 	sprite.setScale(scale);
 }
 

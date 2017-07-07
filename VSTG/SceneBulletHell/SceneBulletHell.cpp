@@ -35,7 +35,7 @@ namespace DllSceneBulletHell {
 		CommResMeth::FrameTimer ft;
 		ft.Mark();
 		Canvas mainCanvas(sceneGame, { 0,0,sceneGame->width,sceneGame->height }, { 0,0,100,100 });
-		mainCanvas.setBackground(CommResMeth::AssetManager::GetTexture("Resources/Textures/Enemy02.png"));
+		mainCanvas.setBackground(CommResMeth::AssetManager::GetTexture("Resources/Textures/Background.png"));
 		while (wnd->isOpen()) {
 			sf::Event e;
 			while (wnd->pollEvent(e)) {
