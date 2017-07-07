@@ -28,8 +28,16 @@ namespace CommResMeth {
 
 	__VSTG_API void resetView(sf::RenderWindow & wnd)
 	{
-		sf::View view(sf::Vector2f(400, 300), sf::Vector2f(WINDOWS_HEIGHT * getAspectRatio(wnd), WINDOWS_HEIGHT));
+		//sf::View view(sf::Vector2f(400, 300), sf::Vector2f(WINDOWS_HEIGHT * getAspectRatio(wnd), WINDOWS_HEIGHT));
+		sf::View view;
+		resetView(wnd, view);
 		wnd.setView(view);
+	}
+
+	__VSTG_API void resetView(const sf::RenderWindow & wnd, sf::View & view_out)
+	{
+		view_out.setCenter(sf::Vector2f(400, 300));
+		view_out.setSize(sf::Vector2f(WINDOWS_HEIGHT * getAspectRatio(wnd), WINDOWS_HEIGHT));
 	}
 
 	__VSTG_API float getAspectRatio(const sf::Window & wnd)

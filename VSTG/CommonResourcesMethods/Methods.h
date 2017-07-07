@@ -39,6 +39,7 @@ namespace CommResMeth {
 
 		__VSTG_API void defHandleMsg(sf::RenderWindow &wnd, const sf::Event &eventType);
 		__VSTG_API void resetView(sf::RenderWindow &wnd);
+		__VSTG_API void resetView(const sf::RenderWindow &wnd, sf::View &view_out);
 		__VSTG_API float getAspectRatio(const sf::Window& wnd);
 		__VSTG_API float getWndScale(const sf::Window& wnd);
 		__VSTG_API sf::Vector2f getUnscaledCoord(const sf::Window& wnd, const sf::Vector2f& pos);

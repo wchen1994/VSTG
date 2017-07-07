@@ -7,22 +7,26 @@ std::list<Canvas*> Renderer::listCanvas;
 
 void Renderer::draw(sf::RenderTarget & gfx)
 {
-	// Draw Canvas Background first
-	for (auto pCanvas : listCanvas) {
-		if (pCanvas->pTex)
-			gfx.draw(pCanvas->sprite);
-	}
-
-	// Draw objects
-	for (auto pRender : setDrawObjects) {
-		for (auto pCanvas : listCanvas) {
-			auto& worldRect = pCanvas->worldRect; // Maybe add a register signiture
-			if (worldRect.contains(sf::Vector2i((int)pRender->position.x, (int)pRender->position.y))) {
-				const sf::Vector2f canvasPos = pRender->position - sf::Vector2f((float)worldRect.left, (float)worldRect.top - worldRect.height);
-				pRender->sprite.setPosition(pCanvas->BottomLeftCoord2Window(canvasPos));
-				gfx.draw(pRender->sprite);
-			}
-		}
+//	// Draw Canvas Background first
+//	for (auto pCanvas : listCanvas) {
+//		if (pCanvas->pTex)
+//			gfx.draw(pCanvas->sprite);
+//	}
+//
+//	// Draw objects
+//	for (auto pRender : setDrawObjects) {
+//		for (auto pCanvas : listCanvas) {
+//			auto& worldRect = pCanvas->worldRect; // Maybe add a register signiture
+//			if (worldRect.contains(sf::Vector2i((int)pRender->position.x, (int)pRender->position.y))) {
+//				const sf::Vector2f canvasPos = pRender->position - sf::Vector2f((float)worldRect.left, (float)worldRect.top - worldRect.height);
+//				pRender->sprite.setPosition(pCanvas->BottomLeftCoord2Window(canvasPos));
+//				gfx.draw(pRender->sprite);
+//			}
+//		}
+//	}
+	for (auto pRenderer : setDrawObjects) {
+		pRenderer->sprite.setPosition( CommResMeth::Scene::BottomLeftCoord2TopLeftCoord(pRenderer->position) );
+		gfx.draw(pRenderer->sprite);
 	}
 }
 

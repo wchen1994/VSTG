@@ -20,14 +20,21 @@ namespace DllSceneBulletHell {
 		SceneGame(CommResMeth::Scene* const parent);
 		~SceneGame();
 		void Update(const float dt) override;
+		void Draw();
+		void resetViewport();
 	private:
 		Board brd;
+		sf::View gameView;
+		std::shared_ptr<sf::Texture> pBGTex;
+		sf::Sprite spriteBG;
 	};
 
 	class __VSTG_API SceneBulletHell : public CommResMeth::Scene {
 	public:
 		SceneBulletHell(CommResMeth::Scene* const parent);
 		int Exec() override;
+	private:
+		sf::View mainView;
 	};
 }
 

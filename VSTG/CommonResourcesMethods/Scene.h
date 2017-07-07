@@ -20,6 +20,8 @@ namespace CommResMeth {
 		virtual void setSize(int w, int h);
 		void setSize(const sf::Vector2i & size) { setSize(size.x, size.y); }
 	public: // static func
+		static inline const sf::Vector2f TopLeftCoord2BottomLeftCoord(const sf::Vector2f& vec2);
+		static inline const sf::Vector2f BottomLeftCoord2TopLeftCoord(const sf::Vector2f& vec2);
 		inline const sf::Vector2f TopLeftCoord2Window(const sf::Vector2f& vec2);
 		inline const sf::Vector2f BottomLeftCoord2Window(const sf::Vector2f& vec2);
 		inline const sf::Vector2f Window2TopLeftCoord(const sf::Vector2f& vec2);
