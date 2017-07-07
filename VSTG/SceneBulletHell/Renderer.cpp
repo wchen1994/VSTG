@@ -59,8 +59,8 @@ Renderer::~Renderer()
 	setDrawObjects.erase(shared_from_this());
 }
 
-Canvas::Canvas(Scene * const parent, sf::IntRect windowRect, sf::IntRect worldRect) :
-	Scene(parent, windowRect), worldRect(worldRect), pTex(nullptr)
+Canvas::Canvas(Scene * const parent, const sf::IntRect & windowRect, const sf::FloatRect & worldRect) :
+	Scene(parent, windowRect), worldRect(worldRect), pTex(nullptr), view(worldRect)
 {
 	Renderer::listCanvas.push_back(this);
 }

@@ -15,7 +15,7 @@ class Renderer;
 
 class Canvas : public CommResMeth::Scene { // Consider to make canvas an object to draw when collider ?
 public:
-	Canvas(Scene * const parent, sf::IntRect windowRect, sf::IntRect worldRect);
+	Canvas(Scene * const parent, const sf::IntRect & windowRect, const sf::FloatRect & worldRect);
 	~Canvas();
 	void setBackground(std::shared_ptr<sf::Texture> pTexture, sf::IntRect rect);
 	void setBackground(std::shared_ptr<sf::Texture> pTexture);
@@ -23,6 +23,7 @@ public:
 	sf::IntRect worldRect;
 	std::shared_ptr<sf::Texture> pTex;
 	sf::Sprite sprite;
+	sf::View view;
 };
 
 class Renderer : public virtual Moveable, public std::enable_shared_from_this<Renderer>
