@@ -46,11 +46,8 @@ namespace CommResMeth {
 
 	void Button::Update()
 	{
-		sf::Vector2i vecI = sf::Mouse::getPosition(*wnd);
-		sf::Vector2f vecF = { float(vecI.x), float(vecI.y) };
-		vecF /= windowScale;
-		vecI = { int(vecF.x), int(vecF.y) };
-		if (contains(vecI)) {
+		sf::Vector2i vec = sf::Mouse::getPosition(*wnd);
+		if (contains(CommResMeth::getUnscaledCoord(*wnd, vec))) {
 			if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
 				state = ButtonState::Push;
 			}

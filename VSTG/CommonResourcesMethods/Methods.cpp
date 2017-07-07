@@ -4,23 +4,56 @@
 
 namespace CommResMeth {
 
-	void CommResMeth::defHandleMsg(sf::Window &wnd, const sf::Event &event) {
+	void CommResMeth::defHandleMsg(sf::RenderWindow &wnd, const sf::Event &event) {
 		switch (event.type) {
 		case sf::Event::Closed:
 			wnd.close();
 			break;
 		case sf::Event::Resized:
-			windowScale = std::max<float>(event.size.height / 600.0f, event.size.width / 800.0f);
-			if (windowScale > 0.5) {
-				wnd.setSize(sf::Vector2u(int(800 * windowScale), int(600 * windowScale)));
-			}
-			else {
-				wnd.setSize(sf::Vector2u(400, 300));
-			}
+		{
+			resetView(wnd);
+//			windowScale = std::max<float>(event.size.height / 600.0f, event.size.width / 800.0f);
+//			if (windowScale > 0.5) {
+//				wnd.setSize(sf::Vector2u(int(800 * windowScale), int(600 * windowScale)));
+//			}
+//			else {
+//				wnd.setSize(sf::Vector2u(400, 300));
+//			}
 			break;
+		}
 		default:
 			break;
 		}
+	}
+
+	__VSTG_API void resetView(sf::RenderWindow & wnd)
+	{
+		sf::View view(sf::Vector2f(400, 300), sf::Vector2f(WINDOWS_HEIGHT * getAspectRatio(wnd), WINDOWS_HEIGHT));
+		wnd.setView(view);
+	}
+
+	__VSTG_API float getAspectRatio(const sf::Window & wnd)
+	{
+		return float(wnd.getSize().x) / float(wnd.getSize().y);
+	}
+
+	__VSTG_API float getWndScale(const sf::Window & wnd)
+	{
+		return (float)wnd.getSize().y / WINDOWS_HEIGHT;
+	}
+
+	__VSTG_API sf::Vector2f getUnscaledCoord(const sf::Window& wnd, const sf::Vector2f & pos)
+	{
+		const float xOffset = (wnd.getSize().x - wnd.getSize().y * 800 / 600.f) / 2;
+		sf::Vector2f vec = { pos.x - xOffset, pos.y };
+		vec /= getWndScale(wnd);
+		return vec;
+	}
+
+	__VSTG_API sf::Vector2i getUnscaledCoord(const sf::Window & wnd, const sf::Vector2i & pos)
+	{
+		sf::Vector2f vec = getUnscaledCoord(wnd, sf::Vector2f(pos.x, pos.y));
+		return sf::Vector2i((int)vec.x, (int)vec.y);
 	}
 
 	sf::Vector2f vec2i2f(const sf::Vector2i& vec) { return sf::Vector2f(float(vec.x), float(vec.y)); }

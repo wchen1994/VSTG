@@ -17,6 +17,7 @@ namespace DllSceneStartMenu {
 		CommResMeth::Button butEdit;
 		CommResMeth::Button butExit;
 		bool isFocus;
+		bool isFullscreen;
 	public:
 		SceneStartMenu(Scene* const parent = nullptr);
 		virtual ~SceneStartMenu() = default;

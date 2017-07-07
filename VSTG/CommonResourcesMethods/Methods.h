@@ -8,6 +8,8 @@
 
 #include "Defines.h"
 
+#define WINDOWS_HEIGHT 600
+
 namespace CommResMeth {
 		enum class GameState : uint32_t { MENU, GAME, EDITOR, LOBBY, POP, GAMEHOST, GAMECLIENT };
 
@@ -35,7 +37,12 @@ namespace CommResMeth {
 
 		static std::chrono::time_point<std::chrono::steady_clock> timeStart;
 
-		__VSTG_API void defHandleMsg(sf::Window &wnd, const sf::Event &eventType);
+		__VSTG_API void defHandleMsg(sf::RenderWindow &wnd, const sf::Event &eventType);
+		__VSTG_API void resetView(sf::RenderWindow &wnd);
+		__VSTG_API float getAspectRatio(const sf::Window& wnd);
+		__VSTG_API float getWndScale(const sf::Window& wnd);
+		__VSTG_API sf::Vector2f getUnscaledCoord(const sf::Window& wnd, const sf::Vector2f& pos);
+		__VSTG_API sf::Vector2i getUnscaledCoord(const sf::Window& wnd, const sf::Vector2i& pos);
 		__VSTG_API bool inGamecanvas(const sf::Vector2f & pos);
 		__VSTG_API sf::Vector2i vec2f2i(const sf::Vector2f& vec);
 		__VSTG_API sf::Vector2i vec2f2i(const float x, const float y);

@@ -5,7 +5,7 @@ namespace DllSceneStartMenu {
 
 	SceneStartMenu::SceneStartMenu(Scene* const parent)
 		:
-		Scene(parent), isFocus(true),
+		Scene(parent), isFocus(true), isFullscreen(false),
 		butStart(this), butOnline(this), butEdit(this), butExit(this)
 	{
 		CommResMeth::Button::processDefaultButton(&butStart, CommResMeth::TextManager::getText(1), CommResMeth::Button::MEDIUM);
@@ -28,7 +28,16 @@ namespace DllSceneStartMenu {
 				switch (event.type) {
 				case sf::Event::KeyPressed:
 					if (event.key.code == sf::Keyboard::Return) {
-						return GAMESTATE_GAME_OFFLINE;
+						if (event.key.system) {
+							isFullscreen = !isFullscreen;
+							if (!isFullscreen)
+								wnd->create(sf::VideoMode::getDesktopMode(), "Game", sf::Style::Default);
+							else
+								wnd->create(sf::VideoMode::getFullscreenModes()[0], "Game", sf::Style::Fullscreen);
+							CommResMeth::resetView(*wnd);
+						}
+						else
+							return GAMESTATE_GAME_OFFLINE;
 					}
 					if (event.key.code == sf::Keyboard::E) {
 						return GAMESTATE_EDITOR;
