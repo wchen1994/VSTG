@@ -26,7 +26,8 @@ namespace CommResMeth {
 		inline bool operator==(const Angle& rhs) { return this->angle == rhs.angle; }
 		inline bool operator!=(const Angle& rhs) { return !(*this == rhs); }
 
-		operator float() const { return angle; }
+		inline operator float() const { return angle; }
+		inline float rad() { return angle * 3.141592654f / 180; }
 
 	private:
 		float angle;
