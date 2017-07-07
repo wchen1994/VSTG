@@ -70,6 +70,7 @@ Canvas::~Canvas()
 	for (auto itCanvas = Renderer::listCanvas.begin(); itCanvas != Renderer::listCanvas.end();) {
 		if (*itCanvas == this) {
 			itCanvas = Renderer::listCanvas.erase(itCanvas);
+			break;
 		}
 		else {
 			++itCanvas;
@@ -80,6 +81,7 @@ Canvas::~Canvas()
 void Canvas::setBackground(std::shared_ptr<sf::Texture> pTexture, sf::IntRect rect)
 {
 	pTex = pTexture;
+	sprite.setPosition((float)left, (float)top);
 	sprite.setTexture(*pTexture);
 	sprite.setTextureRect(rect);
 	sf::Vector2f scale = { width / (float)rect.width, height / (float)rect.height };

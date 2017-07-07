@@ -5,6 +5,8 @@ namespace CommResMeth {
 	Scene::Scene(Scene* const parent, sf::IntRect rect) : sf::IntRect(rect), isCreator(false), parent(parent)
 	{
 		if (parent) {
+			left += parent->left;
+			top += parent->top;
 			wnd = parent->wnd;
 			parent->childs.push_back(this);
 		}
@@ -28,6 +30,7 @@ namespace CommResMeth {
 			for (auto itPChild = parent->childs.begin(); itPChild != parent->childs.end();) {
 				if (*itPChild == this) {
 					itPChild = parent->childs.erase(itPChild);
+					break;
 				}
 				else {
 					itPChild++;

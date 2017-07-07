@@ -7,7 +7,7 @@
 namespace DllSceneBulletHell {
 
 	SceneGame::SceneGame(CommResMeth::Scene * const parent) :
-		CommResMeth::Scene(parent, sf::IntRect(50, 50, 500, 550)), brd(this, sf::Vector2i(100, 100))
+		CommResMeth::Scene(parent, sf::IntRect(25, 25, 500, 550)), brd(this, sf::Vector2i(100, 100))
 	{
 	}
 
@@ -34,8 +34,9 @@ namespace DllSceneBulletHell {
 		DllSceneBulletHell::SceneGame *sceneGame = new DllSceneBulletHell::SceneGame(this);
 		CommResMeth::FrameTimer ft;
 		ft.Mark();
-		Canvas mainCanvas(sceneGame, { 0,0,sceneGame->width,sceneGame->height }, { 0,0,100,100 });
-		mainCanvas.setBackground(CommResMeth::AssetManager::GetTexture("Resources/Textures/Background.png"));
+		Canvas *mainCanvas = new Canvas(sceneGame, { 0,0,sceneGame->width,sceneGame->height }, { 0,0,100,100 });
+		mainCanvas->setBackground(CommResMeth::AssetManager::GetTexture("Resources/Textures/Background.png"));
+
 		while (wnd->isOpen()) {
 			sf::Event e;
 			while (wnd->pollEvent(e)) {
@@ -44,6 +45,8 @@ namespace DllSceneBulletHell {
 
 			sceneGame->update(ft.Mark());
 		}
+
+		delete mainCanvas;
 		delete sceneGame;
 
 		return 0;
