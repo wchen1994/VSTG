@@ -7,11 +7,17 @@ std::queue<std::shared_ptr<GameObject>> GameObject::layerDelete;
 std::map<OBJID, std::shared_ptr<GameObject>, GameObject::ObjIdBefore> GameObject::layerDefault;
 //Static end
 
+std::shared_ptr<GameObject> GameObject::Create(GameObject * const parent, const sf::Vector2f & pos, const CommResMeth::Angle & rot, char objName[])
+{
+	std::shared_ptr<GameObject> pObj = std::make_shared<GameObject>(parent, pos, rot, objName);
+	layerDefault[pObj->unique_id] = pObj;
+	return pObj;
+}
+
 GameObject::GameObject(GameObject* const parent, const sf::Vector2f & pos, const CommResMeth::Angle & rot, char objName[]) :
 	Moveable(pos, rot),
 	unique_id(++uniqueIdCounter),
-	parent(parent),
-	enable_shared_from_this()
+	parent(parent)
 {
 	if (parent) {
 		parent->childs.push_back(this);
@@ -21,8 +27,6 @@ GameObject::GameObject(GameObject* const parent, const sf::Vector2f & pos, const
 	strcpy_s(this->objName, objName);
 
 	assert(uniqueIdCounter < OBJID_MAX);
-
-	layerDefault[unique_id] = shared_from_this();
 }
 
 
@@ -39,10 +43,8 @@ GameObject::~GameObject(){
 	}
 
 	for (auto pChild : childs) {
-		layerDelete.push(shared_from_this());
+		layerDelete.push(pChild->shared_from_this());
 	}
-
-	layerDefault.erase(this->uniqueIdCounter);
 };
 
 void GameObject::Draw(sf::RenderTarget& gfx){
@@ -65,6 +67,7 @@ void GameObject::PostUpdate()
 
 void GameObject::clearObjects()
 {
+	processDelete();
 	layerDefault.clear();
 }
 
@@ -72,6 +75,7 @@ void GameObject::processDelete()
 {
 	while (layerDelete.size() != 0) {
 		auto &pObj = layerDelete.front();
+		layerDefault.erase(pObj->unique_id);
 		layerDelete.pop();
 		assert(pObj.use_count() == 1);
 	}

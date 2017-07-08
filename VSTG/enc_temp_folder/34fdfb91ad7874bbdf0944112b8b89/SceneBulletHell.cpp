@@ -70,8 +70,8 @@ namespace DllSceneBulletHell {
 			wnd->display();
 		}
 
-		GameObject::clearObjects();
-		delete sceneGame;
+//		GameObject::clearObjects();
+//		delete sceneGame;
 
 		system("pause");
 

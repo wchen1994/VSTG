@@ -17,9 +17,11 @@
 
 class GameObject : public virtual Moveable, public std::enable_shared_from_this<GameObject>
 {
-
+public:
+	static std::shared_ptr<GameObject> Create(
+		GameObject* const parent, const sf::Vector2f & pos = sf::Vector2f(), const CommResMeth::Angle & rot = 0, char objName[] = "unknow");
 public: // Constructor Destructor
-	GameObject(GameObject* const parent, const sf::Vector2f & pos = sf::Vector2f(), const CommResMeth::Angle & rot = 0, char objName[] = "unknow");
+	GameObject(GameObject* const parent, const sf::Vector2f & pos, const CommResMeth::Angle & rot, char objName[]);
 	~GameObject();
 
 public: // Public Static func
@@ -39,7 +41,7 @@ public: // operator for set order
 		}
 	};
 
-public: // Public Static variable
+protected: // Static variable
 	static std::map<OBJID, std::shared_ptr<GameObject>, ObjIdBefore> layerDefault;
 	static std::queue<std::shared_ptr<GameObject>> layerDelete;
 

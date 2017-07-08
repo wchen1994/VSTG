@@ -61,8 +61,8 @@ Board::Board(Scene* const parent, const int tileWidth, const int tileHeight) :
 {
 	// Include additional tile for out of scope
 	for (int i = 0; i <= outsiderIndex; i++) {
-		tiles.push_back(std::make_shared<Tile>(Tile()));
-		next_tiles.push_back(std::make_shared<Tile>(Tile()));
+		tiles.push_back(std::make_shared<Tile>());
+		next_tiles.push_back(std::make_shared<Tile>());
 	}
 }
 
