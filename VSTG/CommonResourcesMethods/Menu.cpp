@@ -38,21 +38,21 @@ namespace CommResMeth {
 
 		switch (flag) {
 		case MENUFLAG::OK:
-			Button::processDefaultButton(&but1, TextManager::getText(7), Button::SMALL);
+			but1.setStyle(Button::SMALL, TextManager::getText(7));
 			but1.setPosition(rect.left + rect.width / 2, rect.top + rect.height / 2);
 			break;
 		case MENUFLAG::OK_CANCEL:
-			Button::processDefaultButton(&but1, TextManager::getText(7), Button::SMALL);
+			but1.setStyle(Button::SMALL, TextManager::getText(7));
 			but1.setPosition(rect.left, rect.top + rect.height / 2);
 
-			Button::processDefaultButton(&but2, TextManager::getText(8), Button::SMALL);
+			but2.setStyle(Button::SMALL, TextManager::getText(8));
 			but2.setPosition(rect.left + rect.width / 2, rect.top + rect.height / 2);
 			break;
 		case MENUFLAG::YES_NO:
-			Button::processDefaultButton(&but1, TextManager::getText(5), Button::SMALL);
+			but1.setStyle(Button::SMALL, TextManager::getText(5));
 			but1.setPosition(rect.left, rect.top + rect.height / 2);
 
-			Button::processDefaultButton(&but2, TextManager::getText(6), Button::SMALL);
+			but2.setStyle(Button::SMALL, TextManager::getText(6));
 			but2.setPosition(rect.left + rect.width / 2, rect.top + rect.height / 2);
 			break;
 		}
@@ -62,14 +62,14 @@ namespace CommResMeth {
 	{
 		switch (flag) {
 		case MENUFLAG::OK:
-			but1.Update();
+			but1.update();
 			if (but1.getStatus() == Button::ButtonState::Release)
 				return 1;
 			break;
 		case MENUFLAG::OK_CANCEL:
 		case MENUFLAG::YES_NO:
-			but1.Update();
-			but2.Update();
+			but1.update();
+			but2.update();
 			if (but1.getStatus() == Button::ButtonState::Release)
 				return 1;
 			if (but2.getStatus() == Button::ButtonState::Release)
@@ -105,12 +105,12 @@ namespace CommResMeth {
 		gfx.draw(text);
 		switch (flag) {
 		case MENUFLAG::OK:
-			but1.draw(gfx);
+			but1.draw();
 			break;
 		case MENUFLAG::OK_CANCEL:
 		case MENUFLAG::YES_NO:
-			but1.draw(gfx);
-			but2.draw(gfx);
+			but1.draw();
+			but2.draw();
 			break;
 		}
 	}

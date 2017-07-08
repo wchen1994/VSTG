@@ -18,9 +18,9 @@ namespace CommResMeth {
 		void resetViewport();
 		void move(int x, int y);
 		void move(sf::Vector2i & dpos) { move(dpos.x, dpos.y); }
-		virtual void setPosition(int x, int y);
+		void setPosition(int x, int y);
 		void setPosition(const sf::Vector2i & pos) { setPosition(pos.x, pos.y); }
-		virtual void setSize(int w, int h);
+		void setSize(int w, int h);
 		void setSize(const sf::Vector2i & size) { setSize(size.x, size.y); }
 	public: // static func
 		inline static const sf::Vector2f TopLeftCoord2BottomLeftCoord(const sf::Vector2f& vec2) {
@@ -50,8 +50,8 @@ namespace CommResMeth {
 		sf::RenderWindow* wnd;
 		Scene *parent;
 		std::vector<Scene*> childs;
+		sf::View sceneView;
 	private:
 		bool isCreator;
-		sf::View sceneView;
 	};
 }

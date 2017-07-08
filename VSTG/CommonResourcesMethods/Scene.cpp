@@ -89,6 +89,7 @@ namespace CommResMeth {
 		top += y;
 		for (auto pChild : childs)
 			pChild->move(x, y);
+		resetViewport();
 	}
 
 	void Scene::setPosition(int x, int y)
@@ -110,6 +111,7 @@ namespace CommResMeth {
 	{
 		width = w; 
 		height = h;
+		resetViewport();
 	}
 
 	void Scene::Update(const float dt)

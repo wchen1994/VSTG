@@ -12,19 +12,20 @@ namespace CommResMeth {
 	class __VSTG_API Button : public Scene {
 	public:
 		enum ButtonState { Idle, Push, Focus, Release, Count };
+		enum ButtonStyle { SMALL, MEDIUM, COUNT };
 	public:
-		explicit Button(Scene* const parent);
+		explicit Button(Scene* const parent, const sf::Vector2i & pos = sf::Vector2i(),
+			ButtonStyle style=ButtonStyle::SMALL, const sf::String & label="unamed");
 		void setTexture(const sf::String & tex);
 		void setLable(const sf::String & s);
 		void setSprites(const sf::Vector2i &ipos, const sf::Vector2i &ppos, const sf::Vector2i &fpos, const sf::Vector2i &size);
-		void setPosition(int x, int y) override;
-		void Update() override;
-		void draw(sf::RenderTarget &gfx);
 		void setState(ButtonState s) { state = s; }
 		ButtonState getStatus() const { return state; }
+	private:
+		void Update() override;
+		void Draw() override;
 	public:
-		enum ButtonStyle { SMALL, MEDIUM, COUNT };
-		static Button* processDefaultButton(Button* const but, const sf::String & lable, ButtonStyle style);
+		void setStyle(ButtonStyle style, const sf::String & lable);
 	private:
 		ButtonState state;
 		sf::Sprite sprites[3];

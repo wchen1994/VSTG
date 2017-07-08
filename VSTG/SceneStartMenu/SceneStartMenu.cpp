@@ -6,19 +6,11 @@ namespace DllSceneStartMenu {
 	SceneStartMenu::SceneStartMenu(Scene* const parent)
 		:
 		Scene(parent), isFocus(true), isFullscreen(false),
-		butStart(this), butOnline(this), butEdit(this), butExit(this)
+		butStart(this, { 550,280 }, CommResMeth::Button::MEDIUM, CommResMeth::TextManager::getText(1)),
+		butOnline(this, { 550,340 }, CommResMeth::Button::MEDIUM, "Start Online"),
+		butEdit(this, { 550,400 }, CommResMeth::Button::MEDIUM, CommResMeth::TextManager::getText(2)),
+		butExit(this, { 550,460 }, CommResMeth::Button::MEDIUM, CommResMeth::TextManager::getText(3))
 	{
-		CommResMeth::Button::processDefaultButton(&butStart, CommResMeth::TextManager::getText(1), CommResMeth::Button::MEDIUM);
-		butStart.setPosition(550, 280);
-
-		CommResMeth::Button::processDefaultButton(&butOnline, "Start Online", CommResMeth::Button::MEDIUM);
-		butOnline.setPosition(550, 340);
-
-		CommResMeth::Button::processDefaultButton(&butEdit, CommResMeth::TextManager::getText(2), CommResMeth::Button::MEDIUM);
-		butEdit.setPosition(550, 400);
-
-		CommResMeth::Button::processDefaultButton(&butExit, CommResMeth::TextManager::getText(3), CommResMeth::Button::MEDIUM);
-		butExit.setPosition(550, 460);
 	}
 
 	int SceneStartMenu::Exec() {
@@ -48,6 +40,14 @@ namespace DllSceneStartMenu {
 					break;
 				case sf::Event::LostFocus:
 					isFocus = false;
+					break;
+				case sf::Event::Resized:
+					CommResMeth::resetWindowView(*wnd);
+					butStart.resetViewport();
+					butEdit.resetViewport();
+					butOnline.resetViewport();
+					butExit.resetViewport();
+					break;
 				default:
 					CommResMeth::defHandleMsg(*wnd, event);
 				}
@@ -75,10 +75,14 @@ namespace DllSceneStartMenu {
 				}
 			}
 			wnd->clear(sf::Color(100, 255, 255));
-			butStart.draw(*wnd);
-			butOnline.draw(*wnd);
-			butEdit.draw(*wnd);
-			butExit.draw(*wnd);
+//			butStart.draw(*wnd);
+//			butOnline.draw(*wnd);
+//			butEdit.draw(*wnd);
+//			butExit.draw(*wnd);
+			butStart.draw();
+			butOnline.draw();
+			butEdit.draw();
+			butExit.draw();
 			wnd->display();
 		}
 		return GAMESTATE_POP;

@@ -2,10 +2,11 @@
 
 namespace CommResMeth {
 
-	Button::Button(Scene* const parent)
-		: Scene(parent), pTex(nullptr)
+	Button::Button(Scene* const parent, const sf::Vector2i & pos, ButtonStyle style, const sf::String & label)
+		: Scene(parent), pTex(nullptr), state(ButtonState::Idle)
 	{
-		state = ButtonState::Idle;
+		setPosition(pos);
+		setStyle(style, label);
 	}
 
 	void Button::setTexture(const sf::String & tex)
@@ -23,8 +24,7 @@ namespace CommResMeth {
 			sprites[i].setTexture(*pTex);
 			sprites[i].setTextureRect(sf::IntRect(pos[i], size));
 		}
-		width = size.x;
-		height = size.y;
+		setSize(size);
 	}
 
 	void Button::setLable(const sf::String & s) {
@@ -33,15 +33,6 @@ namespace CommResMeth {
 		text.setString(s);
 		text.setCharacterSize(uint32_t(30 * textScale));
 		text.setFillColor(sf::Color::White);
-	}
-
-	void Button::setPosition(int x, int y)
-	{
-		for (auto &sprite : sprites) {
-			sprite.setPosition(float(x), float(y));
-		}
-		text.setPosition(float(x), float(y));
-		Scene::setPosition(x, y);
 	}
 
 	void Button::Update()
@@ -63,44 +54,41 @@ namespace CommResMeth {
 		}
 	}
 
-	void Button::draw(sf::RenderTarget & gfx)
+	void Button::Draw()
 	{
 		switch (state) {
-		case ButtonState::Idle:
-		case ButtonState::Release:
-			gfx.draw(sprites[0]);
-			break;
-		case ButtonState::Push:
-			gfx.draw(sprites[1]);
-			break;
-		case ButtonState::Focus:
-			gfx.draw(sprites[2]);
-			break;
-		default:
-			gfx.draw(sprites[0]);
-		}
-		gfx.draw(text);
+			case ButtonState::Idle:
+			case ButtonState::Release:
+				wnd->draw(sprites[0]);
+				break;
+			case ButtonState::Push:
+				wnd->draw(sprites[1]);
+				break;
+			case ButtonState::Focus:
+				wnd->draw(sprites[2]);
+				break;
+			default:
+				wnd->draw(sprites[0]);
+			}
+			wnd->draw(text);
 	}
 
-	Button* Button::processDefaultButton(Button* const but, const sf::String & lable, ButtonStyle style = Button::SMALL)
+	void Button::setStyle(ButtonStyle style, const sf::String & lable)
 	{
 		switch (style) {
-		case Button::SMALL:
-			but->setTexture("Resources/Textures/button01.png");
-			but->setLable(lable);
-			but->setSprites(sf::Vector2i(0, 0), sf::Vector2i(0, 110), sf::Vector2i(0, 51), sf::Vector2i(90, 40));
-			break;
 		case Button::MEDIUM:
-			but->setTexture("Resources/Textures/button01.png");
-			but->setLable(lable);
-			but->setSprites(sf::Vector2i(0, 0), sf::Vector2i(0, 110), sf::Vector2i(0, 51), sf::Vector2i(150, 50));
+			setTexture("Resources/Textures/button01.png");
+			setLable(lable);
+			setSprites(sf::Vector2i(0, 0), sf::Vector2i(0, 110), sf::Vector2i(0, 51), sf::Vector2i(150, 50));
 			break;
+		case Button::SMALL:
 		default:
-			but->setTexture("Resources/Textures/button01.png");
-			but->setLable(lable);
-			but->setSprites(sf::Vector2i(0, 0), sf::Vector2i(0, 110), sf::Vector2i(0, 51), sf::Vector2i(90, 40));
+			setTexture("Resources/Textures/button01.png");
+			setLable(lable);
+			setSprites(sf::Vector2i(0, 0), sf::Vector2i(0, 110), sf::Vector2i(0, 51), sf::Vector2i(90, 40));
+			break;
 		}
-
-		return but;
+		sceneView.setCenter(width / 2.f, height / 2.f);
+		sceneView.setSize((float)width, (float)height);
 	}
 }
