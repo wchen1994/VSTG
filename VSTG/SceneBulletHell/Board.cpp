@@ -7,23 +7,25 @@ BoardObj::BoardObj(Board * const brd, ColliderType type, const ColliderProperiti
 	FLAG_TYPE selfFlag, FLAG_TYPE interactFlag, const sf::Vector2f & pos, const CommResMeth::Angle & rot)
 	:
 	Moveable(pos, rot), Collider(type, propertites, selfFlag, interactFlag),
-	brd(brd),
-	enable_shared_from_this<BoardObj>()
+	brd(brd)
 {
 	updateBoardPos();
-	brd->addObject(shared_from_this());
+	brd->addObject(this);
+//	brd->addObject(shared_from_this());
 }
 
 void BoardObj::updateBoardPos()
 {
-	brd->removeObject(shared_from_this());
+//	brd->removeObject(this);
+//	brd->removeObject(shared_from_this());
 	OnUpdateBrdPos();
-	brd->addObject(shared_from_this()); // outsider will automatically add to outsiders' tile
+	brd->addObject(this);
+//	brd->addObject(shared_from_this()); // outsider will automatically add to outsiders' tile
 }
 
 void BoardObj::OnUpdateBrdPos()
 {
-	assert(queueBrdPos.size() == 0);
+//	assert(queueBrdPos.size() == 0);
 	queueBrdPos.push_back(sf::Vector2i((int)position.x / brd->getTileSize().x, (int)position.y / brd->getTileSize().y));
 }
 
@@ -32,17 +34,20 @@ Board::Tile::Tile() : isColiChecked(false), objCount(0)
 	isColiChecked = true;
 }
 
-std::set<std::shared_ptr<BoardObj>>& Board::Tile::GetLayer()
+const std::set<BoardObj*>& Board::Tile::GetLayer()
+//std::set<std::shared_ptr<BoardObj>>& Board::Tile::GetLayer()
 {
 	return layerObject;
 }
 
-void Board::Tile::RemoveObject(std::shared_ptr<BoardObj> pObject)
+void Board::Tile::RemoveObject(BoardObj* pObject)
+//void Board::Tile::RemoveObject(std::shared_ptr<BoardObj> pObject)
 {
 	layerObject.erase(pObject);
 }
 
-void Board::Tile::AddObject(std::shared_ptr<BoardObj> pObject)
+void Board::Tile::AddObject(BoardObj* pObject)
+//void Board::Tile::AddObject(std::shared_ptr<BoardObj> pObject)
 {
 	layerObject.insert(pObject);
 }
@@ -53,11 +58,11 @@ void Board::Tile::Clear()
 }
 
 
-Board::Board(Scene* const parent, const int tileWidth, const int tileHeight) :
-	Scene(parent),
+Board::Board(Scene* const parent, const sf::IntRect & rect, const int tileWidth, const int tileHeight) :
+	Scene(parent, rect, sf::View()),
 	boardSize({ width, height }), tileSize(tileWidth, tileHeight),
 	grid({ (width + 1) / tileWidth, (height + 1) / tileHeight }),
-	outsiderIndex(grid.x * grid.y)
+	outsiderIndex( ((rect.width + 1) / tileWidth) * ((rect.height + 1) / tileHeight) )
 {
 	// Include additional tile for out of scope
 	for (int i = 0; i <= outsiderIndex; i++) {
@@ -98,7 +103,8 @@ const std::set<std::shared_ptr<Board::Tile>> Board::getPotentialTile(const int i
 	return setTiles;
 }
 
-void Board::removeObject(const std::shared_ptr<BoardObj> pObject)
+void Board::removeObject(BoardObj* pObject)
+//void Board::removeObject(const std::shared_ptr<BoardObj> pObject)
 {
 	std::deque<sf::Vector2i>& qBrdPos = pObject->getQBoardPos();
 	while (qBrdPos.size() != 0) {
@@ -108,7 +114,8 @@ void Board::removeObject(const std::shared_ptr<BoardObj> pObject)
 	}
 }
 
-void Board::removeObject(const sf::Vector2i& brdPos, const std::shared_ptr<BoardObj> pObject)
+void Board::removeObject(const sf::Vector2i& brdPos, BoardObj* pObject)
+//void Board::removeObject(const sf::Vector2i& brdPos, const std::shared_ptr<BoardObj> pObject)
 {
 	if (brdPos.x < 0 || brdPos.x >= grid.x || brdPos.y < 0 || brdPos.y >= grid.y) {
 		tiles[outsiderIndex]->RemoveObject(pObject);
@@ -118,7 +125,8 @@ void Board::removeObject(const sf::Vector2i& brdPos, const std::shared_ptr<Board
 	}
 }
 
-void Board::addObject(const std::shared_ptr<BoardObj> pObject)
+void Board::addObject(BoardObj* pObject)
+//void Board::addObject(const std::shared_ptr<BoardObj> pObject)
 {
 	// Do not clear the queue
 	std::deque<sf::Vector2i>& qBrdPos = pObject->getQBoardPos();
@@ -127,7 +135,8 @@ void Board::addObject(const std::shared_ptr<BoardObj> pObject)
 	}
 }
 
-void Board::addObject(const sf::Vector2i& brdPos, const std::shared_ptr<BoardObj> pObject)
+void Board::addObject(const sf::Vector2i& brdPos, BoardObj* pObject)
+//void Board::addObject(const sf::Vector2i& brdPos, const std::shared_ptr<BoardObj> pObject)
 {
 	if (brdPos.x < 0 || brdPos.x >= grid.x || brdPos.y < 0 || brdPos.y >= grid.y) {
 		next_tiles[outsiderIndex]->AddObject(pObject);
@@ -147,6 +156,7 @@ void Board::clear()
 
 void Board::processCollision()
 {
+	// reset tiles' isColiChecked
 	for (int i = 0; i < outsiderIndex; i++) {
 		assert(tiles[i]->isColiChecked == true);
 		tiles[i]->isColiChecked = false;
@@ -169,7 +179,7 @@ void Board::processCollision()
 				for (auto it1 = layer1.begin(); it1 != layer1.end(); it1++) {
 					for (auto it2 = layer2.begin(); it2 != layer2.end(); it2++) {
 						if ((*it1) != (*it2) && (*it1)->interactFlag && (*it2)->colliderFlag) {
-							(*it1)->processCollision((*it2).get());
+							(*it1)->processCollision(*it2/*(*it2).get()*/);
 						}
 					}
 				}
@@ -185,6 +195,7 @@ void Board::updateObjsBrdPos()
 		for (auto pObj : tile->GetLayer()){
 			pObj->updateBoardPos();
 		}
+		tile->Clear();
 	}
 	tiles.swap(next_tiles); // Reference to cppreference.com System was in maintance
 }

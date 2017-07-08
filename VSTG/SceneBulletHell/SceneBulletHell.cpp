@@ -12,7 +12,7 @@ namespace DllSceneBulletHell {
 	SceneGame::SceneGame(CommResMeth::Scene * const parent) :
 		CommResMeth::Scene(parent, sf::IntRect(25, 25, 500, 550), 
 			sf::View(BottomLeftCoord2TopLeftCoord(sf::Vector2f(WORLD_WIDTH/2,WORLD_HEIGHT/2)), sf::Vector2f(WORLD_WIDTH, WORLD_HEIGHT))),
-		brd(this, sf::Vector2i(100, 100))
+		brd(this, sf::IntRect(25, 0, 500, 600), sf::Vector2i(100, 100))
 	{
 		pBGTex = CommResMeth::AssetManager::GetTexture("Resources/Textures/Background.png");
 		spriteBG.setTexture(*pBGTex);
@@ -20,7 +20,14 @@ namespace DllSceneBulletHell {
 		spriteBG.setScale(scale);
 		spriteBG.setPosition(BottomLeftCoord2TopLeftCoord(sf::Vector2f(0.f, (float)height)));
 
-		player = Player::Create(sf::Vector2f(250, 250), CommResMeth::AssetManager::GetTexture("Resources/Textures/player00.png"));
+		player = Player::Create(
+			sf::Vector2f(250, 250), CommResMeth::AssetManager::GetTexture("Resources/Textures/player00.png"), &brd);
+		player = Player::Create(
+			sf::Vector2f(150, 250), CommResMeth::AssetManager::GetTexture("Resources/Textures/player00.png"), &brd);
+		player = Player::Create(
+			sf::Vector2f(200, 250), CommResMeth::AssetManager::GetTexture("Resources/Textures/player00.png"), &brd);
+		player = Player::Create(
+			sf::Vector2f(191, 250), CommResMeth::AssetManager::GetTexture("Resources/Textures/player00.png"), &brd);
 		player = nullptr;
 	}
 
@@ -31,7 +38,9 @@ namespace DllSceneBulletHell {
 	void SceneGame::Update(const float dt)
 	{
 		GameObject::update(dt);
+		brd.updateObjsBrdPos();
 		brd.processCollision();
+		size_t numb = brd.getCountNumb();
 		GameObject::processDelete();
 	}
 

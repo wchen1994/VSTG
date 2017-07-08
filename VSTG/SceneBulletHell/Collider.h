@@ -23,13 +23,15 @@ public: // Defines
 	};
 
 	union ColliderProperities {
-		struct CilcleCollider {
+		struct CircleCollider {
 			float radius;
 		} circle;
 		struct RectangleCollider {
 			float width;
 			float height;
 		} rectangle;
+		ColliderProperities(float r) { circle.radius = r; }
+		ColliderProperities(float w, float h) { rectangle.width = w; rectangle.height = h; }
 	};
 
 public:

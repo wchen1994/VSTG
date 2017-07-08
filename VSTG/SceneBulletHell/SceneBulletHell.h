@@ -14,17 +14,19 @@
 #pragma comment(lib, "CommonResourcesMethods")
 
 namespace DllSceneBulletHell {
-	class Player : public virtual GameObject, public virtual Renderer/*, public virtual BoardObj*/ {
+	class Player : public virtual GameObject, public virtual Renderer, public virtual BoardObj {
 	public:
-		static std::shared_ptr<Player> Create(sf::Vector2f pos, std::shared_ptr<sf::Texture> pTex) {
-			std::shared_ptr<Player> pPlayer = std::make_shared<Player>(pos, pTex);
+		static std::shared_ptr<Player> Create(sf::Vector2f pos, std::shared_ptr<sf::Texture> pTex, Board *brd) {
+			std::shared_ptr<Player> pPlayer = std::make_shared<Player>(pos, pTex, brd);
 			layerDefault[pPlayer->unique_id] = pPlayer;
 			return pPlayer;
 		}
-		Player(sf::Vector2f pos, std::shared_ptr<sf::Texture> pTex) :
+		Player(sf::Vector2f pos, std::shared_ptr<sf::Texture> pTex, Board *brd) :
 			Moveable(pos),
 			GameObject(nullptr, pos, 0.f, "player"),
-			Renderer(pTex, sf::Vector2f(pTex->getSize().x/2.f, pTex->getSize().y/2.f), sf::Vector2f(0.1f, 0.1f))
+			Renderer(pTex, sf::Vector2f(pTex->getSize().x/2.f, pTex->getSize().y/2.f), sf::Vector2f(0.1f, 0.1f)),
+			BoardObj(brd, ColliderType::Circle, ColliderProperities(5.f)),
+			Collider(ColliderType::Circle, ColliderProperities(5.f))
 		{
 		}
 	};

@@ -32,20 +32,25 @@ public:
 	struct Tile {
 		Tile();
 		~Tile() { Clear(); }
-		std::set<std::shared_ptr<BoardObj>>& GetLayer();
-		void RemoveObject(std::shared_ptr<BoardObj> pObject);
-		void AddObject(std::shared_ptr<BoardObj> pObject);
+		const std::set<BoardObj*>& GetLayer();
+//		std::set<std::shared_ptr<BoardObj>>& GetLayer();
+		void RemoveObject(BoardObj* pObject);
+//		void RemoveObject(std::shared_ptr<BoardObj> pObject);
+		void AddObject(BoardObj* pObject);
+//		void AddObject(std::shared_ptr<BoardObj> pObject);
 		void Clear();
 
 		bool isColiChecked;
 		int objCount;
-		std::set<std::shared_ptr<BoardObj>> layerObject;
+		std::set<BoardObj*> layerObject;
+//		std::set<std::shared_ptr<BoardObj>> layerObject;
 	};
 	const int outsiderIndex;
 
 public:
-	Board(Scene* const parent, const int tileWidth, const int tileHeight);
-	Board(Scene* const parent, const sf::Vector2i & tileSize): Board(parent, tileSize.x, tileSize.y){}
+	Board(Scene* const parent, const sf::IntRect & rect, const int tileWidth, const int tileHeight);
+	Board(Scene* const parent, const sf::IntRect & rect, const sf::Vector2i & tileSize): 
+		Board(parent, rect, tileSize.x, tileSize.y){}
 	~Board() { clear(); }
 
 	/*
@@ -55,7 +60,8 @@ public:
 	const CommResMeth::setVecInt getPotentialPos(const float pos_x, const float pos_y) const {
 		return getPotentialPos(int(pos_x / tileSize.x), int(pos_y / tileSize.y));
 	}
-	const CommResMeth::setVecInt getPotentialPos(const std::shared_ptr<BoardObj> pObject) const {
+	const CommResMeth::setVecInt getPotentialPos(const BoardObj* pObject) const {
+//	const CommResMeth::setVecInt getPotentialPos(const std::shared_ptr<BoardObj> pObject) const {
 		const sf::Vector2f & pos = pObject->getPosition();
 		return getPotentialPos(pos.x, pos.y);
 	}
@@ -67,15 +73,20 @@ public:
 	const std::set<std::shared_ptr<Tile>> getPotentialTile(const float pos_x, const float pos_y) const {
 		return getPotentialTile(int(pos_x / tileSize.x), int(pos_y / tileSize.y));
 	}
-	const std::set<std::shared_ptr<Tile>> getPotentialTile(const std::shared_ptr<BoardObj> pObject) const {
+	const std::set<std::shared_ptr<Tile>> getPotentialTile(const BoardObj* pObject) const {
+//	const std::set<std::shared_ptr<Tile>> getPotentialTile(const std::shared_ptr<BoardObj> pObject) const {
 		const sf::Vector2f & pos = pObject->getPosition();
 		return getPotentialTile(pos.x, pos.y);
 	}
 	
-	void removeObject(const std::shared_ptr<BoardObj> pObject);
-	void removeObject(const sf::Vector2i& brdPos, const std::shared_ptr<BoardObj> pObject);
-	void addObject(const std::shared_ptr<BoardObj> pObject);
-	void addObject(const sf::Vector2i& brdPos, const std::shared_ptr<BoardObj> pObject);
+	void removeObject(BoardObj* pObject);
+//	void removeObject(const std::shared_ptr<BoardObj> pObject);
+	void removeObject(const sf::Vector2i& brdPos, BoardObj* pObject);
+//	void removeObject(const sf::Vector2i& brdPos, const std::shared_ptr<BoardObj> pObject);
+	void addObject(BoardObj* pObject);
+//	void addObject(const std::shared_ptr<BoardObj> pObject);
+	void addObject(const sf::Vector2i& brdPos, BoardObj* pObject);
+//	void addObject(const sf::Vector2i& brdPos, const std::shared_ptr<BoardObj> pObject);
 
 	void clear();
 	void processCollision();
@@ -94,8 +105,8 @@ private:
 	sf::Vector2i grid;
 	std::vector<std::shared_ptr<Tile>> tiles;
 	std::vector<std::shared_ptr<Tile>> next_tiles;
-	CommResMeth::setVecInt sHLPos;
-	std::set<std::shared_ptr<Board::Tile>> sTile;
+//	CommResMeth::setVecInt sHLPos;
+//	std::set<std::shared_ptr<Board::Tile>> sTile;
 
 public: // Draw for debug
 	void viewGrid(sf::RenderTarget& gfx);
