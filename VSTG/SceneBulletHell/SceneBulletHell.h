@@ -19,12 +19,11 @@ namespace DllSceneBulletHell {
 	public:
 		SceneGame(CommResMeth::Scene* const parent);
 		~SceneGame();
+	private:
 		void Update(const float dt) override;
-		void Draw();
-		void resetViewport();
+		void Draw() override;
 	private:
 		Board brd;
-		sf::View gameView;
 		std::shared_ptr<sf::Texture> pBGTex;
 		sf::Sprite spriteBG;
 	};
@@ -33,8 +32,6 @@ namespace DllSceneBulletHell {
 	public:
 		SceneBulletHell(CommResMeth::Scene* const parent);
 		int Exec() override;
-	private:
-		sf::View mainView;
 	};
 }
 

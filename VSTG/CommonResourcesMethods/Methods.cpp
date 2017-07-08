@@ -11,7 +11,7 @@ namespace CommResMeth {
 			break;
 		case sf::Event::Resized:
 		{
-			resetView(wnd);
+			resetWindowView(wnd);
 //			windowScale = std::max<float>(event.size.height / 600.0f, event.size.width / 800.0f);
 //			if (windowScale > 0.5) {
 //				wnd.setSize(sf::Vector2u(int(800 * windowScale), int(600 * windowScale)));
@@ -26,18 +26,17 @@ namespace CommResMeth {
 		}
 	}
 
-	__VSTG_API void resetView(sf::RenderWindow & wnd)
+	__VSTG_API void resetWindowView(sf::RenderWindow & wnd)
 	{
-		//sf::View view(sf::Vector2f(400, 300), sf::Vector2f(WINDOWS_HEIGHT * getAspectRatio(wnd), WINDOWS_HEIGHT));
 		sf::View view;
-		resetView(wnd, view);
+		resetWindowView(wnd, view);
 		wnd.setView(view);
 	}
 
-	__VSTG_API void resetView(const sf::RenderWindow & wnd, sf::View & view_out)
+	__VSTG_API void resetWindowView(const sf::RenderWindow & wnd, sf::View & view_out)
 	{
-		view_out.setCenter(sf::Vector2f(400, 300));
-		view_out.setSize(sf::Vector2f(WINDOWS_HEIGHT * getAspectRatio(wnd), WINDOWS_HEIGHT));
+		view_out.setCenter(sf::Vector2f(DEFAULT_WINDOWS_WIDTH/2, DEFAULT_WINDOWS_HEIGHT/2));
+		view_out.setSize(sf::Vector2f(DEFAULT_WINDOWS_HEIGHT * getAspectRatio(wnd), DEFAULT_WINDOWS_HEIGHT));
 	}
 
 	__VSTG_API float getAspectRatio(const sf::Window & wnd)
@@ -47,7 +46,7 @@ namespace CommResMeth {
 
 	__VSTG_API float getWndScale(const sf::Window & wnd)
 	{
-		return (float)wnd.getSize().y / WINDOWS_HEIGHT;
+		return (float)wnd.getSize().y / DEFAULT_WINDOWS_HEIGHT;
 	}
 
 	__VSTG_API sf::Vector2f getUnscaledCoord(const sf::Window& wnd, const sf::Vector2f & pos)

@@ -1,18 +1,21 @@
 #pragma once
 
 #include "Defines.h"
+#include "Methods.h"
 #include <SFML/Graphics.hpp>
 
 namespace CommResMeth {
 
 	class __VSTG_API Scene : public sf::IntRect{
 	public:
-		Scene(Scene* const parent, sf::IntRect rect = sf::IntRect());
+		Scene(Scene* const parent, const sf::IntRect & rect = sf::IntRect(), const sf::View & view = sf::View());
 		Scene(sf::RenderWindow* const wnd);
 		~Scene();
 		int exec();
 		void update(const float dt);
 		void update();
+		void draw();
+		void resetViewport();
 		void move(int x, int y);
 		void move(sf::Vector2i & dpos) { move(dpos.x, dpos.y); }
 		virtual void setPosition(int x, int y);
@@ -42,11 +45,13 @@ namespace CommResMeth {
 		virtual int Exec();
 		virtual void Update(const float dt);
 		virtual void Update();
+		virtual void Draw() {};
 	protected:
 		sf::RenderWindow* wnd;
 		Scene *parent;
 		std::vector<Scene*> childs;
 	private:
 		bool isCreator;
+		sf::View sceneView;
 	};
 }

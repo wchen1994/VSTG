@@ -8,7 +8,8 @@
 
 #include "Defines.h"
 
-#define WINDOWS_HEIGHT 600
+#define DEFAULT_WINDOWS_HEIGHT 600
+#define DEFAULT_WINDOWS_WIDTH 800
 
 namespace CommResMeth {
 		enum class GameState : uint32_t { MENU, GAME, EDITOR, LOBBY, POP, GAMEHOST, GAMECLIENT };
@@ -38,8 +39,8 @@ namespace CommResMeth {
 		static std::chrono::time_point<std::chrono::steady_clock> timeStart;
 
 		__VSTG_API void defHandleMsg(sf::RenderWindow &wnd, const sf::Event &eventType);
-		__VSTG_API void resetView(sf::RenderWindow &wnd);
-		__VSTG_API void resetView(const sf::RenderWindow &wnd, sf::View &view_out);
+		__VSTG_API void resetWindowView(sf::RenderWindow &wnd);
+		__VSTG_API void resetWindowView(const sf::RenderWindow &wnd, sf::View &view_out);
 		__VSTG_API float getAspectRatio(const sf::Window& wnd);
 		__VSTG_API float getWndScale(const sf::Window& wnd);
 		__VSTG_API sf::Vector2f getUnscaledCoord(const sf::Window& wnd, const sf::Vector2f& pos);

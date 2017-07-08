@@ -34,7 +34,7 @@ namespace DllSceneStartMenu {
 								wnd->create(sf::VideoMode::getDesktopMode(), "Game", sf::Style::Default);
 							else
 								wnd->create(sf::VideoMode::getFullscreenModes()[0], "Game", sf::Style::Fullscreen);
-							CommResMeth::resetView(*wnd);
+							CommResMeth::resetWindowView(*wnd);
 						}
 						else
 							return GAMESTATE_GAME_OFFLINE;

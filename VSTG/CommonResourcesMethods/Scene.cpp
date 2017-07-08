@@ -2,7 +2,8 @@
 
 namespace CommResMeth {
 
-	Scene::Scene(Scene* const parent, sf::IntRect rect) : sf::IntRect(rect), isCreator(false), parent(parent)
+	Scene::Scene(Scene* const parent, const sf::IntRect & rect, const sf::View & view) : 
+		sf::IntRect(rect), isCreator(false), parent(parent), sceneView(view)
 	{
 		if (parent) {
 			left += parent->left;
@@ -14,6 +15,7 @@ namespace CommResMeth {
 			wnd = new sf::RenderWindow(sf::VideoMode(left + width, top + height), "unnamed");
 			isCreator = true;
 		}
+		resetViewport();
 	}
 
 	Scene::Scene(sf::RenderWindow* const wnd) : isCreator(false), parent(nullptr), wnd(wnd)
@@ -62,6 +64,23 @@ namespace CommResMeth {
 	void Scene::update()
 	{
 		Update();
+	}
+
+	void Scene::draw()
+	{
+		wnd->setView(sceneView);
+		Draw();
+	}
+
+	void Scene::resetViewport()
+	{
+		const sf::Vector2u size = wnd->getSize();
+		const float scale = getWndScale(*wnd);
+		const sf::Vector2f unscaledSize = { size.x / scale, size.y / scale };
+		const float offsetX = (unscaledSize.x - DEFAULT_WINDOWS_WIDTH) / 2.f;
+		const sf::FloatRect viewport(	(left + offsetX) / unscaledSize.x,	top / (float)DEFAULT_WINDOWS_HEIGHT, 
+										width / unscaledSize.x,				height / (float)DEFAULT_WINDOWS_HEIGHT  );
+		sceneView.setViewport(viewport);
 	}
 
 	void Scene::move(int x, int y)
