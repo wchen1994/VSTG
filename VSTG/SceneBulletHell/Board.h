@@ -90,11 +90,7 @@ public: // Getter & Setter
 
 private:
 	sf::Vector2i tileSize;
-//	int boardWidth;
-//	int boardHeight;
 	sf::Vector2i boardSize;
-//	int nRow;
-//	int nCol;
 	sf::Vector2i grid;
 	std::vector<std::shared_ptr<Tile>> tiles;
 	std::vector<std::shared_ptr<Tile>> next_tiles;

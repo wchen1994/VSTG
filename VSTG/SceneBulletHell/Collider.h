@@ -13,6 +13,8 @@ typedef uint32_t FLAG_TYPE;
 #define COLLI_FLAG_3				static_cast<FLAG_TYPE>( 1 << 3	)
 #define COLLI_FLAG_4				static_cast<FLAG_TYPE>( 1 << 4	)
 
+#define COLLI_FLAG_(X)				((X) < 32) ? (static_cast<FLAG_TYPE>( 1 << (X))) : ERROR_FLAG_OVERFLOW
+
 class Collider : public virtual Moveable
 {
 public: // Defines

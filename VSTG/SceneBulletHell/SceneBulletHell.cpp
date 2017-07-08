@@ -8,13 +8,13 @@ namespace DllSceneBulletHell {
 
 	SceneGame::SceneGame(CommResMeth::Scene * const parent) :
 		CommResMeth::Scene(parent, sf::IntRect(25, 25, 500, 550)), brd(this, sf::Vector2i(100, 100)), 
-		gameView(BottomLeftCoord2TopLeftCoord(sf::Vector2f(width/2.f, height/2.f)), sf::Vector2f(width, height))
+		gameView(BottomLeftCoord2TopLeftCoord(sf::Vector2f(width/2.f, height/2.f)), sf::Vector2f((float)width, (float)height))
 	{
 		pBGTex = CommResMeth::AssetManager::GetTexture("Resources/Textures/Background.png");
 		spriteBG.setTexture(*pBGTex);
 		sf::Vector2f scale = { (float)width / pBGTex->getSize().x, (float)height / pBGTex->getSize().y };
 		spriteBG.setScale(scale);
-		spriteBG.setPosition(BottomLeftCoord2TopLeftCoord(sf::Vector2f(0, height)));
+		spriteBG.setPosition(BottomLeftCoord2TopLeftCoord(sf::Vector2f(0.f, (float)height)));
 		resetViewport();
 	}
 

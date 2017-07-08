@@ -66,7 +66,7 @@ bool Collider::isCollideCircleCircle(const Collider * const other) const
 
 bool Collider::isCollideRectangleCircle(const Collider * const other) const
 {
-	float rot = rotation;
+	float rot = rotation.rad();
 	sf::Vector2f diffPos = other->position - position;
 	float newX = diffPos.x * cos(rot) - diffPos.y * sin(rot);
 	float newY = diffPos.x * sin(rot) + diffPos.y * cos(rot);
@@ -105,8 +105,8 @@ bool Collider::isCollideRectangleCircle(const Collider * const other) const
 
 bool Collider::isCollideRectangleRectangle(const Collider * const other) const
 {
-	float rot = rotation;
-	float diffRot = other->rotation - rotation;
+	float rot = rotation.rad();
+	float diffRot = CommResMeth::Angle(other->rotation - rotation).rad();
 	sf::Vector2f diffPos = other->position - position;
 	float newX = diffPos.x * cos(rot) - diffPos.y * sin(rot);
 	float newY = diffPos.x * sin(rot) + diffPos.y * cos(rot);

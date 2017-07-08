@@ -60,7 +60,7 @@ namespace CommResMeth {
 
 	__VSTG_API sf::Vector2i getUnscaledCoord(const sf::Window & wnd, const sf::Vector2i & pos)
 	{
-		sf::Vector2f vec = getUnscaledCoord(wnd, sf::Vector2f(pos.x, pos.y));
+		sf::Vector2f vec = getUnscaledCoord(wnd, sf::Vector2f((float)pos.x, (float)pos.y));
 		return sf::Vector2i((int)vec.x, (int)vec.y);
 	}
 

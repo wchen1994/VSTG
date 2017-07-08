@@ -20,12 +20,24 @@ namespace CommResMeth {
 		virtual void setSize(int w, int h);
 		void setSize(const sf::Vector2i & size) { setSize(size.x, size.y); }
 	public: // static func
-		static inline const sf::Vector2f TopLeftCoord2BottomLeftCoord(const sf::Vector2f& vec2);
-		static inline const sf::Vector2f BottomLeftCoord2TopLeftCoord(const sf::Vector2f& vec2);
-		inline const sf::Vector2f TopLeftCoord2Window(const sf::Vector2f& vec2);
-		inline const sf::Vector2f BottomLeftCoord2Window(const sf::Vector2f& vec2);
-		inline const sf::Vector2f Window2TopLeftCoord(const sf::Vector2f& vec2);
-		inline const sf::Vector2f Window2BottomLeftCoord(const sf::Vector2f& vec2);
+		inline static const sf::Vector2f TopLeftCoord2BottomLeftCoord(const sf::Vector2f& vec2) {
+			return sf::Vector2f(vec2.x, -vec2.y);
+		}
+		inline static const sf::Vector2f BottomLeftCoord2TopLeftCoord(const sf::Vector2f& vec2) {
+			return sf::Vector2f(vec2.x, -vec2.y);
+		}
+		inline const sf::Vector2f TopLeftCoord2Window(const sf::Vector2f& vec2) {
+			return sf::Vector2f(left + vec2.x, top + vec2.y);
+		}
+		inline const sf::Vector2f BottomLeftCoord2Window(const sf::Vector2f& vec2) {
+			return sf::Vector2f(left + vec2.x, top + height - vec2.y);
+		}
+		inline const sf::Vector2f Window2TopLeftCoord(const sf::Vector2f& vec2) {
+			return sf::Vector2f(vec2.x - left, vec2.y - top);
+		}
+		inline const sf::Vector2f Window2BottomLeftCoord(const sf::Vector2f& vec2) {
+			return sf::Vector2f(vec2.x - left, height - vec2.y + top);
+		}
 	private:
 		virtual int Exec();
 		virtual void Update(const float dt);
