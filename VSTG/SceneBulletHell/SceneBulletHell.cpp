@@ -29,6 +29,10 @@ namespace DllSceneBulletHell {
 		player = Player::Create(
 			sf::Vector2f(191, 250), CommResMeth::AssetManager::GetTexture("Resources/Textures/player00.png"), &brd);
 		player = nullptr;
+
+		objTree = HappyTree::Create(
+			sf::Vector2f(191, 250), CommResMeth::AssetManager::GetTexture("Resources/Textures/Enemy03.png"), 
+			CommResMeth::AssetManager::GetTexture("Resources/Textures/Enemy02.png"), &brd);
 	}
 
 	SceneGame::~SceneGame() {

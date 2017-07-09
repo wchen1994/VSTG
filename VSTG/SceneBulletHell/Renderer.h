@@ -23,7 +23,7 @@ public:
 	Renderer(const sf::IntRect & rect, std::shared_ptr<sf::Texture> pTex, const sf::Vector2f & origin,
 		const sf::Vector2f & scale);
 	~Renderer();
-private:
+protected:
 	std::shared_ptr<sf::Texture> pTex;
 	sf::Sprite sprite;
 };

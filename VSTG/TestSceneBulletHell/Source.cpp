@@ -1,5 +1,6 @@
 #include "SceneBulletHell.h"
 #include "FrameTimer.h"
+#include <Windows.h>
 
 #define __TEST_1
 
