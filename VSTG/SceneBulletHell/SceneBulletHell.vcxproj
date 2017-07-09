@@ -123,6 +123,7 @@
     <ClCompile Include="SceneBulletHell.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BehaviourControler.h" />
     <ClInclude Include="Board.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="Defines.h" />

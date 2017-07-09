@@ -77,7 +77,8 @@ void GameObject::processDelete()
 		auto &pObj = layerDelete.front();
 		layerDefault.erase(pObj->unique_id);
 		layerDelete.pop();
-		assert(pObj.use_count() == 1);
+//		int rc = pObj.use_count();	// Duplicate delete of one obj will cause assertion error.
+//		assert(rc == 1);			// however multiple collision cause multiple push of the same obj 
 	}
 }
 

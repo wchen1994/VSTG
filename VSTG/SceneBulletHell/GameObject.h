@@ -46,9 +46,9 @@ protected: // Static variable
 	static std::queue<std::shared_ptr<GameObject>> layerDelete;
 
 public: // Geter and seter
-	sf::Vector2<float> getPosition() const { return position; }
-	void setPosition(const sf::Vector2f &vec) { position = vec; }
-
+//	sf::Vector2<float> getPosition() const { return position; }
+//	void setPosition(const sf::Vector2f &vec) { position = vec; }
+//
 	std::string getName() const { return objName; }
 	void setName(const std::string id) { strcpy_s(objName, id.c_str()); }
 

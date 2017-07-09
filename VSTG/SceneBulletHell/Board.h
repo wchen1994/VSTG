@@ -19,6 +19,7 @@ public:
 	BoardObj(Board * const brd, ColliderType type, const ColliderProperities & propertites,
 		FLAG_TYPE selfFlag = COLLI_FLAG_EVERYTHING, FLAG_TYPE interactFlag = COLLI_FLAG_EVERYTHING,
 		const sf::Vector2f & pos = sf::Vector2f(), const CommResMeth::Angle & rot = 0.f);
+	~BoardObj();
 	void updateBoardPos();
 	std::deque<sf::Vector2i>& getQBoardPos() { return queueBrdPos; }
 	virtual void OnUpdateBrdPos();

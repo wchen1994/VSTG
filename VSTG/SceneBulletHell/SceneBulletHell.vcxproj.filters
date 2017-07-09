@@ -53,5 +53,8 @@
     <ClInclude Include="SceneBulletHell.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="BehaviourControler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

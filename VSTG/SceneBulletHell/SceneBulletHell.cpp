@@ -21,18 +21,14 @@ namespace DllSceneBulletHell {
 		spriteBG.setPosition(BottomLeftCoord2TopLeftCoord(sf::Vector2f(0.f, (float)height)));
 
 		player = Player::Create(
-			sf::Vector2f(250, 250), CommResMeth::AssetManager::GetTexture("Resources/Textures/player00.png"), &brd);
-		player = Player::Create(
-			sf::Vector2f(150, 250), CommResMeth::AssetManager::GetTexture("Resources/Textures/player00.png"), &brd);
+			sf::Vector2f(300, 250), CommResMeth::AssetManager::GetTexture("Resources/Textures/player00.png"), &brd);
 		player = Player::Create(
 			sf::Vector2f(200, 250), CommResMeth::AssetManager::GetTexture("Resources/Textures/player00.png"), &brd);
-		player = Player::Create(
-			sf::Vector2f(191, 250), CommResMeth::AssetManager::GetTexture("Resources/Textures/player00.png"), &brd);
-		player = nullptr;
 
 		objTree = HappyTree::Create(
-			sf::Vector2f(191, 250), CommResMeth::AssetManager::GetTexture("Resources/Textures/Enemy03.png"), 
+			sf::Vector2f(170, 250), CommResMeth::AssetManager::GetTexture("Resources/Textures/Enemy03.png"), 
 			CommResMeth::AssetManager::GetTexture("Resources/Textures/Enemy02.png"), &brd);
+		objTree = nullptr;
 	}
 
 	SceneGame::~SceneGame() {

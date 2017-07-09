@@ -50,7 +50,13 @@ namespace CommResMeth {
 		__VSTG_API sf::Vector2i vec2f2i(const float x, const float y);
 		__VSTG_API sf::Vector2f vec2i2f(const sf::Vector2i& vec);
 		__VSTG_API sf::Vector2f vec2i2f(const int x, const int y);
-		__VSTG_API sf::Vector2f normalize(const sf::Vector2f& vec);
+
+		__VSTG_API inline sf::Vector2f normalize(const sf::Vector2f& vec){
+			float sqlen = vec.x * vec.x + vec.y * vec.y;
+			if (sqlen == 0.f)
+				return sf::Vector2f(0.f, 0.f);
+			return sf::Vector2f(vec.x / sqrt(sqlen), vec.y / sqrt(sqlen));
+		}
 
 		template<class T>
 		struct vec2Compare {

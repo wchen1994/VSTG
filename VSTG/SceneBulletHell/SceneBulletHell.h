@@ -9,12 +9,13 @@
 #include "Scene.h"
 #include "Board.h"
 #include "Renderer.h"
+#include "BehaviourControler.h"
 #include "FrameTimer.h"
 
 #pragma comment(lib, "CommonResourcesMethods")
 
 namespace DllSceneBulletHell {
-	class Player : public virtual GameObject, public virtual Renderer, public virtual BoardObj {
+	class Player : public virtual GameObject, public virtual Renderer, public virtual BoardObj, public virtual BehaviourControler {
 	public:
 		static std::shared_ptr<Player> Create(sf::Vector2f pos, std::shared_ptr<sf::Texture> pTex, Board *brd) {
 			std::shared_ptr<Player> pPlayer = std::make_shared<Player>(pos, pTex, brd);
@@ -28,6 +29,11 @@ namespace DllSceneBulletHell {
 			BoardObj(brd, ColliderType::Circle, ColliderProperities(5.f)),
 			Collider(ColliderType::Circle, ColliderProperities(5.f))
 		{
+			curNode = t1->head;
+		}
+	protected:
+		void Update(const float dt) override {
+			updateBehaviour(dt);
 		}
 	};
 
@@ -40,21 +46,21 @@ namespace DllSceneBulletHell {
 		}
 		HappyTree(sf::Vector2f pos, std::shared_ptr<sf::Texture> pTex, std::shared_ptr<sf::Texture> pTex2, Board *brd) :
 			Moveable(pos),
-			GameObject(nullptr, pos, 0.f, "player"),
+			GameObject(nullptr, pos, 0.f, "Enemy"),
 			Renderer(pTex, sf::Vector2f(pTex->getSize().x / 2.f, pTex->getSize().y / 2.f), sf::Vector2f(0.1f, 0.1f)),
-			BoardObj(brd, ColliderType::Circle, ColliderProperities(5.f)),
-			Collider(ColliderType::Circle, ColliderProperities(5.f)),
+			BoardObj(brd, ColliderType::Circle, ColliderProperities(25.f)),
+			Collider(ColliderType::Circle, ColliderProperities(25.f)),
 			pTex2(pTex2), isRed(false)
 		{
 		}
 
 		void OnCollisionEnter(Collider* const other) override {
-			GameObject *pM = dynamic_cast<GameObject*>(other);
-			if (isRed)
-				sprite.setTexture(*pTex2);
-			else
-				sprite.setTexture(*pTex);
-			isRed = !isRed;
+			GameObject::delObject(this->unique_id);
+//			if (isRed)
+//				sprite.setTexture(*pTex2);
+//			else
+//				sprite.setTexture(*pTex);
+//			isRed = !isRed;
 		}
 	private:
 		std::shared_ptr<sf::Texture> pTex2;

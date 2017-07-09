@@ -68,12 +68,6 @@ namespace CommResMeth {
 	sf::Vector2i vec2f2i(const sf::Vector2f& vec) { return sf::Vector2i(int(vec.x), int(vec.y)); }
 	sf::Vector2i vec2f2i(const float x, const float y) { return sf::Vector2i(int(x), int(y)); }
 
-	sf::Vector2f normalize(const sf::Vector2f & vec)
-	{
-		float sqlen = vec.x * vec.x + vec.y * vec.y;
-		return sf::Vector2f(vec.x / sqrt(sqlen), vec.y / sqrt(sqlen));
-	}
-
 	bool inGamecanvas(const sf::Vector2f & pos)
 	{
 		sf::Vector2f topLeft = vec2i2f(CANVAS_LEFT, CANVAS_TOP);

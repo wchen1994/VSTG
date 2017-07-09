@@ -14,6 +14,11 @@ BoardObj::BoardObj(Board * const brd, ColliderType type, const ColliderProperiti
 //	brd->addObject(shared_from_this());
 }
 
+BoardObj::~BoardObj()
+{
+	brd->removeObject(this);
+}
+
 void BoardObj::updateBoardPos()
 {
 //	brd->removeObject(this);
@@ -26,6 +31,7 @@ void BoardObj::updateBoardPos()
 void BoardObj::OnUpdateBrdPos()
 {
 //	assert(queueBrdPos.size() == 0);
+	queueBrdPos.clear();
 	queueBrdPos.push_back(sf::Vector2i((int)position.x / brd->getTileSize().x, (int)position.y / brd->getTileSize().y));
 }
 
@@ -87,13 +93,13 @@ const std::set<std::shared_ptr<Board::Tile>> Board::getPotentialTile(const int i
 	std::set<std::shared_ptr<Board::Tile>> setTiles;
 	for (const auto & vecInt : getPotentialPos(id_x, id_y)) {
 		const auto & tile = tiles[vecInt.y * grid.x + vecInt.x];
-#ifdef _DEBUG
-		for (auto & pObj : tile->GetLayer()) {
-			const sf::Vector2f & pos = pObj->getPosition();
-			assert(pos.x >= vecInt.x * tileSize.x && pos.x < (vecInt.x + 1) * tileSize.x);
-			assert(pos.y >= vecInt.y * tileSize.y && pos.y < (vecInt.y + 1) * tileSize.y);
-		}
-#endif
+//#ifdef _DEBUG
+//		for (auto & pObj : tile->GetLayer()) {
+//			const sf::Vector2f & pos = pObj->getPosition();
+//			assert(pos.x >= vecInt.x * tileSize.x && pos.x < (vecInt.x + 1) * tileSize.x);
+//			assert(pos.y >= vecInt.y * tileSize.y && pos.y < (vecInt.y + 1) * tileSize.y);
+//		}
+//#endif
 		if (!tile->isColiChecked && tile->layerObject.size() > 0) {
 			setTiles.insert(tiles[vecInt.y * grid.x + vecInt.x]);
 			//sHLPos.insert(sf::Vector2i(x, y)); // set for draw for debug
