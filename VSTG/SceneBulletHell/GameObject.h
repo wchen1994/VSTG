@@ -68,7 +68,8 @@ protected: // protected func
 	template <typename Derived>
 	std::shared_ptr<Derived> shared_from_derived()
 	{
-		return std::static_pointer_cast<Derived>(shared_from_this());
+//		return std::static_pointer_cast<Derived>(shared_from_this());
+		return std::dynamic_pointer_cast<Derived>(shared_from_this());
 	}
 
 protected: // Virtual func

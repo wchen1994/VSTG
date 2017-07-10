@@ -12,7 +12,7 @@ void Renderer::draw(sf::RenderTarget & gfx)
 	}
 }
 
-Renderer::Renderer(std::shared_ptr<sf::Texture> pTex, const sf::Vector2f & origin, const sf::Vector2f & scale) 
+Renderer::Renderer(std::shared_ptr<sf::Texture> pTex, const sf::Vector2f & origin, const sf::Vector2f & scale, const CommResMeth::Angle angle) 
 {
 	if (pTex == nullptr)
 		pTex = CommResMeth::AssetManager::GetTexture("Resources/Textures/default.png");
@@ -20,12 +20,14 @@ Renderer::Renderer(std::shared_ptr<sf::Texture> pTex, const sf::Vector2f & origi
 	sprite.setTexture(*pTex);
 	sprite.setOrigin(origin);
 	sprite.setScale(scale);
+	sprite.setRotation(angle);
 
 	setDrawObjects.insert(this);
 }
 
-Renderer::Renderer(const sf::IntRect & rect, std::shared_ptr<sf::Texture> pTex, const sf::Vector2f & origin, const sf::Vector2f & scale) :
-	Renderer(pTex, origin, scale)
+Renderer::Renderer(const sf::IntRect & rect, std::shared_ptr<sf::Texture> pTex, const sf::Vector2f & origin, 
+	const sf::Vector2f & scale, const CommResMeth::Angle angle) :
+	Renderer(pTex, origin, scale, angle)
 {
 	sprite.setTextureRect(rect);
 }

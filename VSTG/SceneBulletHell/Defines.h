@@ -12,7 +12,7 @@ typedef unsigned int OBJID;
 Determine how many times of FixedUpdate() occured in gameobjects 
 in a second
 */
-#define FIXEDUPDATE_RATE 30
+#define FIXEDUPDATE_RATE 60
 
 /* 
 Force FixedUpdate() to occur every $(FIXEDUPDATE_RATE) per second

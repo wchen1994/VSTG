@@ -56,8 +56,12 @@ void BinTree::ClearTree(BinTree * bTree)
 
 BehaviourController::BehaviourController(BinTree * tree) :
 	GameObject(nullptr, sf::Vector2f(),CommResMeth::Angle(),""),
-	tree(tree), curNode(tree->head)
+	tree(tree)
 {
+	if (tree)
+		curNode = tree->head;
+	else
+		curNode = nullptr;
 }
 
 void BehaviourController::updateBehaviour(const float dt)

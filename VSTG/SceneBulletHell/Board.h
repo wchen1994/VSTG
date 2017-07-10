@@ -23,7 +23,7 @@ public:
 	void updateBoardPos();
 	std::deque<sf::Vector2i>& getQBoardPos() { return queueBrdPos; }
 	virtual void OnUpdateBrdPos();
-private:
+protected:
 	std::deque<sf::Vector2i> queueBrdPos;
 	Board *brd;
 };
