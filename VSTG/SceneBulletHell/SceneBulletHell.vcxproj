@@ -116,19 +116,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BehaviourController.cpp" />
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="ObjCreator.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="SceneBulletHell.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BehaviourControler.h" />
+    <ClInclude Include="BehaviourController.h" />
     <ClInclude Include="Board.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="Defines.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Moveable.h" />
+    <ClInclude Include="ObjCreator.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="SceneBulletHell.h" />
   </ItemGroup>

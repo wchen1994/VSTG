@@ -4,7 +4,7 @@
 
 #include "SceneBulletHell.h"
 
-#define WORLD_HEIGHT (500.f)
+#define WORLD_HEIGHT (550.f)
 #define WORLD_WIDTH (500.f)
 
 namespace DllSceneBulletHell {
@@ -20,15 +20,8 @@ namespace DllSceneBulletHell {
 		spriteBG.setScale(scale);
 		spriteBG.setPosition(BottomLeftCoord2TopLeftCoord(sf::Vector2f(0.f, (float)height)));
 
-		player = Player::Create(
-			sf::Vector2f(300, 250), CommResMeth::AssetManager::GetTexture("Resources/Textures/player00.png"), &brd);
-		player = Player::Create(
-			sf::Vector2f(200, 250), CommResMeth::AssetManager::GetTexture("Resources/Textures/player00.png"), &brd);
-
-		objTree = HappyTree::Create(
-			sf::Vector2f(170, 250), CommResMeth::AssetManager::GetTexture("Resources/Textures/Enemy03.png"), 
-			CommResMeth::AssetManager::GetTexture("Resources/Textures/Enemy02.png"), &brd);
-		objTree = nullptr;
+		ObjCreator::Player::Create(
+			sf::Vector2f(250, 250), CommResMeth::AssetManager::GetTexture("Resources/Textures/player00.png"), &brd);
 	}
 
 	SceneGame::~SceneGame() {
@@ -81,8 +74,6 @@ namespace DllSceneBulletHell {
 
 		GameObject::clearObjects();
 		delete sceneGame;
-
-		system("pause");
 
 		return 0;
 	}

@@ -30,6 +30,12 @@
     <ClCompile Include="SceneBulletHell.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ObjCreator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BehaviourController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Defines.h">
@@ -53,7 +59,10 @@
     <ClInclude Include="SceneBulletHell.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BehaviourControler.h">
+    <ClInclude Include="ObjCreator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BehaviourController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

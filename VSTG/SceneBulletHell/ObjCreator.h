@@ -1,39 +1,49 @@
 #pragma once
 
-#include "ObjEnemy.hpp"
-#include "Enemys/EnemyDuck.h"
-#include "Essential.hpp"
-#include "ObjEnemyBullet.h"
-#include "SoundPlayer.h"
-#include "ObjCostume.h"
-#include <memory>
-#include <SFML/System.hpp>
-#include <chrono>
+#include "GameObject.h"
+#include "Renderer.h"
+#include "Board.h"
+#include "BehaviourController.h"
+
+static BinTree *CreatePlayerTree();
 
 namespace ObjCreator {
-	void AssignTexture(std::shared_ptr<ObjCharacter> pObject, std::string texPath);
-	void AssignTexture(std::shared_ptr<ObjCharacter> pObject, std::string texPath, sf::IntRect texRect);
 
-	void SendPacket(std::shared_ptr<ObjCharacter> pObject);
+	class Character : public virtual GameObject, public virtual Renderer, public virtual BoardObj, public virtual BehaviourController {
+	public:
+		static std::shared_ptr<Character> Create(sf::Vector2f pos, std::shared_ptr<sf::Texture> pTex, Board *brd);
 
-	enum EnemyBulletType : uint32_t { BROUND, BPOINTING };
-	std::shared_ptr<ObjEnemyBullet> _CreateEnemyBullet(std::string ObjName, float radius, sf::Vector2f pos, sf::Vector2f vel, float rot);
-	std::shared_ptr<ObjEnemyBullet> CreateEnemyBullet(EnemyBulletType type, sf::Vector2f pos, sf::Vector2f vel = { 0.0f,1.0f });
-	std::shared_ptr<ObjEnemyBullet> CreateEnemyBullet(EnemyBulletType type, sf::Vector2f pos, float rot);
+		Character(sf::Vector2f pos, std::shared_ptr<sf::Texture> pTex, Board *brd);
 
-	enum EnemyType : uint32_t {ROCK_DOWN, ROCK_RAND, DUCK_RED, DUCK_BLUE, COUNT};
-	std::shared_ptr<ObjEnemy> _CreateEnemy(std::string ObjName, float radius, sf::Vector2f pos, sf::Vector2f vel, float rot, float rotSpeed);
-	std::shared_ptr<ObjEnemy> _CreateEnemy2(std::string ObjName, float radius, sf::Vector2f pos, sf::Vector2f vel, EnemyBulletType bullet);
-	std::shared_ptr<ObjEnemy> CreateEnemy(EnemyType type, sf::Vector2f pos);
-	std::shared_ptr<ObjEnemy> CreateEnemy(EnemyType type, sf::Vector2f pos, sf::Vector2f vel, float rot, float rotSpeed);
+	public:
+		void setVelocity(const sf::Vector2f & vel);
+		float getSpeed() const { return speed; }
 
-	enum PlayerType : uint32_t {HULUWA};
-	std::shared_ptr<ObjPlayer> _CreatePlayer(std::string ObjName, float radius, sf::Vector2f pos, int playerNumb);
-	std::shared_ptr<ObjPlayer> CreatePlayer(PlayerType type, sf::Vector2f pos, int playerNumb);
+	protected:
+		void Update(const float dt) override {
+			updateBehaviour(dt);
+		}
 
-	enum BulletType : uint32_t {BLUE, GREEN};
-	std::shared_ptr<ObjBullet> _CreateBullet(std::string Objname, float radius, sf::Vector2f pos, float speed, float rot);
-	std::shared_ptr<ObjBullet> CreateBullet(BulletType type, sf::Vector2f pos, float rot);
+		void FixedUpdate(const float dt) override {
+			position += velocity * speed * dt;
+		}
 
-	std::shared_ptr<ObjCostume> CreateCostume(std::string filename, sf::Vector2f pos);
+	protected:
+		sf::Vector2f velocity;
+		float speed;
+	};
+
+	class Player : public Character {
+	public:
+		static std::shared_ptr<Player> Create(sf::Vector2f pos, std::shared_ptr<sf::Texture> pTex, Board *brd);
+
+		Player(sf::Vector2f pos, std::shared_ptr<sf::Texture> pTex, Board *brd);
+
+		void onFire(const float dt);
+
+	private:
+		float hp;
+		static constexpr float coolDown = 0.3f;
+		float counter;
+	};
 }
