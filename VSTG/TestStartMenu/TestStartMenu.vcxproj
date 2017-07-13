@@ -81,11 +81,11 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\wchen\Source\Repos\VSTG\VSTG\CommonResourcesMethods;C:\Users\wchen\Source\Repos\VSTG\VSTG\SceneStartMenu;C:\SFML-2.4.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\wchen\Source\Repos\VSTG\VSTG\CommonResourcesMethods;C:\Users\wchen\Source\Repos\VSTG\VSTG\SceneStartMenu;C:\SFML-2.4.2\include;C:\App\TGUI-0.7\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link />
     <Link>
-      <AdditionalLibraryDirectories>C:\SFML-2.4.2\lib;C:\Users\wchen\Source\Repos\VSTG\VSTG\x64\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\SFML-2.4.2\lib;C:\Users\wchen\Source\Repos\VSTG\VSTG\x64\Debug;C:\App\TGUI-0.7\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -108,12 +108,12 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\wchen\Source\Repos\VSTG\VSTG\CommonResourcesMethods;C:\Users\wchen\Source\Repos\VSTG\VSTG\SceneStartMenu;C:\SFML-2.4.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\wchen\Source\Repos\VSTG\VSTG\CommonResourcesMethods;C:\Users\wchen\Source\Repos\VSTG\VSTG\SceneStartMenu;C:\SFML-2.4.2\include;C:\App\TGUI-0.7\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>C:\SFML-2.4.2\lib;C:\Users\wchen\Source\Repos\VSTG\VSTG\x64\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\SFML-2.4.2\lib;C:\Users\wchen\Source\Repos\VSTG\VSTG\x64\Debug;C:\App\TGUI-0.7\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
