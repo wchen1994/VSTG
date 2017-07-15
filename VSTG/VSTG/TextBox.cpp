@@ -45,7 +45,7 @@ void TextBox::Input(const sf::Event::KeyEvent & keyevent)
 	sf::Keyboard::Key key = keyevent.code;
 	if (!isFocus)
 		return;
-	if (int(input.size()) < size) {
+	if (input.size() < size) {
 		if (flag & flagALPHABET) {
 			if (keyevent.shift) {
 				if (key >= sf::Keyboard::Key::A && key <= sf::Keyboard::Key::Z) {

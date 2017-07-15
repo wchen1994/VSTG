@@ -5,10 +5,13 @@
 #include "SceneGame.hpp"
 #include "ObjCreator.h"
 
+ObjPlayer::ObjPlayer() :
+	ObjPlayer(sf::Vector2f(0.0f, 0.0f))
+{
+}
 
-ObjPlayer::ObjPlayer(sf::Vector2f pos, int playerNumb) :
-	ObjCharacter(pos, sf::Vector2f(0.0f,0.0f), 0.0f, 0.0f),
-	playerNumb(playerNumb)
+ObjPlayer::ObjPlayer(sf::Vector2f pos) :
+	ObjCharacter(pos, sf::Vector2f(0.0f,0.0f), 0.0f, 0.0f)
 {
 	up = down = left = right = false;
 	fire = false;
@@ -21,7 +24,6 @@ ObjPlayer::ObjPlayer(sf::Vector2f pos, int playerNumb) :
 	drawCollider = pSprite;
 
 	type = GameObject::PLAYER;
-	typeInteract = GameObject::GameObjectType(GameObject::ENEMY | GameObject::ENEMYNOTDEAD);
 }
 
 void ObjPlayer::Update(const float dt){
@@ -50,10 +52,13 @@ void ObjPlayer::Update(const float dt){
 //		const std::shared_ptr<ObjBullet> pBullet = std::make_shared<ObjBullet>(ObjBullet(position));
 		const std::shared_ptr<ObjBullet> pBullet1 = ObjCreator::CreateBullet(ObjCreator::BulletType::BLUE, position, 0.0f);
 		SceneGame::layerDefault.insert(pBullet1);
+		SceneGame::layerBullet.insert(pBullet1);
 		const std::shared_ptr<ObjBullet> pBullet2 = ObjCreator::CreateBullet(ObjCreator::BulletType::GREEN, position, 30.0f);
 		SceneGame::layerDefault.insert(pBullet2);
+		SceneGame::layerBullet.insert(pBullet2);
 		const std::shared_ptr<ObjBullet> pBullet3 = ObjCreator::CreateBullet(ObjCreator::BulletType::GREEN, position, -30.0f);
 		SceneGame::layerDefault.insert(pBullet3);
+		SceneGame::layerBullet.insert(pBullet3);
 		cooldown = cooldownDuration;
 	}
 }
@@ -171,11 +176,6 @@ void ObjPlayer::OnCollisionEnter(std::shared_ptr<ObjCharacter> pOther){
 	if ( type == GameObject::ENEMY || type == GameObject::ENEMYNOTDEAD){
 		SceneGame::layerDelete.insert(pOther);
 		hp -= pOther->GetDamage();
-		if (Essential::isHost) {
-			sf::Packet packet_out;
-			packet_out << int(Essential::PacketType::CHANGE_HP) << playerNumb << hp;
-			Essential::socket.SendPacket(packet_out);
-		}
 		if (hp < 0) {
 			SceneGame::layerDelete.insert(shared_from_derived<ObjPlayer>());
 		}

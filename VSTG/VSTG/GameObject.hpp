@@ -15,11 +15,7 @@
 class GameObject : public std::enable_shared_from_this<GameObject>
 {
 public:
-	enum GameObjectType : uint32_t {UNKONW = 0, 
-							   PLAYER = 1 << 0, 
-		                       BULLET = 1 << 1, 
-							   ENEMY = 1 << 2, 
-							   ENEMYNOTDEAD = 1 << 3,};
+	enum GameObjectType : int {UNKONW, PLAYER, BULLET, ENEMY, ENEMYNOTDEAD, COUNT};
 protected:
 	template <typename Derived>
 	std::shared_ptr<Derived> shared_from_derived()
@@ -32,7 +28,6 @@ protected:
 	uint32_t hashOID;
 	bool isDelete;
 	GameObjectType type;
-	GameObjectType typeInteract;
 	uint32_t unique_id;
 private:
 	static uint32_t uniqueIdCounter;
@@ -57,9 +52,6 @@ public:
 
 	GameObjectType GetType() const { return type; }
 	void SetType(const GameObjectType type) { this->type = type; }
-
-	GameObjectType GetInteractType() const { return typeInteract; }
-	void SetInteractType(const GameObjectType type) { this->typeInteract = type; }
 
 	const unsigned int GetUniId() const { return unique_id; }
 };

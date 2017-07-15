@@ -11,7 +11,6 @@ ObjEnemy::ObjEnemy(sf::Vector2f pos, sf::Vector2f vel, float rot, float rotSpeed
 	drawCollider = pCollider;
 
 	type = GameObject::ENEMY;
-	typeInteract = GameObject::GameObjectType(GameObject::BULLET | GameObject::PLAYER);
 }
 
 void ObjEnemy::Update(const float dt){

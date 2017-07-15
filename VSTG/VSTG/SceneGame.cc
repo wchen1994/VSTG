@@ -11,7 +11,10 @@
 
 
 std::set<std::shared_ptr<ObjCharacter>> SceneGame::layerDefault;
+std::set<std::shared_ptr<ObjCharacter>> SceneGame::layerBullet;
 std::vector<std::shared_ptr<ObjPlayer>> SceneGame::layerPlayer;
+std::set<std::shared_ptr<ObjCharacter>> SceneGame::layerEnemy;
+std::set<std::shared_ptr<ObjCharacter>> SceneGame::layerEnemyBullet;
 std::set<std::shared_ptr<ObjCharacter>> SceneGame::layerDelete;
 Board SceneGame::brd(Essential::ScreenWidth, Essential::ScreenHeight, tileWidth, tileHeight);
 
@@ -37,6 +40,7 @@ SceneGame::SceneGame(sf::RenderWindow& wnd) :
 
 SceneGame::~SceneGame(){
 	layerDefault.clear();
+	layerBullet.clear();
 	layerPlayer.clear();
 	layerDelete.clear();
 	brd.clear();
@@ -49,11 +53,11 @@ Essential::GameState SceneGame::Run(){
 	else if (!Essential::isClient && Essential::isHost) { // Host Start
 		Essential::totalNumbPlayer = int(Essential::socket.GetClinetNumb()) + 1;
 		for (int i = 0; i < Essential::totalNumbPlayer; i++) {
-			layerPlayer.push_back(ObjCreator::CreatePlayer(ObjCreator::PlayerType::HULUWA, sf::Vector2f(0.0f, 0.0f), i));
+			layerPlayer.push_back(ObjCreator::CreatePlayer(ObjCreator::PlayerType::HULUWA, sf::Vector2f(0.0f, 0.0f)));
 		}
 	}
 	else if (!Essential::isClient && !Essential::isHost) { // Offline Start
-		layerPlayer.push_back(ObjCreator::CreatePlayer(ObjCreator::PlayerType::HULUWA, sf::Vector2f(0.0f, 0.0f), 0));
+		layerPlayer.push_back(ObjCreator::CreatePlayer(ObjCreator::PlayerType::HULUWA, sf::Vector2f(0.0f, 0.0f)));
 	}
 	else
 		assert(false);
@@ -133,9 +137,13 @@ void SceneGame::Reset()
 	Essential::wnd.display();
 
 	layerDefault.clear();
+	layerBullet.clear();
+	layerEnemy.clear();
+	layerEnemyBullet.clear();
 	brd.clear();
 
 
+	std::this_thread::sleep_for(std::chrono::duration<float>(1.0f));
 	// Load Map
 	if (Essential::isClient) {
 		if (!map.LoadFromSocket())
@@ -145,6 +153,7 @@ void SceneGame::Reset()
 		if (!map.LoadFile(levelFileName))
 			isGameFail = true;
 	}
+	std::this_thread::sleep_for(std::chrono::duration<float>(1.0f));
 
 	Essential::totalNumbPlayer = int(layerPlayer.size());
 
@@ -253,19 +262,14 @@ void SceneGame::Update() {
 	bool isEnemy = map.Update(dt);
 
 	//check the current number of enemy
-	const std::vector<size_t>& brdCount = brd.GetCount();
+	const std::vector<size_t>& EnemyCount = brd.GetCount();
 	size_t nBrdObj = 0;
-	for (size_t count : brdCount) {
+	for (size_t count : EnemyCount) {
 		nBrdObj += count;
 	}
 
 	// check whether the game is success
-	int playerAliveNumb = 0;
-	for (auto &pPlayer : layerPlayer) {
-		if (pPlayer)
-			playerAliveNumb++;
-	}
-	if (!isEnemy && layerDefault.size() == playerAliveNumb && !Essential::isClient) {
+	if (!isEnemy && nBrdObj == 0 && !Essential::isClient) {
 		if (Essential::isHost) {
 			sf::Packet packet_out;
 			packet_out << int(Essential::PacketType::SIGNAL);
@@ -302,11 +306,13 @@ void SceneGame::Update() {
 			if (objType == GameObject::ENEMYNOTDEAD) {
 				auto pBullet = ObjCreator::CreateEnemyBullet(ObjCreator::EnemyBulletType(OID), pos, vel);
 				pBullet->FixedUpdate(dt);
+				layerEnemyBullet.insert(pBullet);
 				layerDefault.insert(pBullet);
 			} 
 			else if (objType == GameObject::BULLET) {
 				auto pBullet = ObjCreator::CreateBullet(ObjCreator::BulletType(OID), pos, rotation);
 				pBullet->FixedUpdate(dt);
+				layerBullet.insert(pBullet);
 				layerDefault.insert(pBullet);
 			}
 			else {
@@ -465,61 +471,57 @@ void SceneGame::Update() {
 
 		// Disable collison n client
 		if (!Essential::isClient) {
-//			for (auto it = layerEnemy.begin(); it != layerEnemy.end(); it++) {
-//				brd.UpdateObjectPos(*it);
-//			}
-//			for (auto it = layerEnemyBullet.begin(); it != layerEnemyBullet.end(); it++) {
-//				brd.UpdateObjectPos(*it);
-//			}
-//
-//			//Bullet collision
-//			for (auto it = layerBullet.begin(); it != layerBullet.end(); it++) {
-//				const std::set<std::shared_ptr<Board::Tile>>& sTile = brd.GetPotentialTile(*it);
-//				for (auto it_tile = sTile.begin(); it_tile != sTile.end(); it_tile++) {
-//					const std::set<std::shared_ptr<ObjCharacter>>& sObject = (*it_tile)->GetLayer();
-//					for (auto it2 = sObject.begin(); it2 != sObject.end(); it2++) {
-//						sf::Vector2<float> diffPos = (*it)->getPosition() - (*it2)->getPosition();
-//						float len = (*it)->GetColliderSize() + (*it2)->GetColliderSize();
-//						if (diffPos.x*diffPos.x + diffPos.y*diffPos.y <= len*len)
-//							(*it)->OnCollisionEnter(*it2);
-//					}
-//				}
-//			}
-//			// Player collision
-////			for (auto it = layerPlayer.begin(); it != layerPlayer.end(); it++) {
-//			for (int i=0; i<Essential::totalNumbPlayer; i++){
-//				
-//				// layerPlayer is a vector
-//				if (layerPlayer[i] == NULL)
-//					continue;
-//
-//				float hp_old;
-//				if (Essential::isHost)
-//					hp_old = layerPlayer[i]->GetHp();
-//
-//
-//				std::set<std::shared_ptr<Board::Tile>> sTile = brd.GetPotentialTile(layerPlayer[i]);
-//				for (auto it_tile = sTile.begin(); it_tile != sTile.end(); it_tile++) {
-//					const std::set<std::shared_ptr<ObjCharacter>> sObject = (*it_tile)->GetLayer();
-//					for (auto it2 = sObject.begin(); it2 != sObject.end(); it2++) {
-//						sf::Vector2<float> diffPos = layerPlayer[i]->getPosition() - (*it2)->getPosition();
-//						float len = layerPlayer[i]->GetColliderSize() + (*it2)->GetColliderSize();
-//
-//						if (diffPos.x*diffPos.x + diffPos.y*diffPos.y <= len*len)
-//							layerPlayer[i]->OnCollisionEnter(*it2);
-//						float hp_new = layerPlayer[i]->GetHp();
-//						if (Essential::isHost && i != 0 && hp_new != hp_old) {
-//							sf::Packet packet_out;
-//							packet_out << int(Essential::PacketType::CHANGE_HP) << i << hp_new;
-//							Essential::socket.SendPacket(packet_out);
-//						}
-//					}
-//				}
-//			}
-			for (auto it = layerDefault.begin(); it != layerDefault.end(); it++) {
+			for (auto it = layerEnemy.begin(); it != layerEnemy.end(); it++) {
 				brd.UpdateObjectPos(*it);
 			}
-			brd.ProcessCollision();
+			for (auto it = layerEnemyBullet.begin(); it != layerEnemyBullet.end(); it++) {
+				brd.UpdateObjectPos(*it);
+			}
+
+			//Bullet collision
+			for (auto it = layerBullet.begin(); it != layerBullet.end(); it++) {
+				const std::set<std::shared_ptr<Board::Tile>>& sTile = brd.GetPotentialTile(*it);
+				for (auto it_tile = sTile.begin(); it_tile != sTile.end(); it_tile++) {
+					const std::set<std::shared_ptr<ObjCharacter>>& sObject = (*it_tile)->GetLayer();
+					for (auto it2 = sObject.begin(); it2 != sObject.end(); it2++) {
+						sf::Vector2<float> diffPos = (*it)->getPosition() - (*it2)->getPosition();
+						float len = (*it)->GetColliderSize() + (*it2)->GetColliderSize();
+						if (diffPos.x*diffPos.x + diffPos.y*diffPos.y <= len*len)
+							(*it)->OnCollisionEnter(*it2);
+					}
+				}
+			}
+			// Player collision
+//			for (auto it = layerPlayer.begin(); it != layerPlayer.end(); it++) {
+			for (int i=0; i<Essential::totalNumbPlayer; i++){
+				
+				// layerPlayer is a vector
+				if (layerPlayer[i] == NULL)
+					continue;
+
+				float hp_old;
+				if (Essential::isHost)
+					hp_old = layerPlayer[i]->GetHp();
+
+
+				std::set<std::shared_ptr<Board::Tile>> sTile = brd.GetPotentialTile(layerPlayer[i]);
+				for (auto it_tile = sTile.begin(); it_tile != sTile.end(); it_tile++) {
+					const std::set<std::shared_ptr<ObjCharacter>> sObject = (*it_tile)->GetLayer();
+					for (auto it2 = sObject.begin(); it2 != sObject.end(); it2++) {
+						sf::Vector2<float> diffPos = layerPlayer[i]->getPosition() - (*it2)->getPosition();
+						float len = layerPlayer[i]->GetColliderSize() + (*it2)->GetColliderSize();
+
+						if (diffPos.x*diffPos.x + diffPos.y*diffPos.y <= len*len)
+							layerPlayer[i]->OnCollisionEnter(*it2);
+						float hp_new = layerPlayer[i]->GetHp();
+						if (Essential::isHost && i != 0 && hp_new != hp_old) {
+							sf::Packet packet_out;
+							packet_out << int(Essential::PacketType::CHANGE_HP) << i << hp_new;
+							Essential::socket.SendPacket(packet_out);
+						}
+					}
+				}
+			}
 		}
 	}
 
@@ -528,7 +530,7 @@ void SceneGame::Update() {
 		(*it)->LateUpdate();
 	}
 
-#if defined(_DEBUG_LOG) && defined(_DEBUG)
+#ifdef _DEBUG_LOG
 
 	//Log
 	if (logTimer > 0) {
@@ -540,6 +542,9 @@ void SceneGame::Update() {
 		system("CLS");
 		std::cout << "FPS:\t\t" << std::setprecision(1) << std::fixed << 1 / dt << std::endl;
 		std::cout << "Objects:\t" << layerDefault.size() << std::endl;
+		std::cout << "Bullets:\t" << layerBullet.size() << std::endl;
+		std::cout << "Enemys:\t" << layerEnemy.size() << std::endl;
+		std::cout << "EnemyBullets:\t" << layerEnemyBullet.size() << std::endl;
 		std::cout << "Deletes:\t" << nDeletes << std::endl;
 		std::cout << "Brd:Totoal:\t" << nBrdObj << std::endl;
 
@@ -550,6 +555,9 @@ void SceneGame::Update() {
 	//Remove
 	for (auto it = layerDelete.begin(); it != layerDelete.end(); it++) {
 		layerDefault.erase(*it);
+		layerBullet.erase(*it);
+		layerEnemy.erase(*it);
+		layerEnemyBullet.erase(*it);
 		brd.RemoveObject(*it);
 		if ((*it)->GetType() == GameObject::PLAYER) {
 			for (auto & pPlayer : layerPlayer) {
@@ -578,7 +586,7 @@ void SceneGame::DrawScene()
 	wnd.draw(background);
 	wnd.draw(playerHP);
 
-#if defined(_DEBUG) && defined(_DEBUG_BOARD)
+#ifdef _DEBUG_BOARD
 	brd.Highlight(wnd);
 	brd.View(wnd);
 #endif

@@ -19,10 +19,10 @@ private:
 	bool up, down, left, right;
 	bool fire;
 	float cooldown;
-	int playerNumb;
 	static constexpr float cooldownDuration = 0.05f;
 public:
-	ObjPlayer(sf::Vector2f pos, int playerNumb);
+	ObjPlayer();
+	ObjPlayer(sf::Vector2f pos);
 	void Update(const float dt);
 	StructInput UpdateInput();
 	void UpdateInput(StructInput & input);

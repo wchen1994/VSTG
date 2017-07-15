@@ -8,7 +8,7 @@ ObjCharacter::ObjCharacter():
 
 ObjCharacter::ObjCharacter(sf::Vector2f pos, sf::Vector2f vel, float rot, float rotSpeed):
 	GameObject(pos),
-	brdPos(-10, -10),
+	brdPos(0, 0),
 	drawCollider(nullptr),
 	drawSprite(nullptr),
 	hp(100.0f),
@@ -62,7 +62,7 @@ void ObjCharacter::Draw(sf::RenderTarget& gfx) {
 	else if (drawCollider) {
 		gfx.draw(*drawCollider);
 	}
-#if defined(_DEBUG_COLLIDER) && defined(_DEBUG)
+#ifdef _DEBUG_COLLIDER
 	if (drawCollider) {
 		gfx.draw(*drawCollider);
 	}

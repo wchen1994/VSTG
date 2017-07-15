@@ -7,7 +7,6 @@ Board::Tile::Tile(int width_in, int height_in) : isColiChecked(false), objCount(
 {
 	width = width_in;
 	height = height_in;
-	isColiChecked = true;
 }
 
 std::set<std::shared_ptr<ObjCharacter>>& Board::Tile::GetLayer()
@@ -64,18 +63,6 @@ std::set<std::shared_ptr<Board::Tile>>& Board::GetPotentialTile(const int id_x, 
 	for (int y = std::max(0, id_y - 1); y <= std::min(nRow-1, id_y + 1); y++) {
 		for (int x = std::max(0, id_x - 1); x <= std::min(nCol-1, id_x + 1); x++) {
 			auto& tile = tiles[y*nCol + x];
-#ifdef _DEBUG
-			for (auto & pObj : tile->GetLayer()) {
-				sf::Vector2f pos = pObj->getPosition();
-				if (pos.x >= 0 && pos.x < Essential::ScreenWidth && pos.y >= 0 && pos.y < Essential::ScreenHeight) {
-					assert(pos.x >= x*tileWidth && pos.x < (x + 1) *tileWidth);
-					assert(pos.y >= y*tileHeight && pos.y < (y + 1) *tileHeight);
-				}
-				else {
-					assert(y*nCol + x == nCol * nRow);
-				}
-			}
-#endif
 			if (!tile->isColiChecked && tile->layerObject.size() > 0) {
 				sTile.insert(tiles[y*nCol + x]);
 				sHLPos.insert(sf::Vector2i(x, y));
@@ -142,7 +129,7 @@ void Board::Highlight(sf::RenderTarget & gfx)
 
 void Board::HighlightTile(sf::RenderTarget & gfx, sf::Vector2i pos)
 {
-	static sf::RectangleShape rect;
+	sf::RectangleShape rect;
 	rect.setPosition(sf::Vector2f(float(pos.x * tileWidth), float(pos.y * tileHeight)));
 	rect.setSize(sf::Vector2f(float(tileWidth), float(tileHeight)));
 	rect.setFillColor(sf::Color::Red);
@@ -168,33 +155,13 @@ void Board::clear()
 
 void Board::ProcessCollision()
 {
-	for (int i = 0; i < nRow*nCol; i++) {
-		assert(tiles[i]->isColiChecked == true);
-		tiles[i]->isColiChecked = false;
-	}
 	for (int i = 0; i < nRow*nCol;i++) {
 		auto& tile = tiles[i];
 		if (!tile->isColiChecked) {
-			if (tile->layerObject.size() == 0) {
-				tile->isColiChecked = true;
-				continue;
-			}
-			assert(tile->layerObject.size() > 0);
-			auto& potentialTiles = GetPotentialTile(i % nCol, i / nCol);
+			auto& potentialTiles = GetPotentialTile(i / nCol, i % nCol);
 			for (auto& potentialTile : potentialTiles) {
 				auto& layer1 = tile->layerObject;
 				auto& layer2 = potentialTile->layerObject;
-				for (auto it1 = layer1.begin(); it1 != layer1.end(); it1++) {
-					for (auto it2 = layer2.begin(); it2 != layer2.end(); it2++) {
-						if ((*it1) != (*it2) && (*it1)->GetInteractType() && (*it2)->GetType()) {
-							//HighlightTile(Essential::wnd, sf::Vector2i(i / nCol, i % nCol));
-							sf::Vector2<float> diffPos = (*it1)->getPosition() - (*it2)->getPosition();
-							float len = (*it1)->GetColliderSize() + (*it2)->GetColliderSize();
-							if (diffPos.x*diffPos.x + diffPos.y*diffPos.y <= len*len)
-								(*it1)->OnCollisionEnter(*it2);
-						}
-					}
-				}
 			}
 			tile->isColiChecked = true;
 		}
@@ -224,13 +191,7 @@ sf::Vector2i Board::UpdateObjectPos(std::shared_ptr<ObjCharacter> pObj)
 {
 	const auto& position = pObj->getPosition();
 	const auto& brdPos = pObj->GetBrdPos();
-	sf::Vector2i newBrdPos;
-	if (position.x >= 0 && position.x < Essential::ScreenWidth && position.y >= 0 && position.y < Essential::ScreenHeight) {
-		newBrdPos = sf::Vector2i(int(position.x / tileWidth), int(position.y / tileHeight));
-	}
-	else {
-		newBrdPos = sf::Vector2i(0, nRow+1);
-	}
+	const sf::Vector2i newBrdPos(int(position.x / tileWidth), int(position.y / tileHeight));
 	if (brdPos.x != newBrdPos.x || brdPos.y != newBrdPos.y) {
 		RemoveObject(brdPos, pObj);
 		AddObject(newBrdPos, pObj);

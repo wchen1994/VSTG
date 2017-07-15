@@ -4,7 +4,6 @@ ObjEnemyBullet::ObjEnemyBullet(sf::Vector2f pos, sf::Vector2f vel) :
 	ObjBullet(pos, vel)
 {
 	type = GameObject::ENEMYNOTDEAD;
-	typeInteract = GameObject::PLAYER;
 }
 
 void ObjEnemyBullet::OnCollisionEnter(std::shared_ptr<ObjCharacter> pOther)

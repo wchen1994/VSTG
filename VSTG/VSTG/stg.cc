@@ -36,7 +36,7 @@ A touhou like game
 
 int main(){
 	// For test used
-//	Essential::wnd.setSize(sf::Vector2u(400, 300));
+	Essential::wnd.setSize(sf::Vector2u(400, 300));
 	// End
 	AssetManager::assetManager.GetTexture("Resources/Textures/Bullet00.png");
 	AssetManager::assetManager.GetTexture("Resources/Textures/Bullet01.png");

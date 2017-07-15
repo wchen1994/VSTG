@@ -38,7 +38,7 @@ void SoundPlayer::play(std::string const & path, const sf::Vector2f & pos, const
 		}
 	}
 
-//	std::cout << setSound.size() << std::endl;
+	std::cout << setSound.size() << std::endl;
 
 	const auto &pair = setSound.insert(structSound);
 

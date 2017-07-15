@@ -25,12 +25,15 @@ void EnemyDuck::Update(const float dt)
 				std::shared_ptr<ObjEnemyBullet> pBullet1;
 				std::shared_ptr<ObjEnemyBullet> pBullet2;
 				std::shared_ptr<ObjEnemyBullet> pBullet3;
-				pBullet1 = ObjCreator::CreateEnemyBullet(ObjCreator::EnemyBulletType::BROUND, position, 180.0f);
-				pBullet2 = ObjCreator::CreateEnemyBullet(ObjCreator::EnemyBulletType::BROUND, position, 150.0f);
-				pBullet3 = ObjCreator::CreateEnemyBullet(ObjCreator::EnemyBulletType::BROUND, position, 210.0f);
+				pBullet1 = ObjCreator::CreateEnemyBullet(ObjCreator::EnemyBulletType::BROUND, position, 120.0f, 180.0f);
+				pBullet2 = ObjCreator::CreateEnemyBullet(ObjCreator::EnemyBulletType::BROUND, position, 120.0f, 150.0f);
+				pBullet3 = ObjCreator::CreateEnemyBullet(ObjCreator::EnemyBulletType::BROUND, position, 120.0f, 210.0f);
 				SceneGame::layerDefault.insert(pBullet1);
 				SceneGame::layerDefault.insert(pBullet2);
 				SceneGame::layerDefault.insert(pBullet3);
+				SceneGame::layerEnemyBullet.insert(pBullet1);
+				SceneGame::layerEnemyBullet.insert(pBullet2);
+				SceneGame::layerEnemyBullet.insert(pBullet3);
 			}
 			else {
 				std::shared_ptr<ObjEnemyBullet> pBullet;
@@ -40,6 +43,7 @@ void EnemyDuck::Update(const float dt)
 						const sf::Vector2f diffPos = playerPos - position;
 						pBullet = ObjCreator::CreateEnemyBullet(ObjCreator::EnemyBulletType::BPOINTING, position, diffPos);
 						SceneGame::layerDefault.insert(pBullet);
+						SceneGame::layerEnemyBullet.insert(pBullet);
 					}
 				}
 			}
