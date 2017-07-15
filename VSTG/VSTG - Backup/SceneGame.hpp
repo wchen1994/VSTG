@@ -1,0 +1,64 @@
+#pragma once
+
+#include <SFML/Graphics.hpp>
+#include <vector>
+#include <set>
+#include <iostream>
+
+#include "GameObject.hpp"
+#include "Scene.hpp"
+#include "Essential.hpp"
+#include "FrameTimer.h"
+#include "Board.hpp"
+#include "Map.h"
+#include "ObjMenu.h"
+#include "ObjCreator.h"
+
+#define _DEBUG_BOARD
+#define _DEBUG_LOG
+
+class SceneGame : public Scene{
+private:
+	sf::Event event;
+	sf::RenderWindow& wnd;
+	FrameTimer ft;
+	float dt;//Delta time
+	float culDt = 0.0f;//Culmulative delta time
+	float logTimer = 0.0f;
+	static constexpr float fixedUpdateDuration = 1 / 30.0f;
+	size_t nDeletes = 0;
+	bool isFocused;
+	bool isMenuTriger;
+	bool isGamePause;
+	bool isGameFail;
+	bool isGameSucceed;
+	Map map;
+	int levelCount;
+	std::string levelFileName;
+	ObjMenu escMenu;
+	sf::RectangleShape background; 
+
+	// UI
+	sf::Text playerHP;
+
+	// Online
+	float onlineLatency;
+	static constexpr float synCooldown = 1.0f;
+	float synTimer;
+public:
+	SceneGame(sf::RenderWindow& wnd);
+	~SceneGame();
+	Essential::GameState Run();
+	void Reset();
+	void Update();
+	void DrawScene();
+public:
+	static std::set<std::shared_ptr<ObjCharacter>> layerDefault;
+	static std::vector<std::shared_ptr<ObjPlayer>> layerPlayer;
+	static std::set<std::shared_ptr<ObjCharacter>> layerDelete;
+	static Board brd;
+
+	// Changing the tile size require to rebuild the soluction
+	static constexpr int tileWidth = 50;
+	static constexpr int tileHeight = 50;
+};
